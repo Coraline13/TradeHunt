@@ -1,0 +1,17 @@
+{
+  "supported_locales": ["en", "fr"],
+  "strings": {
+    "username_exists": {
+      "en": "This username is already in use!",
+      "fr": "Ce nom d'utilisateur est déjà utilisé!"
+    },
+    "email_exists": {
+      "en": "This e-mail address is already associated with an account!",
+      "fr": "FRENCH * E-MAIL EXISTS"
+    },
+    "register_unknown_err": {
+      "en": "There was an error while creating your account. Please try again.",
+      "fr": "FRENCH * UNKNOWN ERROR"
+    }
+  }
+}

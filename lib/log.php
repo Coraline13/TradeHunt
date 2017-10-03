@@ -30,7 +30,7 @@ $log_levels = array(LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARNING, LOG_LEVE
 function _log_write($message, $level) {
     global $log, $log_levels;
     assert(in_array($level, $log_levels), sprintf("%s is not a valid log level", $level));
-    fprintf($log, "[%s] [%s] %s\n", format_timestamp(), $level, $message);
+    fprintf($log, "[%s][%s] %s\n", format_timestamp(), $level, $message);
 }
 
 /**

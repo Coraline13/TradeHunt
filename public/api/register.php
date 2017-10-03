@@ -12,23 +12,28 @@ try {
     echo json_encode(["id" => $user->getId()], JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
 }
 catch (APIException $e) {
+    $ip = $_SERVER['REMOTE_ADDR'];
     $error_response = [
         "error_code" => $e->getCode(),
         "message" => $e->getMessage(),
-        "trace" => $e->getTraceAsString(),
+        "ip" => $ip,
     ];
-    $cause = $e->getPrevious();
-    if ($cause) {
-        $error_response['cause'] = [
-            "trace" => $cause->getTraceAsString(),
-            "message" => $cause->getMessage()
-        ];
-        if ($cause instanceof PDOException) {
-            $error_response['cause']['errorInfo'] = $cause->errorInfo;
+
+    if ($ip === "127.0.0.1" || substr($ip, 0, strlen("10.17.0.")) === "10.17.0.") {
+        $error_response['trace'] = $e->getTraceAsString();
+        $cause = $e->getPrevious();
+        if ($cause) {
+            $error_response['cause'] = [
+                "trace" => $cause->getTraceAsString(),
+                "message" => $cause->getMessage()
+            ];
+            if ($cause instanceof PDOException) {
+                $error_response['cause']['errorInfo'] = $cause->errorInfo;
+            }
         }
     }
 
-    http_response_code(409);
+    http_response_code($e->getRecommendedHttpStatus());
     header("Content-Type: application/json");
     echo json_encode($error_response);
 }

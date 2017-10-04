@@ -1,5 +1,5 @@
 <?php
-$log = fopen(dirname(__FILE__).'/../application.log', 'at');
+$log = fopen(dirname(__FILE__).'/../data/application.log', 'at');
 
 /**
  * @return string current date and time formatted as a string
@@ -29,7 +29,9 @@ $log_levels = array(LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARNING, LOG_LEVE
  */
 function _log_write($message, $level) {
     global $log, $log_levels;
-    assert(in_array($level, $log_levels), sprintf("%s is not a valid log level", $level));
+    if (!in_array($level, $log_levels)) {
+        throw new InvalidArgumentException("$level is not a valid log level");
+    }
     fprintf($log, "[%s][%s] %s\n", format_timestamp(), $level, $message);
 }
 

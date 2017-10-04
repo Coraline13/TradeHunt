@@ -68,5 +68,4 @@ fabric.properties
 
 *.sqlite3-journal
 public/phpinfo.php
-/application.log
-/database.sqlite3
+/data

@@ -2,7 +2,7 @@
 require_once dirname(__FILE__).'/log.php';
 require_once dirname(__FILE__).'/sql_parse.php';
 
-$db = new PDO('sqlite:'.dirname(__FILE__).'/../database.sqlite3', SQLITE3_OPEN_READWRITE);
+$db = new PDO('sqlite:'.dirname(__FILE__).'/../data/database.sqlite3', SQLITE3_OPEN_READWRITE);
 $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
 define("SCHEMA_VERSION", 1);

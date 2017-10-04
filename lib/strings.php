@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/../init.php';
 
 define("STRING_NO_STRING", 0);
 define("STRING_USERNAME_EXISTS", 1);

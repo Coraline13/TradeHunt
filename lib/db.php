@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/log.php';
+require_once dirname(__FILE__).'/../init.php';
 require_once dirname(__FILE__).'/sql_parse.php';
 
 $db = new PDO('sqlite:'.dirname(__FILE__).'/../data/database.sqlite3');

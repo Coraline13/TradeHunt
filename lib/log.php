@@ -1,5 +1,9 @@
 <?php
-$log = fopen(dirname(__FILE__).'/../data/application.log', 'at');
+$datadir = dirname(__FILE__).'/../data';
+if (!file_exists($datadir)) {
+    mkdir($datadir, 0750, false);
+}
+$log = fopen($datadir.'/application.log', 'at');
 
 /**
  * @return string current date and time formatted as a string

@@ -1,6 +1,6 @@
 <?php
+require_once dirname(__FILE__).'/../init.php';
 require_once dirname(__FILE__).'/db.php';
-require_once dirname(__FILE__).'/log.php';
 require_once dirname(__FILE__).'/strings.php';
 
 

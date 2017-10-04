@@ -11,7 +11,15 @@
     },
     "register_unknown_err": {
       "en": "There was an error while creating your account. Please try again.",
+      "fr": "FRENCH * UNKNOWN USER ERROR"
+    },
+    "generic_error": {
+      "en": "An unknown error occured while processing your request",
       "fr": "FRENCH * UNKNOWN ERROR"
+    },
+    "no_string": {
+      "en": "<no string>",
+      "fr": "<no string>"
     }
   }
 }

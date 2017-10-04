@@ -2,6 +2,8 @@
 require_once dirname(__FILE__).'/../../init.php';
 require_once dirname(__FILE__).'/../../lib/api.php';
 
+check_method(["POST"]);
+
 $req_body = file_get_contents('php://input');
 $request = json_decode($req_body, true);
 

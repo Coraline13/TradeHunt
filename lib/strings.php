@@ -1,13 +1,17 @@
 <?php
 
+define("STRING_NO_STRING", 0);
 define("STRING_USERNAME_EXISTS", 1);
 define("STRING_EMAIL_EXISTS", 2);
 define("STRING_REGISTER_UNKNOWN_ERR", 3);
+define("STRING_GENERIC_ERROR", 4);
 
 $string_code_to_name = array(
+    STRING_NO_STRING => "no_string",
     STRING_USERNAME_EXISTS => "username_exists",
     STRING_EMAIL_EXISTS => "email_exists",
     STRING_REGISTER_UNKNOWN_ERR => "register_unknown_err",
+    STRING_GENERIC_ERROR => "generic_error"
 );
 
 $supported_locales = null;

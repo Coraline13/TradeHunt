@@ -58,11 +58,11 @@ class User
             log_info(sprintf("Created user #%d: %s <%s>", $uid, $username, $email));
             return new User($uid, $username, $email, $password_hash);
         } catch (PDOException $e) {
-            if ($e->errorInfo[0] == '23000' && strpos($e->errorInfo[2], "UNIQUE") !== false) {
-                if (strpos($e->errorInfo[2], "users.email") !== false) {
+            if ($e->errorInfo[0] == '23000' && stripos($e->errorInfo[2], "unique") !== false) {
+                if (strpos($e->errorInfo[2], "email") !== false) {
                     throw new UserException(ERROR_EMAIL_EXISTS, $e);
                 }
-                if (strpos($e->errorInfo[2], "users.username") !== false) {
+                if (strpos($e->errorInfo[2], "username") !== false) {
                     throw new UserException(ERROR_USERNAME_EXISTS, $e);
                 }
             }

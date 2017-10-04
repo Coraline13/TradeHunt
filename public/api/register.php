@@ -19,4 +19,5 @@ try {
 catch (APIException $e) {
     write_error_response_json($e);
     log_warning("register failed for ${request['username']} <${request['email']}>: ".$e->getMessage());
+    log_exception($e, LOG_LEVEL_DEBUG);
 }

@@ -70,3 +70,18 @@ function log_warning($message) {
 function log_error($message) {
     _log_write($message, LOG_LEVEL_ERROR);
 }
+
+/**
+ * Format and write the given exception to the application log. Multiple log messages will be outputted, one for each
+ * nested exception.
+ * @param Throwable $exc the exception
+ * @param string $log_level optional log level; defaults to ERROR
+ */
+function log_exception($exc, $log_level = LOG_LEVEL_ERROR) {
+    _log_write("unhandled exception of type ".get_class($exc).": ".$exc->getMessage()."\n".format_exception_trace($exc), $log_level);
+    $cause = $exc->getPrevious();
+    while ($cause !== null) {
+        _log_write("previous exception was caused by ".get_class($cause).": ".$cause->getMessage()."\n".format_exception_trace($cause), $log_level);
+        $cause = $cause->getPrevious();
+    }
+}

@@ -44,7 +44,6 @@ function format_exception_trace($exception) {
     return "\t".trim($rtn);
 }
 
-
 /**
  * Check if a given IP lies in a reserved private or loopback IP range
  *  (192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8) (127.0.0.0/8)
@@ -114,13 +113,7 @@ function write_error_response_json($exc) {
  * @see set_exception_handler()
  */
 function exception_handler($exc) {
-    log_error("unhandled exception of type ".get_class($exc).": ".$exc->getMessage()."\n".format_exception_trace($exc));
-    $cause = $exc->getPrevious();
-    while ($cause !== null) {
-        log_error("previous exception was caused by ".get_class($cause).": ".$cause->getMessage()."\n".format_exception_trace($cause));
-        $cause = $cause->getPrevious();
-    }
-
+    log_exception($exc, LOG_LEVEL_ERROR);
     write_error_response_json($exc);
 }
 

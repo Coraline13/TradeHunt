@@ -115,7 +115,12 @@ function error_handler($errno , $errstr, $errfile = null, $errline = -1, $errcon
         $msg .= " at line $errline";
     }
     log_error($msg);
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    $exc = new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    if (PHP_VERSION_ID < 50524) {
+        exception_handler($exc);
+        die();
+    }
+    throw $exc;
 }
 
 set_exception_handler('exception_handler');

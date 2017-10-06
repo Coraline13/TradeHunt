@@ -99,11 +99,9 @@ class User
      * @param string $password plain text password
      * @return string password hash
      */
-    private static function hash_password($password)
+    public static function hash_password($password)
     {
         //TODO: hash password
         return base64_encode($password);
     }
 }
-
-class UserException extends APIException { }

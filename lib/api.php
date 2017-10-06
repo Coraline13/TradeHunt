@@ -58,4 +58,7 @@ function check_method($allowed_methods) {
 
 }
 
+class UserException extends APIException { }
+
+
 require_once dirname(__FILE__).'/models/User.php';

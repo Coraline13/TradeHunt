@@ -4,6 +4,7 @@ require_once dirname(__FILE__).'/sql_parse.php';
 
 $db = new PDO('sqlite:'.dirname(__FILE__).'/../data/database.sqlite3');
 $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+$db->exec( 'PRAGMA foreign_keys = ON;' );
 
 define("SCHEMA_VERSION", 1);
 

@@ -51,7 +51,7 @@ function remove_comments(&$output)
            $in_comment = true;
        }
 
-       if( !$in_comment )
+       if(!$in_comment)
        {
            $output .= $lines[$i] . "\n";
        }
@@ -96,7 +96,6 @@ function remove_remarks($sql)
    }
 
    return $output;
-
 }
 
 /**
@@ -128,11 +127,11 @@ function split_sql_file($sql, $delimiter)
            // Counts single quotes that are preceded by an odd number of backslashes,
            // which means they're escaped quotes.
            $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $tokens[$i], $matches);
-
+           $has_begin = strpos($tokens[$i], "BEGIN") !== false;
            $unescaped_quotes = $total_quotes - $escaped_quotes;
 
            // If the number of unescaped quotes is even, then the delimiter did NOT occur inside a string literal.
-           if (($unescaped_quotes % 2) == 0)
+           if (($unescaped_quotes % 2) == 0 && !$has_begin)
            {
                // It's a complete sql statement.
                $output[] = $tokens[$i];
@@ -160,7 +159,9 @@ function split_sql_file($sql, $delimiter)
 
                 $unescaped_quotes = $total_quotes - $escaped_quotes;
 
-                if (($unescaped_quotes % 2) == 1)
+                $has_end = strpos($tokens[$j], "END") !== false;
+
+                if ((($unescaped_quotes % 2) == 1 && !$has_begin) || $has_end)
                 {
                     // odd number of unescaped quotes. In combination with the previous incomplete
                     // statement(s), we now have a complete statement. (2 odds always make an even)

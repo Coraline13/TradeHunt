@@ -6,11 +6,11 @@ $db = new PDO('sqlite:'.dirname(__FILE__).'/../data/database.sqlite3');
 $db->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 $db->exec( 'PRAGMA foreign_keys = ON;' );
 
-define("SCHEMA_VERSION", 1);
+define("SCHEMA_VERSION", 3);
 
 /**
- * @param $db PDO opened database connection
- * @param $sql string SQL script content (multiple statements delimited by ';'
+ * @param PDO $db opened database connection
+ * @param string $sql SQL script content (multiple statements delimited by ';'
  */
 function exec_sql_script($db, $sql) {
     $sql = remove_comments($sql);
@@ -21,10 +21,37 @@ function exec_sql_script($db, $sql) {
     }
 }
 
+/**
+ * Drop all user tables and indexes from an sqlite3 database.
+ * @param PDO $db target database
+ * @param array $excluded_names table or index names to exclude
+ */
+function truncate_database($db, $excluded_names) {
+    $excluded_names[] = 'sqlite_sequence';
+    $excluded_names[] = 'sqlite_master';
+    $excluded_names = array_unique($excluded_names);
+
+    $db->exec("PRAGMA writable_schema = 1;");
+    $db->exec("DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('".join("', '", $excluded_names)."');");
+    $db->exec("DELETE FROM sqlite_master WHERE type = 'index';");
+    $db->exec("DELETE FROM sqlite_master WHERE type = 'trigger';");
+    $db->exec("PRAGMA writable_schema = 0;");
+
+    $in_transaction = $db->inTransaction();
+    if ($in_transaction) {
+        $db->commit();
+    }
+    $db->exec("VACUUM");
+    if ($in_transaction) {
+        $db->beginTransaction();
+    }
+}
+
 $schema_version = 0;
 try {
     $schema = $db->query("SELECT MAX(version) FROM schema");
     $schema_version = $schema->fetchColumn(0);
+    $schema->closeCursor();
 }
 catch (PDOException $e) {
     log_warning("failed to read schema version from database, recreating");
@@ -39,7 +66,9 @@ if ($schema_version < SCHEMA_VERSION) {
     if (!$db->inTransaction()) {
         $db->beginTransaction();
     }
+    truncate_database($db, ['schema']);
     exec_sql_script($db, $db_sql);
+    $db->exec("INSERT INTO `schema`(`version`) VALUES (".SCHEMA_VERSION.");");
     log_info("schema upgrade successful");
 }
 else if ($schema_version > SCHEMA_VERSION) {

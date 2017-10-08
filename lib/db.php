@@ -64,11 +64,13 @@ try {
 if ($schema_version < SCHEMA_VERSION) {
     log_info("schema version $schema_version is older than " . SCHEMA_VERSION . ". upgrading...");
     $db_sql = file_get_contents(dirname(__FILE__) . '/../database.sql');
+    $inserts_sql = file_get_contents(dirname(__FILE__) . '/../inserts.sql');
     if (!$db->inTransaction()) {
         $db->beginTransaction();
     }
     truncate_database($db, ['schema']);
     exec_sql_script($db, $db_sql);
+    exec_sql_script($db, $inserts_sql);
     $db->exec("INSERT INTO `schema`(`version`) VALUES (" . SCHEMA_VERSION . ");");
     log_info("schema upgrade successful");
 } else if ($schema_version > SCHEMA_VERSION) {

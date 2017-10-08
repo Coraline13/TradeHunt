@@ -7,9 +7,11 @@ $req_body = file_get_contents('php://input');
 $req = json_decode($req_body, true);
 
 try {
+    $db->beginTransaction();
     $location = Location::getById($req['location_id']);
     $profile = Profile::create($location, $req['first_name'], $req['last_name'], $req['tel']);
     $user = User::create($req['username'], $req['email'], $req['password'], $profile);
+    $db->commit();
 
     http_response_code(200);
     header("Content-Type: application/json");

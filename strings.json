@@ -14,12 +14,20 @@
       "fr": "FRENCH * UNKNOWN USER ERROR"
     },
     "generic_error": {
-      "en": "An unknown error occured while processing your request",
+      "en": "An unknown error occured while processing your request.",
       "fr": "FRENCH * UNKNOWN ERROR"
     },
     "no_string": {
       "en": "<no string>",
       "fr": "<no string>"
+    },
+    "validation_error": {
+      "en": "There was an error while validating your request. Please check all the data you entered is correct.",
+      "fr": "FRENCH * VALIDATION ERROR"
+    },
+    "parameter_required": {
+      "en": "The parameter is required but was not specified.",
+      "fr": "FRENCH * VALIDATION ERROR"
     }
   }
 }

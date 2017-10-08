@@ -6,17 +6,36 @@ define("STRING_USERNAME_EXISTS", 1);
 define("STRING_EMAIL_EXISTS", 2);
 define("STRING_REGISTER_UNKNOWN_ERR", 3);
 define("STRING_GENERIC_ERROR", 4);
+define("STRING_VALIDATION_ERROR", 5);
+define("STRING_PARAMETER_REQUIRED", 6);
 
+/**
+ * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
+ *
+ * All STRING constants must have an entry in this array, else _load_strings() will fail.
+ * @see _load_strings()
+ */
 $string_code_to_name = array(
     STRING_NO_STRING => "no_string",
     STRING_USERNAME_EXISTS => "username_exists",
     STRING_EMAIL_EXISTS => "email_exists",
     STRING_REGISTER_UNKNOWN_ERR => "register_unknown_err",
-    STRING_GENERIC_ERROR => "generic_error"
+    STRING_GENERIC_ERROR => "generic_error",
+    STRING_VALIDATION_ERROR => "validation_error",
+    STRING_PARAMETER_REQUIRED => "parameter_required"
 );
 
 $supported_locales = null;
 
+/**
+ * Load and statically cache the strings.json file describing localized strings for all STRING_ constants.
+ *
+ * May throw validation errors on startup if string definitions are missing.
+ * @return string[] localized strings
+ * @throws UnexpectedValueException STRING constant not declard in $string_code_to_name,
+ *   or string is missing from strings.json
+ * @see $string_code_to_name
+ */
 function _load_strings()
 {
     global $string_code_to_name, $supported_locales;

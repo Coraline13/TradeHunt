@@ -1,18 +1,3 @@
-CREATE TABLE `users` (
-  `id`            INTEGER PRIMARY KEY AUTOINCREMENT,
-  `username`      TEXT NOT NULL UNIQUE,
-  `email`         TEXT NOT NULL UNIQUE,
-  `password_hash` TEXT NOT NULL
-);
-CREATE TABLE `sessions` (
-  `id`         INTEGER PRIMARY KEY AUTOINCREMENT,
-  `user_id`    INTEGER  NOT NULL,
-  `token`      TEXT     NOT NULL,
-  `expiration` DATETIME NOT NULL,
-  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
 CREATE TABLE `locations` (
   `id`      INTEGER PRIMARY KEY AUTOINCREMENT,
   `country` TEXT NOT NULL,
@@ -25,6 +10,25 @@ CREATE TABLE `profiles` (
   `last_name`   TEXT    NOT NULL,
   `tel`         TEXT    NOT NULL,
   FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+CREATE TABLE `users` (
+  `id`            INTEGER PRIMARY KEY AUTOINCREMENT,
+  `username`      TEXT NOT NULL UNIQUE,
+  `email`         TEXT NOT NULL UNIQUE,
+  `password_hash` TEXT NOT NULL,
+  `profile_id`    INTEGER NOT NULL,
+  FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+CREATE TABLE `sessions` (
+  `id`         INTEGER PRIMARY KEY AUTOINCREMENT,
+  `user_id`    INTEGER  NOT NULL,
+  `token`      TEXT     NOT NULL,
+  `expiration` DATETIME NOT NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

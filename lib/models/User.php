@@ -7,6 +7,7 @@ require_once dirname(__FILE__) . '/../password.php';
  *
  * @see Session
  * @see Listing
+ * @see Profile
  */
 class User
 {
@@ -28,18 +29,26 @@ class User
     private $password_hash;
 
     /**
+     * @var int the profile's ID
+     * @see Profile
+     */
+    private $profile_id;
+
+    /**
      * User constructor.
      * @param int $id
      * @param string $username
      * @param string $email
      * @param string $hashed_password
+     * @param int $profile_id
      */
-    private function __construct($id, $username, $email, $hashed_password)
+    private function __construct($id, $username, $email, $hashed_password, $profile_id)
     {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
         $this->password_hash = $hashed_password;
+        $this->profile_id = $profile_id;
     }
 
     /**
@@ -47,25 +56,27 @@ class User
      * @param string $username username of new user; must be unique among all users
      * @param string $email contact e-mail address for new user; must be unique among all users
      * @param string $password plain text password for the new user
+     * @param Profile $profile profile information for the new user
      * @return User user object
      * @throws UserException if user creation fails
      */
-    public static function create($username, $email, $password)
+    public static function create($username, $email, $password, $profile)
     {
         global $db;
         $hashed_password = self::hash_password($password);
         try {
-            $stmt = $db->prepare("INSERT INTO users(username, email, password_hash) VALUES (:user, :email, :pass)");
+            $stmt = $db->prepare("INSERT INTO users(username, email, password_hash, profile_id) VALUES (:user, :email, :pass, :profile_id)");
             $stmt->bindValue(":user", $username, PDO::PARAM_STR);
             $stmt->bindValue(":email", $email, PDO::PARAM_STR);
             $stmt->bindValue(":pass", $hashed_password, PDO::PARAM_STR);
+            $stmt->bindValue(":profile_id", $profile->getId(), PDO::PARAM_INT);
             $stmt->execute();
             $stmt->closeCursor();
 
             $uid = (int)$db->lastInsertId();
 
             log_info(sprintf("Created user #%d: %s <%s>", $uid, $username, $email));
-            return new User($uid, $username, $email, $hashed_password);
+            return new User($uid, $username, $email, $hashed_password, $profile->getId());
         } catch (PDOException $e) {
             if ($e->errorInfo[0] == '23000' && stripos($e->errorInfo[2], "unique") !== false) {
                 if (strpos($e->errorInfo[2], "email") !== false) {
@@ -88,13 +99,13 @@ class User
     {
         global $db;
 
-        $stmt = $db->prepare("SELECT id, username, email, password_hash FROM users WHERE id = :user_id");
+        $stmt = $db->prepare("SELECT id, username, email, password_hash, profile_id FROM users WHERE id = :user_id");
         $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
         $stmt->execute();
 
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        return new User($user['id'], $user['username'], $user['email'], $user['password_hash']);
+        return new User($user['id'], $user['username'], $user['email'], $user['password_hash'], $user['profile_id']);
     }
 
     /**
@@ -129,5 +140,13 @@ class User
     public static function hash_password($password)
     {
         return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    /**
+     * @return Profile user's profile
+     */
+    public function getProfile()
+    {
+        return Profile::getById($this->profile_id);
     }
 }

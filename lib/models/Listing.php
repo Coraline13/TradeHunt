@@ -96,6 +96,28 @@ class Listing
     }
 
     /**
+     * @return Tag[] array of this listing's tags
+     */
+    public function getTags()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, name
+                             FROM tags INNER JOIN listing_tags ON tags.id = listing_tags.tag_id
+                             WHERE listing_tags.listing_id = :listing_id");
+        $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($tags as $tag) {
+            $result[] = new Tag($tag['id'], $tag['name']);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return int listing unique ID
      */
     public function getId()

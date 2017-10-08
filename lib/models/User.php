@@ -46,12 +46,13 @@ class User
     {
         global $db;
         $password_hash = self::hash_password($password);
-        $stmt = $db->prepare("INSERT INTO users(username, email, password_hash) VALUES (:user, :email, :pass)");
         try {
-            $stmt->bindValue(":user", $username);
-            $stmt->bindValue(":email", $email);
-            $stmt->bindValue(":pass", $password_hash);
+            $stmt = $db->prepare("INSERT INTO users(username, email, password_hash) VALUES (:user, :email, :pass)");
+            $stmt->bindValue(":user", $username, PDO::PARAM_STR);
+            $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+            $stmt->bindValue(":pass", $password_hash, PDO::PARAM_STR);
             $stmt->execute();
+            $stmt->closeCursor();
 
             $uid = (int) $db->lastInsertId();
 

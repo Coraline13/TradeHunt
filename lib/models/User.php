@@ -71,9 +71,9 @@ class User
     }
 
     /**
-     * get a user from the database
-     * @param $user_id
-     * @return User by ID
+     * Get a user from the database.
+     * @param int $user_id
+     * @return User user by ID
      */
     public static function getById($user_id)
     {

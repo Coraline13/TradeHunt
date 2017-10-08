@@ -56,9 +56,7 @@ class Tag
         $result = [];
         $listings = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($listings as $l) {
-            $added = DateTime::createFromFormat('Y-m-d H:i:s', $l['added']);
-            $result[] = new Listing($l['id'], $l['type'], $l['user_id'], $l['title'], $l['slug'],
-                $l['description'], $l['status'], $added, $l['location_id']);
+            $result[] = Listing::makeFromPDO($l);
         }
 
         return $result;

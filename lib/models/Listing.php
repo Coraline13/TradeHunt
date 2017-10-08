@@ -82,7 +82,7 @@ class Listing
      * @param DateTime $added
      * @param int $location_id
      */
-    public function __construct($id, $type, $user_id, $title, $slug, $description, $status, DateTime $added, $location_id)
+    private function __construct($id, $type, $user_id, $title, $slug, $description, $status, DateTime $added, $location_id)
     {
         $this->id = $id;
         $this->type = $type;
@@ -135,6 +135,17 @@ class Listing
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $l array result fetched with PDO::FETCH_ASSOC
+     * @return Listing Listing object
+     */
+    public static function makeFromPDO($l)
+    {
+        $added = DateTime::createFromFormat('Y-m-d H:i:s', $l['added']);
+        return new Listing($l['id'], $l['type'], $l['user_id'], $l['title'], $l['slug'],
+            $l['description'], $l['status'], $added, $l['location_id']);
     }
 
     /**

@@ -48,9 +48,9 @@ class Session
         $token = bin2hex(openssl_random_pseudo_bytes(10));
         try {
             $stmt = $db->prepare("INSERT INTO sessions(user_id, token, expiration) VALUES (:user_id, :token, :expiration)");
-            $stmt->bindValue(":user_id", $user->getId());
-            $stmt->bindValue(":token", $token);
-            $stmt->bindValue(":expiration", $expiration);
+            $stmt->bindValue(":user_id", $user->getId(), PDO::PARAM_INT);
+            $stmt->bindValue(":token", $token, PDO::PARAM_STR);
+            $stmt->bindValue(":expiration", $expiration->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->execute();
 
             $sid = (int) $db->lastInsertId();
@@ -60,6 +60,14 @@ class Session
         } catch (PDOException $e) {
             throw new APIException(ERROR_GENERIC_API, $e, "fail to create session");
         }
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return User::getById($this->user_id);
     }
 
     /**

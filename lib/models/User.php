@@ -71,6 +71,24 @@ class User
     }
 
     /**
+     * get a user from the database
+     * @param $user_id
+     * @return User by ID
+     */
+    public static function getById($user_id)
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, username, email, password_hash FROM users WHERE id = :user_id");
+        $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return new User($user['id'], $user['username'], $user['email'], $user['password_hash']);
+    }
+
+    /**
      * @return int unique ID
      */
     public function getId()

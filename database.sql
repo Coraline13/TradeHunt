@@ -15,9 +15,9 @@ CREATE TABLE `profiles` (
 );
 CREATE TABLE `users` (
   `id`            INTEGER PRIMARY KEY AUTOINCREMENT,
-  `username`      TEXT NOT NULL UNIQUE,
-  `email`         TEXT NOT NULL UNIQUE,
-  `password_hash` TEXT NOT NULL,
+  `username`      TEXT    NOT NULL UNIQUE,
+  `email`         TEXT    NOT NULL UNIQUE,
+  `password_hash` TEXT    NOT NULL,
   `profile_id`    INTEGER NOT NULL,
   FOREIGN KEY (`profile_id`) REFERENCES `profiles` (`id`)
     ON DELETE CASCADE
@@ -93,19 +93,14 @@ CREATE TABLE `trades` (
   `id`           INTEGER PRIMARY KEY AUTOINCREMENT,
   `recipient_id` INTEGER NOT NULL,
   `sender_id`    INTEGER NOT NULL,
-  `requestor_id` INTEGER NOT NULL,
   `message`      TEXT    NOT NULL    DEFAULT '',
-  `accepted`     BOOLEAN NOT NULL    DEFAULT 0,
+  `status`       INTEGER NOT NULL,
   FOREIGN KEY (`recipient_id`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY (`requestor_id`) REFERENCES `users` (`id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CHECK (`requestor_id` = `recipient_id` OR `requestor_id` = `sender_id`),
   CHECK (`recipient_id` <> `sender_id`)
 );
 CREATE TABLE `trade_offers` (
@@ -119,6 +114,10 @@ CREATE TABLE `trade_offers` (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+CREATE UNIQUE INDEX `uk_trade_offers_trade_listing`
+  ON `trade_offers` (`trade_id`, `listing_id`);
+CREATE UNIQUE INDEX `uk_trade_offers_listing_trade`
+  ON `trade_offers` (`listing_id`, `trade_id`);
 
 CREATE TRIGGER validate_trade_offer
   BEFORE
@@ -131,9 +130,11 @@ BEGIN
      FROM listings
      WHERE listings.id = NEW.listing_id)
     NOT IN
-    (SELECT
-       recipient_id,
-       sender_id
+    (SELECT recipient_id
+     FROM trades
+     WHERE trades.id = NEW.trade_id
+     UNION ALL
+     SELECT sender_id
      FROM trades
      WHERE trades.id = NEW.trade_id);
 END;

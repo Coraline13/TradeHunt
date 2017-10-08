@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/../password.php';
 
 /**
  * A user represents login information and identity for a person's account. Users can interact with listings,
@@ -31,14 +32,14 @@ class User
      * @param int $id
      * @param string $username
      * @param string $email
-     * @param string $password_hash
+     * @param string $hashed_password
      */
-    private function __construct($id, $username, $email, $password_hash)
+    private function __construct($id, $username, $email, $hashed_password)
     {
         $this->id = $id;
         $this->username = $username;
         $this->email = $email;
-        $this->password_hash = $password_hash;
+        $this->password_hash = $hashed_password;
     }
 
     /**
@@ -52,19 +53,19 @@ class User
     public static function create($username, $email, $password)
     {
         global $db;
-        $password_hash = self::hash_password($password);
+        $hashed_password = self::hash_password($password);
         try {
             $stmt = $db->prepare("INSERT INTO users(username, email, password_hash) VALUES (:user, :email, :pass)");
             $stmt->bindValue(":user", $username, PDO::PARAM_STR);
             $stmt->bindValue(":email", $email, PDO::PARAM_STR);
-            $stmt->bindValue(":pass", $password_hash, PDO::PARAM_STR);
+            $stmt->bindValue(":pass", $hashed_password, PDO::PARAM_STR);
             $stmt->execute();
             $stmt->closeCursor();
 
             $uid = (int)$db->lastInsertId();
 
             log_info(sprintf("Created user #%d: %s <%s>", $uid, $username, $email));
-            return new User($uid, $username, $email, $password_hash);
+            return new User($uid, $username, $email, $hashed_password);
         } catch (PDOException $e) {
             if ($e->errorInfo[0] == '23000' && stripos($e->errorInfo[2], "unique") !== false) {
                 if (strpos($e->errorInfo[2], "email") !== false) {
@@ -127,7 +128,6 @@ class User
      */
     public static function hash_password($password)
     {
-        //TODO: hash password
-        return base64_encode($password);
+        return password_hash($password, PASSWORD_BCRYPT);
     }
 }

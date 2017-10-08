@@ -38,7 +38,7 @@ class Session
      * @param string $token
      * @param DateTime $expiration
      */
-    private function __construct($id, $user_id, $token, $expiration)
+    private function __construct($id, $user_id, $token, DateTime $expiration)
     {
         $this->id = $id;
         $this->user_id = $user_id;
@@ -53,7 +53,7 @@ class Session
      * @return Session session object
      * @throws APIException if session create fails
      */
-    public static function create($user, $expiration)
+    public static function create($user, DateTime $expiration)
     {
         global $db;
         $token = bin2hex(openssl_random_pseudo_bytes(10));

@@ -46,7 +46,7 @@ class APIException extends Exception
 
 /**
  * Exception for encapsulating application errors.
- * @param array $allowed_methods methods allowed for the request
+ * @param string[] $allowed_methods methods allowed for the request
  * @throws APIException if the request method is not in $allowed_methods
  */
 function check_method($allowed_methods)

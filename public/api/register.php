@@ -15,7 +15,7 @@ try {
     http_response_code(200);
     header("Content-Type: application/json");
     echo json_encode(["id" => $user->getId()], JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
-} catch (APIException $e) {
+} catch (UserException $e) {
     write_error_response_json($e);
     log_warning("register failed for ${request['username']} <${request['email']}>: " . $e->getMessage());
     log_exception($e, LOG_LEVEL_DEBUG);

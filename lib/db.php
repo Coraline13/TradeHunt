@@ -25,7 +25,7 @@ function exec_sql_script($db, $sql)
 /**
  * Drop all user tables and indexes from an sqlite3 database.
  * @param PDO $db target database
- * @param array $excluded_names table or index names to exclude
+ * @param string[] $excluded_names table or index names to exclude
  */
 function truncate_database($db, $excluded_names)
 {

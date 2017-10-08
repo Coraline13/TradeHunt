@@ -94,7 +94,7 @@ function remove_remarks($sql)
  * Note: expects trim() to have already been run on $sql.
  * @param string $sql SQL script content (multiple statements delimited by $delimiter)
  * @param string $delimiter delimiter string in $sql
- * @return array list of sql statements
+ * @return string[] list of sql statements
  */
 function split_sql_file($sql, $delimiter)
 {

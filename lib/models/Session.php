@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * A session is the backing database entity for user authentication cookies.
+ *
+ * Every time a user pefrosm a login, a random token is generated and stored in both the `sessions` table and as a
+ * cookie in the user's browser.
+ *
+ * On subsequent actions, the authentication cookie is checked against the stored token, and the session is
+ * either valid or not.
+ *
+ * @see User
+ */
 class Session
 {
     /**
@@ -8,13 +19,13 @@ class Session
     private $id;
     /**
      * @var int the user's ID
+     * @see User
      */
     private $user_id;
     /**
      * @var string unique random generated token
      */
     private $token;
-
     /**
      * @var DateTime token expiration date
      */
@@ -53,7 +64,7 @@ class Session
             $stmt->bindValue(":expiration", $expiration->format('Y-m-d H:i:s'), PDO::PARAM_STR);
             $stmt->execute();
 
-            $sid = (int) $db->lastInsertId();
+            $sid = (int)$db->lastInsertId();
 
             log_debug(sprintf("Opened session %d for user #%s (%d)", $sid, $user->getUsername(), $user->getId()));
             return new Session($sid, $user->getId(), $token, $expiration);
@@ -63,7 +74,7 @@ class Session
     }
 
     /**
-     * @return User
+     * @return User the user authenticated by this session
      */
     public function getUser()
     {

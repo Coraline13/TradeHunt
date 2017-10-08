@@ -1,14 +1,15 @@
 <?php
-$datadir = dirname(__FILE__).'/../data';
+$datadir = dirname(__FILE__) . '/../data';
 if (!file_exists($datadir)) {
     mkdir($datadir, 0750, false);
 }
-$log = fopen($datadir.'/application.log', 'at');
+$log = fopen($datadir . '/application.log', 'at');
 
 /**
  * @return string current date and time formatted as a string
  */
-function format_timestamp() {
+function format_timestamp()
+{
     date_default_timezone_set("Europe/Paris");
     $now = new DateTime();
     return $now->format("Y/m/d H:i:s P");
@@ -31,7 +32,8 @@ $log_levels = array(LOG_LEVEL_DEBUG, LOG_LEVEL_INFO, LOG_LEVEL_WARNING, LOG_LEVE
  * @param $level string log level, one of $log_levels
  * @see $log_levels
  */
-function _log_write($message, $level) {
+function _log_write($message, $level)
+{
     global $log, $log_levels;
     if (!in_array($level, $log_levels)) {
         throw new InvalidArgumentException("$level is not a valid log level");
@@ -43,7 +45,8 @@ function _log_write($message, $level) {
  * Write a message to the application log
  * @param $message string log message
  */
-function log_debug($message) {
+function log_debug($message)
+{
     _log_write($message, LOG_LEVEL_DEBUG);
 }
 
@@ -51,7 +54,8 @@ function log_debug($message) {
  * Write a message to the application log
  * @param $message string log message
  */
-function log_info($message) {
+function log_info($message)
+{
     _log_write($message, LOG_LEVEL_INFO);
 }
 
@@ -59,7 +63,8 @@ function log_info($message) {
  * Write a message to the application log
  * @param $message string log message
  */
-function log_warning($message) {
+function log_warning($message)
+{
     _log_write($message, LOG_LEVEL_WARNING);
 }
 
@@ -67,7 +72,8 @@ function log_warning($message) {
  * Write a message to the application log
  * @param $message string log message
  */
-function log_error($message) {
+function log_error($message)
+{
     _log_write($message, LOG_LEVEL_ERROR);
 }
 
@@ -77,11 +83,12 @@ function log_error($message) {
  * @param Throwable $exc the exception
  * @param string $log_level optional log level; defaults to ERROR
  */
-function log_exception($exc, $log_level = LOG_LEVEL_ERROR) {
-    _log_write("unhandled exception of type ".get_class($exc).": ".$exc->getMessage()."\n".format_exception_trace($exc), $log_level);
+function log_exception($exc, $log_level = LOG_LEVEL_ERROR)
+{
+    _log_write("unhandled exception of type " . get_class($exc) . ": " . $exc->getMessage() . "\n" . format_exception_trace($exc), $log_level);
     $cause = $exc->getPrevious();
     while ($cause !== null) {
-        _log_write("previous exception was caused by ".get_class($cause).": ".$cause->getMessage()."\n".format_exception_trace($cause), $log_level);
+        _log_write("previous exception was caused by " . get_class($cause) . ": " . $cause->getMessage() . "\n" . format_exception_trace($cause), $log_level);
         $cause = $cause->getPrevious();
     }
 }

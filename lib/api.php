@@ -1,7 +1,7 @@
 <?php
-require_once dirname(__FILE__).'/../init.php';
-require_once dirname(__FILE__).'/db.php';
-require_once dirname(__FILE__).'/strings.php';
+require_once dirname(__FILE__) . '/../init.php';
+require_once dirname(__FILE__) . '/db.php';
+require_once dirname(__FILE__) . '/strings.php';
 
 
 define("ERROR_USERNAME_EXISTS", 401);
@@ -18,8 +18,8 @@ $error_info = array(
     ERROR_METHOD_NOT_ALLOWED => [STRING_NO_STRING, 405],
 );
 
-class APIException extends Exception {
-
+class APIException extends Exception
+{
     private $recommended_http_status;
 
     /**
@@ -49,16 +49,19 @@ class APIException extends Exception {
  * @param array $allowed_methods methods allowed for the request
  * @throws APIException if the request method is not in $allowed_methods
  */
-function check_method($allowed_methods) {
+function check_method($allowed_methods)
+{
     $method = $_SERVER['REQUEST_METHOD'];
     $allowed_methods[] = "HEAD";
     if (!in_array($method, $allowed_methods)) {
-        throw new APIException(ERROR_METHOD_NOT_ALLOWED, null, "$method not allowed, expected one of ".json_encode($allowed_methods));
+        throw new APIException(ERROR_METHOD_NOT_ALLOWED, null, "$method not allowed, expected one of " . json_encode($allowed_methods));
     }
 
 }
 
-class UserException extends APIException { }
+class UserException extends APIException
+{
+}
 
 
-require_once dirname(__FILE__).'/models/User.php';
+require_once dirname(__FILE__) . '/models/User.php';

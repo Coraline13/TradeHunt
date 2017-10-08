@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../../lib/api.php';
+require_once dirname(__FILE__) . '/../../lib/api.php';
 
 check_method(["POST"]);
 
@@ -15,9 +15,8 @@ try {
     http_response_code(200);
     header("Content-Type: application/json");
     echo json_encode(["id" => $user->getId()], JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
-}
-catch (APIException $e) {
+} catch (APIException $e) {
     write_error_response_json($e);
-    log_warning("register failed for ${request['username']} <${request['email']}>: ".$e->getMessage());
+    log_warning("register failed for ${request['username']} <${request['email']}>: " . $e->getMessage());
     log_exception($e, LOG_LEVEL_DEBUG);
 }

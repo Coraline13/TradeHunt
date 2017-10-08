@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * A user represents login information and identity for a person's account. Users can interact with listings,
+ * make trades and in general perform actions on the site.
+ *
+ * @see Session
+ * @see Listing
+ */
 class User
 {
     /**
@@ -54,7 +61,7 @@ class User
             $stmt->execute();
             $stmt->closeCursor();
 
-            $uid = (int) $db->lastInsertId();
+            $uid = (int)$db->lastInsertId();
 
             log_info(sprintf("Created user #%d: %s <%s>", $uid, $username, $email));
             return new User($uid, $username, $email, $password_hash);

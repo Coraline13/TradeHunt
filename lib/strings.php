@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__).'/../init.php';
+require_once dirname(__FILE__) . '/../init.php';
 
 define("STRING_NO_STRING", 0);
 define("STRING_USERNAME_EXISTS", 1);
@@ -17,7 +17,8 @@ $string_code_to_name = array(
 
 $supported_locales = null;
 
-function _load_strings() {
+function _load_strings()
+{
     global $string_code_to_name, $supported_locales;
     static $strings = null;
 
@@ -35,7 +36,7 @@ function _load_strings() {
         }
 
         // read string data from JSON
-        $string_data = json_decode(file_get_contents(dirname(__FILE__).'/../strings.json'), true);
+        $string_data = json_decode(file_get_contents(dirname(__FILE__) . '/../strings.json'), true);
         $supported_locales = $string_data['supported_locales'];
         $strings = $string_data['strings'];
         if (!$supported_locales || count($supported_locales) == 0) {
@@ -46,8 +47,7 @@ function _load_strings() {
             unset($defined_codes[$code]);
             if (!isset($strings[$string_name])) {
                 throw new UnexpectedValueException("$string_name is missing from strings.json");
-            }
-            else {
+            } else {
                 foreach ($supported_locales as $locale) {
                     if (!isset($strings[$string_name][$locale])) {
                         throw new UnexpectedValueException("$[$string_name] is missing '$locale' translation in strings.json");
@@ -58,7 +58,7 @@ function _load_strings() {
 
         // check that all string codes are defined in $string_code_to_name
         if (count($defined_codes) != 0) {
-            throw new UnexpectedValueException('missing $string_code_to_name definition for codes '.json_encode($defined_codes));
+            throw new UnexpectedValueException('missing $string_code_to_name definition for codes ' . json_encode($defined_codes));
         }
     }
 
@@ -74,7 +74,8 @@ _load_strings();
  * @return string translated string
  * @throws InvalidArgumentException in case of bad string code or locale
  */
-function get_string($string_code) {
+function get_string($string_code)
+{
     global $string_code_to_name, $supported_locales;
     $strings = _load_strings();
 

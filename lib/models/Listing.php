@@ -118,6 +118,26 @@ class Listing
     }
 
     /**
+     * @return Image[] array of this listing's images
+     */
+    public function getImages()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, path FROM images WHERE images.listing_id = :listing_id");
+        $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($images as $image) {
+            $result[] = new Image($image['id'], $image['path'], $this->id);
+        }
+
+        return $result;
+    }
+
+    /**
      * @return int listing unique ID
      */
     public function getId()

@@ -82,7 +82,7 @@ class Listing
      * @param DateTime $added
      * @param int $location_id
      */
-    public function __construct($id, $type, $user_id, $title, $slug, $description, $status, DateTime $added, $location_id)
+    private function __construct($id, $type, $user_id, $title, $slug, $description, $status, DateTime $added, $location_id)
     {
         $this->id = $id;
         $this->type = $type;
@@ -93,6 +93,59 @@ class Listing
         $this->status = $status;
         $this->added = $added;
         $this->location_id = $location_id;
+    }
+
+    /**
+     * @return Tag[] array of this listing's tags
+     */
+    public function getTags()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, name
+                             FROM tags INNER JOIN listing_tags ON tags.id = listing_tags.tag_id
+                             WHERE listing_tags.listing_id = :listing_id");
+        $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($tags as $tag) {
+            $result[] = new Tag($tag['id'], $tag['name']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return Image[] array of this listing's images
+     */
+    public function getImages()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, path FROM images WHERE images.listing_id = :listing_id");
+        $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($images as $image) {
+            $result[] = new Image($image['id'], $image['path'], $this->id);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array $l array result fetched with PDO::FETCH_ASSOC
+     * @return Listing Listing object
+     */
+    public static function makeFromPDO($l)
+    {
+        $added = DateTime::createFromFormat('Y-m-d H:i:s', $l['added']);
+        return new Listing($l['id'], $l['type'], $l['user_id'], $l['title'], $l['slug'],
+            $l['description'], $l['status'], $added, $l['location_id']);
     }
 
     /**

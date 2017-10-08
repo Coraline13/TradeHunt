@@ -116,3 +116,5 @@ require_once dirname(__FILE__) . '/models/Location.php';
 require_once dirname(__FILE__) . '/models/Profile.php';
 require_once dirname(__FILE__) . '/models/User.php';
 require_once dirname(__FILE__) . '/models/Session.php';
+require_once dirname(__FILE__) . '/models/Tag.php';
+require_once dirname(__FILE__) . '/models/Listing.php';

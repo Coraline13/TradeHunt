@@ -149,4 +149,24 @@ class User
     {
         return Profile::getById($this->profile_id);
     }
+
+    /**
+     * @return Bookmark[] array of all bookmarks of current user
+     */
+    public function getBookmarks()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, user_id, listing_id, added FROM bookmarks WHERE bookmarks.user_id = :user_id");
+        $stmt->bindValue(":user_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($bookmarks as $bookmark) {
+            $result[] = new Bookmark($bookmark['id'], $this->id, $bookmark['listing_id'], $bookmark['added']);
+        }
+
+        return $result;
+    }
 }

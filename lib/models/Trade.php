@@ -49,11 +49,11 @@ class Trade
      */
     private function __construct($id, $recipient_id, $sender_id, $message, $status)
     {
-        $this->id = $id;
-        $this->recipient_id = $recipient_id;
-        $this->sender_id = $sender_id;
-        $this->message = $message;
-        $this->status = $status;
+        $this->id = require_non_empty($id, "trade_id");
+        $this->recipient_id = require_non_empty($recipient_id, "recipient_id");
+        $this->sender_id = require_non_empty($sender_id, "sender_id");
+        $this->message = require_non_null($message, "message");
+        $this->status = require_non_empty($status, "status");
     }
 
     /**

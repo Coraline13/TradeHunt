@@ -28,10 +28,10 @@ class Bookmark
      */
     public function __construct($id, $user_id, $listing_id, DateTime $added)
     {
-        $this->id = $id;
-        $this->user_id = $user_id;
-        $this->listing_id = $listing_id;
-        $this->added = $added;
+        $this->id = require_non_empty($id, "bookmark_id");
+        $this->user_id = require_non_empty($user_id, "user_id");
+        $this->listing_id = require_non_empty($listing_id, "listing_id");
+        $this->added = require_non_null($added, "added");
     }
 
     /**

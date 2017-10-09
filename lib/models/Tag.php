@@ -18,8 +18,8 @@ class Tag
      */
     public function __construct($id, $name)
     {
-        $this->id = $id;
-        $this->name = $name;
+        $this->id = require_non_empty($id, "tag_id");
+        $this->name = require_non_empty($name, "name");
     }
 
     /**

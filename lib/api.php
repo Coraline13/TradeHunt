@@ -98,6 +98,15 @@ class ValidationException extends APIException
     }
 }
 
+/**
+ * Throw an exception if the given variable is null
+ * @param mixed $obj target object
+ * @param string $arg_name argument name used for error formatting
+ * @return mixed $obj unmodified
+ * @throws ValidationException if $obj is_null()
+ * @see is_null()
+ * @see require_non_empty(), require_array_value()
+ */
 function require_non_null($obj, $arg_name) {
     if (is_null($obj)) {
         throw new ValidationException($arg_name, get_string(STRING_PARAMETER_REQUIRED));
@@ -105,11 +114,70 @@ function require_non_null($obj, $arg_name) {
     return $obj;
 }
 
-function require_array($arr, $key) {
-    if (array_key_exists($key, $arr)) {
+/**
+ * Throw an exception if the given object is empty or null
+ * @param mixed $obj target object
+ * @param string $arg_name argument name used for error formatting
+ * @return mixed $obj unmodified
+ * @throws ValidationException if $obj is empty()
+ * @see empty()
+ * @see require_non_null(), require_array_value()
+ */
+function require_non_empty($obj, $arg_name) {
+    if (is_null($obj)) {
+        throw new ValidationException($arg_name, get_string(STRING_PARAMETER_REQUIRED));
+    }
+    return $obj;
+}
+
+/**
+ * Get a value from the given array and throw an exception if it does not exist
+ * @param array $arr target array
+ * @param string $key key name in the array
+ * @param bool $allow_empty false to also check that the value is not empty
+ * @return mixed $arr[$key]
+ * @throws ValidationException if $key does not exist in $arr
+ * @see array_key_exists(), empty()
+ * @see require_non_null(), require_non_empty()
+ */
+function require_array_value($arr, $key, $allow_empty = true) {
+    if (!array_key_exists($key, $arr) || ($allow_empty ? is_null($arr[$key]) : empty($arr[$key]))) {
         throw new ValidationException($key, get_string(STRING_PARAMETER_REQUIRED));
     }
     return $arr[$key];
+}
+
+/**
+ * Validate a value against a given validator
+ * @param mixed $obj object to be validated
+ * @param string $arg_name argument name used for error formatting
+ * @param callable $validator (mixed) -> string|null, validator that returns an error string or null
+ * @return mixed $obj unmodified
+ * @throws ValidationException if $validator returns an error
+ */
+function validate_value($obj, $arg_name, $validator) {
+    $validation_error = call_user_func($validator, $obj);
+    if (!empty($validation_error)) {
+        throw new ValidationException($arg_name, $validation_error);
+    }
+    return $obj;
+}
+
+/**
+ * Validate a value from an array against a given validator.
+ * @param array $arr target array
+ * @param string $key key name in the array
+ * @param callable $validator (mixed) -> string|null, validator that returns an error string or null
+ * @return mixed $arr[$key]
+ * @throws ValidationException if $validator returns an error
+ */
+function validate_array_value($arr, $key, $validator) {
+    $obj = array_key_exists($key, $arr) ? $arr[$key] : null;
+    $validation_error = call_user_func($validator, $obj);
+    if (!empty($validation_error)) {
+        throw new ValidationException($key, $validation_error);
+    }
+    return $obj;
 }
 
 require_once dirname(__FILE__) . '/models/Location.php';
@@ -118,3 +186,6 @@ require_once dirname(__FILE__) . '/models/User.php';
 require_once dirname(__FILE__) . '/models/Session.php';
 require_once dirname(__FILE__) . '/models/Tag.php';
 require_once dirname(__FILE__) . '/models/Listing.php';
+require_once dirname(__FILE__) . '/models/Image.php';
+require_once dirname(__FILE__) . '/models/Bookmark.php';
+require_once dirname(__FILE__) . '/models/Trade.php';

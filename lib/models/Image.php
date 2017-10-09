@@ -23,9 +23,9 @@ class Image
      */
     public function __construct($id, $path, $listing_id)
     {
-        $this->id = $id;
-        $this->path = $path;
-        $this->listing_id = $listing_id;
+        $this->id = require_non_empty($id, "image_Id");
+        $this->path = require_non_empty($path, "path");
+        $this->listing_id = require_non_empty($listing_id, "listing_id");
     }
 
     /**

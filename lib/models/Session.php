@@ -40,10 +40,10 @@ class Session
      */
     private function __construct($id, $user_id, $token, DateTime $expiration)
     {
-        $this->id = $id;
-        $this->user_id = $user_id;
-        $this->token = $token;
-        $this->expiration = $expiration;
+        $this->id = require_non_empty($id, "session_id");
+        $this->user_id = require_non_empty($user_id, "user_id");
+        $this->token = require_non_empty($token, "token");
+        $this->expiration = require_non_null($expiration, "expiration");
     }
 
     /**

@@ -84,15 +84,15 @@ class Listing
      */
     private function __construct($id, $type, $user_id, $title, $slug, $description, $status, DateTime $added, $location_id)
     {
-        $this->id = $id;
-        $this->type = $type;
-        $this->user_id = $user_id;
-        $this->title = $title;
-        $this->slug = $slug;
-        $this->description = $description;
-        $this->status = $status;
-        $this->added = $added;
-        $this->location_id = $location_id;
+        $this->id = require_non_empty($id, "listing_id");
+        $this->type = require_non_empty($type, "type");
+        $this->user_id = require_non_empty($user_id, "user_id");
+        $this->title = require_non_empty($title, "title");
+        $this->slug = require_non_empty($slug, "slug");
+        $this->description = require_non_null($description, "description");
+        $this->status = require_non_empty($status, "status");
+        $this->added = require_non_null($added, "added");
+        $this->location_id = require_non_empty($location_id, "location_id");
     }
 
     /**

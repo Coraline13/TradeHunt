@@ -85,6 +85,12 @@ function write_error_response_json($exc) {
         "ip" => $ip,
     ];
 
+    if ($exc instanceof ValidationException) {
+        $error_response['validation_errors'] = [
+            $exc->getArgName() => $exc->getValidationError()
+        ];
+    }
+
     if (ip_is_private($ip)) {
         $error_response['trace'] = $exc->getTraceAsString();
         $cause = $exc->getPrevious();

@@ -170,7 +170,9 @@ function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code
         $cause = $e;
         $result = null;
     }
-    if (empty($result) || !empty($stmt->fetch(PDO::FETCH_ASSOC))) {
+
+    $remaining = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (empty($result) || !empty($remaining)) {
         throw new ValidationException($table_name, get_string_format($string_code, $table_name, $key_name, $key_val), $cause);
     }
     return $result;

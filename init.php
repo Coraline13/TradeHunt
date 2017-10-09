@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__).'/config.php';
 require_once dirname(__FILE__).'/lib/log.php';
 
 /**
@@ -45,6 +46,35 @@ function format_exception_trace($exception) {
 }
 
 /**
+ * Check if a given IP lies in a reserved private or loopback IP range
+ *  (192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8) (127.0.0.0/8)
+ * @param string $ip ip in string form
+ * @return bool true if the ip is private
+ */
+function ip_is_private ($ip) {
+    $pri_addrs = array (
+        '10.0.0.0|10.255.255.255', // single class A network
+        '172.16.0.0|172.31.255.255', // 16 contiguous class B network
+        '192.168.0.0|192.168.255.255', // 256 contiguous class C network
+        '127.0.0.0|127.255.255.255' // loopback
+    );
+
+    $long_ip = ip2long ($ip);
+    if ($long_ip != -1) {
+
+        foreach ($pri_addrs AS $pri_addr) {
+            list ($start, $end) = explode('|', $pri_addr);
+
+            if ($long_ip >= ip2long ($start) && $long_ip <= ip2long ($end)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
  * Write an appropriate JSON response & HTTP status code for the given exception.
  * @param Throwable $exc
  */
@@ -56,7 +86,13 @@ function write_error_response_json($exc) {
         "ip" => $ip,
     ];
 
-    if ($ip === "127.0.0.1" || substr($ip, 0, strlen("10.17.0.")) === "10.17.0.") {
+    if ($exc instanceof ValidationException) {
+        $error_response['validation_errors'] = [
+            $exc->getArgName() => $exc->getValidationError()
+        ];
+    }
+
+    if (ip_is_private($ip)) {
         $error_response['trace'] = $exc->getTraceAsString();
         $cause = $exc->getPrevious();
         $outer = &$error_response;
@@ -84,13 +120,7 @@ function write_error_response_json($exc) {
  * @see set_exception_handler()
  */
 function exception_handler($exc) {
-    log_error("unhandled exception of type ".get_class($exc).": ".$exc->getMessage()."\n".format_exception_trace($exc));
-    $cause = $exc->getPrevious();
-    while ($cause !== null) {
-        log_error("previous exception was caused by ".get_class($cause).": ".$cause->getMessage()."\n".format_exception_trace($cause));
-        $cause = $cause->getPrevious();
-    }
-
+    log_exception($exc, LOG_LEVEL_ERROR);
     write_error_response_json($exc);
 }
 
@@ -115,7 +145,13 @@ function error_handler($errno , $errstr, $errfile = null, $errline = -1, $errcon
         $msg .= " at line $errline";
     }
     log_error($msg);
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    $exc = new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    if (PHP_VERSION_ID < 50524) {
+        // before PHP 5.5, exceptions thrown from the error handler were not caught by the exception handler
+        exception_handler($exc);
+        die();
+    }
+    throw $exc;
 }
 
 set_exception_handler('exception_handler');

@@ -1,5 +1,14 @@
 <?php
+require_once dirname(__FILE__) . '/../password.php';
 
+/**
+ * A user represents login information and identity for a person's account. Users can interact with listings,
+ * make trades and in general perform actions on the site.
+ *
+ * @see Session
+ * @see Listing
+ * @see Profile
+ */
 class User
 {
     /**
@@ -20,18 +29,34 @@ class User
     private $password_hash;
 
     /**
+     * @var int the profile's ID
+     * @see Profile
+     */
+    private $profile_id;
+
+    /**
      * User constructor.
      * @param int $id
      * @param string $username
      * @param string $email
-     * @param string $password_hash
+     * @param string $hashed_password
+     * @param int $profile_id
      */
-    private function __construct($id, $username, $email, $password_hash)
+    private function __construct($id, $username, $email, $hashed_password, $profile_id)
     {
-        $this->id = $id;
-        $this->username = $username;
-        $this->email = $email;
-        $this->password_hash = $password_hash;
+        $this->id = require_non_empty($id, "user_id");
+        $this->username = require_non_empty($username, "username");
+        $this->email = require_non_empty($email, "email");
+        $this->password_hash = require_non_empty($hashed_password, "hashed_password");
+        $this->profile_id = require_non_empty($profile_id, "profile_id");
+    }
+
+    /**
+     * @param array $u array result fetched with PDO::FETCH_ASSOC
+     * @return User User object
+     */
+    public static function makeFromPDO($u) {
+        return new User($u['id'], $u['username'], $u['email'], $u['password_hash'], $u['profile_id']);
     }
 
     /**
@@ -39,35 +64,54 @@ class User
      * @param string $username username of new user; must be unique among all users
      * @param string $email contact e-mail address for new user; must be unique among all users
      * @param string $password plain text password for the new user
+     * @param Profile $profile profile information for the new user
      * @return User user object
      * @throws UserException if user creation fails
      */
-    public static function create($username, $email, $password)
+    public static function create($username, $email, $password, $profile)
     {
         global $db;
-        $password_hash = self::hash_password($password);
-        $stmt = $db->prepare("INSERT INTO users(username, email, password_hash) VALUES (:user, :email, :pass)");
+        $hashed_password = self::hash_password($password);
         try {
-            $stmt->bindValue(":user", $username);
-            $stmt->bindValue(":email", $email);
-            $stmt->bindValue(":pass", $password_hash);
+            $stmt = $db->prepare("INSERT INTO users(username, email, password_hash, profile_id) VALUES (:user, :email, :pass, :profile_id)");
+            $stmt->bindValue(":user", $username, PDO::PARAM_STR);
+            $stmt->bindValue(":email", $email, PDO::PARAM_STR);
+            $stmt->bindValue(":pass", $hashed_password, PDO::PARAM_STR);
+            $stmt->bindValue(":profile_id", $profile->getId(), PDO::PARAM_INT);
             $stmt->execute();
+            $stmt->closeCursor();
 
-            $uid = (int) $db->lastInsertId();
+            $uid = (int)$db->lastInsertId();
 
             log_info(sprintf("Created user #%d: %s <%s>", $uid, $username, $email));
-            return new User($uid, $username, $email, $password_hash);
+            return new User($uid, $username, $email, $hashed_password, $profile->getId());
         } catch (PDOException $e) {
-            if ($e->errorInfo[0] == '23000' && strpos($e->errorInfo[2], "UNIQUE") !== false) {
-                if (strpos($e->errorInfo[2], "users.email") !== false) {
+            if ($e->errorInfo[0] == '23000' && stripos($e->errorInfo[2], "unique") !== false) {
+                if (strpos($e->errorInfo[2], "email") !== false) {
                     throw new UserException(ERROR_EMAIL_EXISTS, $e);
                 }
-                if (strpos($e->errorInfo[2], "users.username") !== false) {
+                if (strpos($e->errorInfo[2], "username") !== false) {
                     throw new UserException(ERROR_USERNAME_EXISTS, $e);
                 }
             }
             throw new UserException(ERROR_USER_UNKNOWN, $e);
         }
+    }
+
+    /**
+     * Get a user from the database.
+     * @param int $user_id
+     * @return User user by ID
+     */
+    public static function getById($user_id)
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, username, email, password_hash, profile_id FROM users WHERE id = :user_id");
+        $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return self::makeFromPDO(require_fetch_one($stmt, "User", "id", $user_id));
     }
 
     /**
@@ -99,11 +143,36 @@ class User
      * @param string $password plain text password
      * @return string password hash
      */
-    private static function hash_password($password)
+    public static function hash_password($password)
     {
-        //TODO: hash password
-        return base64_encode($password);
+        return password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    /**
+     * @return Profile user's profile
+     */
+    public function getProfile()
+    {
+        return Profile::getById($this->profile_id);
+    }
+
+    /**
+     * @return Bookmark[] array of all bookmarks of current user
+     */
+    public function getBookmarks()
+    {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, user_id, listing_id, added FROM bookmarks WHERE bookmarks.user_id = :user_id");
+        $stmt->bindValue(":user_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $result = [];
+        $bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($bookmarks as $bookmark) {
+            $result[] = Bookmark::makeFromPDO($bookmark);
+        }
+
+        return $result;
     }
 }
-
-class UserException extends APIException { }

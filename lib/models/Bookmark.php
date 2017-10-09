@@ -26,7 +26,7 @@ class Bookmark
      * @param int $listing_id the listing's ID
      * @param DateTime $added the date when the listing was bookmarked
      */
-    public function __construct($id, $user_id, $listing_id, DateTime $added)
+    private function __construct($id, $user_id, $listing_id, DateTime $added)
     {
         $this->id = require_non_empty($id, "bookmark_id");
         $this->user_id = require_non_empty($user_id, "user_id");
@@ -35,11 +35,19 @@ class Bookmark
     }
 
     /**
+     * @param array $b array result fetched with PDO::FETCH_ASSOC
+     * @return Bookmark Bookmark object
+     */
+    public static function makeFromPDO($b) {
+        return new Bookmark($b['id'], $b['user_id'], $b['listing_id'], $b['added']);
+    }
+
+    /**
      * @param User $user current user
      * @param Listing $listing the listing to be bookmarked
      * @return Bookmark bookmark object
      */
-    public static function create($user, $listing)
+    public static function create(User $user, Listing $listing)
     {
         global $db;
 
@@ -62,13 +70,6 @@ class Bookmark
      */
     public function getListing()
     {
-        global $db;
-
-        $stmt = $db->prepare("SELECT id, type, user_id, title, slug, description, status, added, location_id
-                             FROM listings WHERE id = :listing_id");
-        $stmt->bindValue(":listing_id", $this->listing_id, PDO::PARAM_INT);
-        $stmt->execute();
-
-        return Listing::makeFromPDO($stmt->fetch(PDO::FETCH_ASSOC));
+        return Listing::getById($this->listing_id);
     }
 }

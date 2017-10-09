@@ -8,6 +8,21 @@ define("STRING_REGISTER_UNKNOWN_ERR", 3);
 define("STRING_GENERIC_ERROR", 4);
 define("STRING_VALIDATION_ERROR", 5);
 define("STRING_PARAMETER_REQUIRED", 6);
+define("STRING_VALIDATE_LENGTH", 7);
+define("STRING_VALIDATE_REGEX", 8);
+define("STRING_VALIDATE_CHARSET", 9);
+define("STRING_VALIDATE_RANGE", 10);
+define("STRING_VALIDATE_EMAIL", 11);
+define("STRING_VALIDATE_PHONE", 12);
+define("STRING_EMAIL_ADDRESS", 13);
+define("STRING_PHONE_NUMBER", 14);
+define("STRING_VALIDATE_FETCH_ONE", 15);
+define("STRING_FIRST_NAME", 16);
+define("STRING_LAST_NAME", 17);
+define("STRING_LOCATION", 18);
+define("STRING_USERNAME", 19);
+define("STRING_PASSWORD", 20);
+
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -17,12 +32,30 @@ define("STRING_PARAMETER_REQUIRED", 6);
  */
 $string_code_to_name = array(
     STRING_NO_STRING => "no_string",
+
+    STRING_GENERIC_ERROR => "generic_error",
+    STRING_PARAMETER_REQUIRED => "parameter_required",
+
     STRING_USERNAME_EXISTS => "username_exists",
     STRING_EMAIL_EXISTS => "email_exists",
     STRING_REGISTER_UNKNOWN_ERR => "register_unknown_err",
-    STRING_GENERIC_ERROR => "generic_error",
+
     STRING_VALIDATION_ERROR => "validation_error",
-    STRING_PARAMETER_REQUIRED => "parameter_required"
+    STRING_VALIDATE_LENGTH => "validate_length",
+    STRING_VALIDATE_REGEX => "validate_regex",
+    STRING_VALIDATE_CHARSET => "validate_charset",
+    STRING_VALIDATE_RANGE => "validate_range",
+    STRING_VALIDATE_EMAIL => "validate_email",
+    STRING_VALIDATE_PHONE => "validate_phone",
+    STRING_VALIDATE_FETCH_ONE => "fetch_error",
+
+    STRING_USERNAME => "username",
+    STRING_PASSWORD => "password",
+    STRING_EMAIL_ADDRESS => "email_address",
+    STRING_FIRST_NAME => "first_name",
+    STRING_LAST_NAME => "last_name",
+    STRING_PHONE_NUMBER => "phone_number",
+    STRING_LOCATION => "location",
 );
 
 $supported_locales = null;
@@ -67,9 +100,12 @@ function _load_strings()
             if (!isset($strings[$string_name])) {
                 throw new UnexpectedValueException("$string_name is missing from strings.json");
             } else {
+                if (preg_match('/[^a-z0-9_]/', $string_name)) {
+                    throw new UnexpectedValueException("string name can only contain [a-z0-9_] ($string_name)");
+                }
                 foreach ($supported_locales as $locale) {
                     if (!isset($strings[$string_name][$locale])) {
-                        throw new UnexpectedValueException("$[$string_name] is missing '$locale' translation in strings.json");
+                        throw new UnexpectedValueException("$string_name is missing '$locale' translation in strings.json");
                     }
                 }
             }
@@ -100,6 +136,9 @@ function get_string($string_code)
 
     $string_name = isset($string_code_to_name[$string_code]) ? $string_code_to_name[$string_code] : null;
     if (!$string_name) {
+        $string_name = is_string($string_code) ? $string_code : null;
+    }
+    if (!$string_name) {
         throw new InvalidArgumentException("invalid or unknown string code $string_code");
     }
 
@@ -111,5 +150,33 @@ function get_string($string_code)
         }
     }
 
-    return $strings[$string_name][$locale];
+    return replace_strings($strings[$string_name][$locale]);
+}
+
+/**
+ * Replace tokens of the form {{ string_name }} with their get_string value.
+ *
+ * Example: "'%1$s' is not a valid {{ email_address }}" => "'%1$s' is not a valid e-mail address",
+ * when there exists a string "email_address": { "en": "e-mail address" },
+ * @param string $str string with unreplaced tokens
+ * @return string string with tokens replaced
+ */
+function replace_strings($str) {
+    return preg_replace_callback('/\{\{\s*([a-z0-9_]+)\s*\}\}/', function ($matches) {
+        return get_string($matches[1]);
+    }, $str);
+}
+
+/**
+ * Get a parameterized string translated according to cookie locale.
+ * @param int $string_code STRING_ constant referring to a string that contains printf format specifiers (%s, %d etc)
+ * @param mixed $fmt_args,... arguments for format specifiers
+ * @return string translated and formatted string
+ * @see get_string()
+ */
+function get_string_format($string_code, $fmt_args) {
+    $fmt = get_string($string_code);
+    $args = func_get_args();
+    array_shift($args);
+    return vsprintf($fmt, $args);
 }

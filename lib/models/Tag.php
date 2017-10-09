@@ -16,10 +16,18 @@ class Tag
      * @param int $id
      * @param string $name
      */
-    public function __construct($id, $name)
+    private function __construct($id, $name)
     {
         $this->id = require_non_empty($id, "tag_id");
         $this->name = require_non_empty($name, "name");
+    }
+
+    /**
+     * @param array $t array result fetched with PDO::FETCH_ASSOC
+     * @return Tag Tag object
+     */
+    public static function makeFromPDO($t) {
+        return new Tag($t['id'], $t['name']);
     }
 
     /**
@@ -74,9 +82,7 @@ class Tag
         $stmt->bindValue(":tag_name", $tag_name, PDO::PARAM_STR);
         $stmt->execute();
 
-        $tag = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return new Tag($tag['id'], $tag['name']);
+        return self::makeFromPDO(require_fetch_one($stmt, "Tag", "name", $tag_name));
     }
 
     /**
@@ -92,7 +98,7 @@ class Tag
         $result = [];
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($tags as $tag) {
-            $result[] = new Tag($tag['id'], $tag['name']);
+            $result[] = self::makeFromPDO($tag);
         }
 
         return $result;

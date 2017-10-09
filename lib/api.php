@@ -2,6 +2,7 @@
 require_once dirname(__FILE__) . '/../init.php';
 require_once dirname(__FILE__) . '/db.php';
 require_once dirname(__FILE__) . '/strings.php';
+require_once dirname(__FILE__) . '/validators.php';
 
 
 define("ERROR_USERNAME_EXISTS", 401);
@@ -148,17 +149,47 @@ function require_array_value($arr, $key, $allow_empty = true) {
 }
 
 /**
+ * Fetch exactly one row from a query, or throw an exception. The fetch style is PDO::FETCH_ASSOC.
+ * @param PDOStatement $stmt target query, must have been execute()d
+ * @param string $table_name
+ * @param string $key_name
+ * @param mixed $key_val
+ * @param int $string_code error format STRING
+ * @return array successful return value of $stmt->fetch(PDO::FETCH_ASSOC)
+ * @throws ValidationException if there was not exactly one row to fetch
+ * @internal param string $field field name for error formatting
+ * @see PDOStatement::fetch()
+ */
+function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code = STRING_VALIDATE_FETCH_ONE) {
+    $result = null;
+    $cause = null;
+    try {
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+        $cause = $e;
+        $result = null;
+    }
+    if (empty($result) || !empty($stmt->fetch(PDO::FETCH_ASSOC))) {
+        throw new ValidationException($table_name, get_string_format($string_code, $table_name, $key_name, $key_val), $cause);
+    }
+    return $result;
+}
+
+/**
  * Validate a value against a given validator
  * @param mixed $obj object to be validated
  * @param string $arg_name argument name used for error formatting
- * @param callable $validator (mixed) -> string|null, validator that returns an error string or null
+ * @param callable[] $validators array of validators [(mixed) -> string|null], that are evaluated in the order given
  * @return mixed $obj unmodified
  * @throws ValidationException if $validator returns an error
  */
-function validate_value($obj, $arg_name, $validator) {
-    $validation_error = call_user_func($validator, $obj);
-    if (!empty($validation_error)) {
-        throw new ValidationException($arg_name, $validation_error);
+function validate_value($obj, $arg_name, $validators) {
+    foreach ($validators as $validator) {
+        $validation_error = call_user_func($validator, $obj);
+        if (!empty($validation_error)) {
+            throw new ValidationException($arg_name, $validation_error);
+        }
     }
     return $obj;
 }
@@ -167,15 +198,17 @@ function validate_value($obj, $arg_name, $validator) {
  * Validate a value from an array against a given validator.
  * @param array $arr target array
  * @param string $key key name in the array
- * @param callable $validator (mixed) -> string|null, validator that returns an error string or null
+ * @param callable[] $validators array of validators [(mixed) -> string|null], that are evaluated in the order given
  * @return mixed $arr[$key]
  * @throws ValidationException if $validator returns an error
  */
-function validate_array_value($arr, $key, $validator) {
+function validate_array_value($arr, $key, $validators) {
     $obj = array_key_exists($key, $arr) ? $arr[$key] : null;
-    $validation_error = call_user_func($validator, $obj);
-    if (!empty($validation_error)) {
-        throw new ValidationException($key, $validation_error);
+    foreach ($validators as $validator) {
+        $validation_error = call_user_func($validator, $obj);
+        if (!empty($validation_error)) {
+            throw new ValidationException($key, $validation_error);
+        }
     }
     return $obj;
 }

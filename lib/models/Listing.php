@@ -96,6 +96,28 @@ class Listing
     }
 
     /**
+     * @param array $l array result fetched with PDO::FETCH_ASSOC
+     * @return Listing Listing object
+     */
+    public static function makeFromPDO($l)
+    {
+        $added = DateTime::createFromFormat('Y-m-d H:i:s', $l['added']);
+        return new Listing($l['id'], $l['type'], $l['user_id'], $l['title'], $l['slug'],
+            $l['description'], $l['status'], $added, $l['location_id']);
+    }
+
+    public static function getById($listing_id) {
+        global $db;
+
+        $stmt = $db->prepare("SELECT id, type, user_id, title, slug, description, status, added, location_id
+                             FROM listings WHERE id = :listing_id");
+        $stmt->bindValue(":listing_id", $listing_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return self::makeFromPDO(require_fetch_one($stmt, "Listing", "id", $listing_id));
+    }
+
+    /**
      * @return Tag[] array of this listing's tags
      */
     public function getTags()
@@ -111,7 +133,7 @@ class Listing
         $result = [];
         $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($tags as $tag) {
-            $result[] = new Tag($tag['id'], $tag['name']);
+            $result[] = Tag::makeFromPDO($tag);
         }
 
         return $result;
@@ -124,28 +146,17 @@ class Listing
     {
         global $db;
 
-        $stmt = $db->prepare("SELECT id, path FROM images WHERE images.listing_id = :listing_id");
+        $stmt = $db->prepare("SELECT id, path, listing_id FROM images WHERE images.listing_id = :listing_id");
         $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
         $result = [];
         $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($images as $image) {
-            $result[] = new Image($image['id'], $image['path'], $this->id);
+            $result[] = Image::makeFromPDO($image);
         }
 
         return $result;
-    }
-
-    /**
-     * @param array $l array result fetched with PDO::FETCH_ASSOC
-     * @return Listing Listing object
-     */
-    public static function makeFromPDO($l)
-    {
-        $added = DateTime::createFromFormat('Y-m-d H:i:s', $l['added']);
-        return new Listing($l['id'], $l['type'], $l['user_id'], $l['title'], $l['slug'],
-            $l['description'], $l['status'], $added, $l['location_id']);
     }
 
     /**

@@ -27,7 +27,63 @@
     },
     "parameter_required": {
       "en": "The parameter is required but was not specified.",
-      "fr": "FRENCH * VALIDATION ERROR"
+      "fr": "FRENCH * PARAMETER REQUIRED"
+    },
+    "validate_length": {
+      "en": "%1$s must be between %2$d and %3$d characters long",
+      "fr": "FRENCH * LENGTH VALIDATION %1$s %2$d %3$d"
+    },
+    "validate_regex": {
+      "en": "invalid %1$s",
+      "fr": "FRENCH * REGEX VALIDATION %1$s"
+    },
+    "validate_charset": {
+      "en": "only characters %2$s are allowed in %1$s",
+      "fr": "FRENCH * CHARSET VALIDATION %1$s %2$s"
+    },
+    "validate_range": {
+      "en": "%1$s must be a number between %2$g and %3$g",
+      "fr": "FRENCH * RANGE VALIDATION %1$g %2$g %3$g"
+    },
+    "validate_email": {
+      "en": "'%1$s' is not a valid {{ email_address }}",
+      "fr": "FRENCH * {{ email_address }} '%1$s'"
+    },
+    "validate_phone": {
+      "en": "'%1$s' is not a valid {{ phone_number }}",
+      "fr": "FRENCH * {{ phone_number }} '%1$s'"
+    },
+    "email_address": {
+      "en": "e-mail address",
+      "fr": "adresse électronique"
+    },
+    "phone_number": {
+      "en": "phone number",
+      "fr": "numéro de téléphone"
+    },
+    "fetch_error": {
+      "en": "could not find %1$s with %2$s %3$s",
+      "fr": "FRENCH * FETCH ERROR %1$s %2$s %3$s"
+    },
+    "first_name": {
+      "en": "first name",
+      "fr": "prénom"
+    },
+    "last_name": {
+      "en": "last name",
+      "fr": "nom"
+    },
+    "location": {
+      "en": "location",
+      "fr": "région"
+    },
+    "username": {
+      "en": "username",
+      "fr": "nom d'utilisateur"
+    },
+    "password": {
+      "en": "password",
+      "fr": "mot de passe"
     }
   }
 }

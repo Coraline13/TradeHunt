@@ -52,6 +52,14 @@ class User
     }
 
     /**
+     * @param array $u array result fetched with PDO::FETCH_ASSOC
+     * @return User User object
+     */
+    public static function makeFromPDO($u) {
+        return new User($u['id'], $u['username'], $u['email'], $u['password_hash'], $u['profile_id']);
+    }
+
+    /**
      * Create a new user and save it into the database.
      * @param string $username username of new user; must be unique among all users
      * @param string $email contact e-mail address for new user; must be unique among all users
@@ -103,9 +111,7 @@ class User
         $stmt->bindValue(":user_id", $user_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return new User($user['id'], $user['username'], $user['email'], $user['password_hash'], $user['profile_id']);
+        return self::makeFromPDO(require_fetch_one($stmt, "User", "id", $user_id));
     }
 
     /**
@@ -164,7 +170,7 @@ class User
         $result = [];
         $bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($bookmarks as $bookmark) {
-            $result[] = new Bookmark($bookmark['id'], $this->id, $bookmark['listing_id'], $bookmark['added']);
+            $result[] = Bookmark::makeFromPDO($bookmark);
         }
 
         return $result;

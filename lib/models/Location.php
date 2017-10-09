@@ -29,6 +29,14 @@ class Location
     }
 
     /**
+     * @param array $l array result fetched with PDO::FETCH_ASSOC
+     * @return Location Location object
+     */
+    public static function makeFromPDO($l) {
+        return new Location($l['id'], $l['country'], $l['city']);
+    }
+
+    /**
      * Get a location from the database.
      * @param int $location_id
      * @return Location location by ID
@@ -41,9 +49,7 @@ class Location
         $stmt->bindValue(":location_id", $location_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $location = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        return new Location($location['id'], $location['country'], $location['city']);
+        return self::makeFromPDO(require_fetch_one($stmt, "Location", "id", $location_id));
     }
 
     /**
@@ -60,7 +66,7 @@ class Location
         $result = [];
         $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($locations as $location) {
-            $result[] = new Location($location['id'], $location['country'], $location['city']);
+            $result[] = self::makeFromPDO($location);
         }
 
         return $result;

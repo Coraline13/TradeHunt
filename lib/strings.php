@@ -22,7 +22,10 @@ define("STRING_LAST_NAME", 17);
 define("STRING_LOCATION", 18);
 define("STRING_USERNAME", 19);
 define("STRING_PASSWORD", 20);
-
+define("STRING_LOG_IN", 21);
+define("STRING_REGISTER", 22);
+define("STRING_PERSONAL_INFO", 23);
+define("STRING_CHOOSE_OPTION", 24);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -56,6 +59,10 @@ $string_code_to_name = array(
     STRING_LAST_NAME => "last_name",
     STRING_PHONE_NUMBER => "phone_number",
     STRING_LOCATION => "location",
+    STRING_LOG_IN => "log_in",
+    STRING_REGISTER => "register",
+    STRING_PERSONAL_INFO => "personal_info",
+    STRING_CHOOSE_OPTION => "choose_option",
 );
 
 $supported_locales = null;

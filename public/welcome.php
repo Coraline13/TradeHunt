@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <title><?php echo _t('t', STRING_APP_NAME) ?></title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel='stylesheet prefetch' href='static/lib/jquery-ui.css'>
     <link rel='stylesheet prefetch' href='static/lib/bootstrap.min.css'>

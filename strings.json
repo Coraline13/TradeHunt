@@ -32,6 +32,10 @@
       "en": "location",
       "fr": "région"
     },
+    "log_in": {
+      "en": "login",
+      "fr": "login"
+    },
     "no_string": {
       "en": "<no string>",
       "fr": "<no string>"
@@ -44,13 +48,29 @@
       "en": "password",
       "fr": "mot de passe"
     },
+    "password_mismatch": {
+      "en": "passwords don't match",
+      "fr": "les mots de passe doivent correspondre"
+    },
+    "personal_info": {
+      "en": "personal information",
+      "fr": "informations personnelles"
+    },
     "phone_number": {
       "en": "phone number",
       "fr": "numéro de téléphone"
     },
+    "register": {
+      "en": "register",
+      "fr": "register"
+    },
     "register_unknown_err": {
       "en": "There was an error while creating your account. Please try again.",
       "fr": "FRENCH * UNKNOWN USER ERROR"
+    },
+    "repeat_password": {
+      "en": "repeat password",
+      "fr": "répéter le mot de passe"
     },
     "username": {
       "en": "username",
@@ -87,18 +107,6 @@
     "validation_error": {
       "en": "There was an error while validating your request. Please check all the data you entered is correct.",
       "fr": "FRENCH * VALIDATION ERROR"
-    },
-    "log_in": {
-      "en": "login",
-      "fr": "login"
-    },
-    "register": {
-      "en": "register",
-      "fr": "register"
-    },
-    "personal_info": {
-      "en": "personal information",
-      "fr": "informations personnelles"
     }
   },
   "supported_locales": [

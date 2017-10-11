@@ -26,6 +26,8 @@ define("STRING_LOG_IN", 21);
 define("STRING_REGISTER", 22);
 define("STRING_PERSONAL_INFO", 23);
 define("STRING_CHOOSE_OPTION", 24);
+define("STRING_REPEAT_PASSWORD", 25);
+define("STRING_PASSWORD_MISMATCH", 26);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -63,6 +65,8 @@ $string_code_to_name = array(
     STRING_REGISTER => "register",
     STRING_PERSONAL_INFO => "personal_info",
     STRING_CHOOSE_OPTION => "choose_option",
+    STRING_REPEAT_PASSWORD => "repeat_password",
+    STRING_PASSWORD_MISMATCH => "password_mismatch",
 );
 
 $supported_locales = null;
@@ -132,7 +136,7 @@ _load_strings();
 
 /**
  * Return the translated version of the given string according to cookie-determined locale.
- * @param $string_code int STRING_ enumeration constant
+ * @param int $string_code STRING_ enumeration constant
  * @return string translated string
  * @throws InvalidArgumentException in case of bad string code or locale
  */
@@ -168,7 +172,8 @@ function get_string($string_code)
  * @param string $str string with unreplaced tokens
  * @return string string with tokens replaced
  */
-function replace_strings($str) {
+function replace_strings($str)
+{
     return preg_replace_callback('/\{\{\s*([a-z0-9_]+)\s*\}\}/', function ($matches) {
         return get_string($matches[1]);
     }, $str);
@@ -181,9 +186,41 @@ function replace_strings($str) {
  * @return string translated and formatted string
  * @see get_string()
  */
-function get_string_format($string_code, $fmt_args) {
+function get_string_format($string_code, $fmt_args = null)
+{
     $fmt = get_string($string_code);
     $args = func_get_args();
     array_shift($args);
     return vsprintf($fmt, $args);
+}
+
+/**
+ * Shorter alais of get_string_format
+ * @param string $case optional case conversion; pass 'u' for Upper case, 'l' for lower case or 't' for Title Case,
+ *  'c' for CAPS, null for no conversion
+ * @param int $string_code parameter to get_string
+ * @param mixed $fmt_args,... arguments for format specifiers
+ * @return string get_string($string_code) with optional case conversion
+ * @see get_string_format
+ */
+function _t($case, $string_code, $fmt_args = null)
+{
+    $args = func_get_args();
+    array_shift($args); // $case
+    $str = call_user_func_array('get_string_format', $args);
+    switch ($case) {
+        case 'u':
+            $str = ucfirst($str);
+            break;
+        case 't':
+            $str = ucwords($str);
+            break;
+        case 'c':
+            $str = strtoupper($str);
+            break;
+        case 'l':
+            $str = strtolower($str);
+            break;
+    }
+    return $str;
 }

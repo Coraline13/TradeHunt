@@ -13,7 +13,7 @@ $tel = validate_value($tel, 'tel', [validator_phone_number()]);
 
 $username = validate_array_value($req, 'username', [
     validator_string_length(get_string(STRING_USERNAME), CFG_USERNAME_MIN_LEN, CFG_USERNAME_MAX_LEN),
-    validator_charset(get_string(STRING_USERNAME), true, true, true, "_.")
+    validator_regex(get_string(STRING_USERNAME), '/'.CFG_USERNAME_REGEX.'/')
 ]);
 $email = validate_array_value($req, 'email', [validator_email()]);
 $password = validate_array_value($req, 'password', [validator_string_length(get_string(STRING_PASSWORD), CFG_PASSWORD_MIN_LEN, CFG_PASSWORD_MAX_LEN)]);

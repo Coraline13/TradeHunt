@@ -2,6 +2,8 @@
 require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_LOCALE, $_SUPPORTED_LOCALES;
+$GLOBALS['root'] = "";
+
 check_method(["GET"]);
 
 $locale = isset($_GET['locale']) ? $_GET['locale'] : null;

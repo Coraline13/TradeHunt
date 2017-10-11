@@ -12,8 +12,8 @@
 
         foreach ($locales as $code => $string) {
             $selected = $_LOCALE == $code ? 'lang-selected' : '';
-            echo "<li><a href=\"/set_locale.php?locale=$code\">";
-            echo "<img src=\"/static/img/flag-$code.svg\" alt=\"\"/>&nbsp;";
+            echo "<li><a href=\"${GLOBALS['root']}set_locale.php?locale=$code\">";
+            echo "<img src=\"${GLOBALS['root']}static/img/flag-$code.svg\" alt=\"\"/>&nbsp;";
             echo "<span class=\"$selected\">"._t(null, $string)."</span>";
             echo "</a></li>";
         }

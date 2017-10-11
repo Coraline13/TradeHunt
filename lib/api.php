@@ -254,7 +254,7 @@ function force_authentication()
     global $_USER;
     if (empty($_USER)) {
         log_debug("Not authenticated, redirecting to login");
-        header('Location: /login.php', true, 302);
+        header("Location: ${GLOBALS['root']}login.php", true, 302);
         exit();
     }
 }

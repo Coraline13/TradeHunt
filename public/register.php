@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__FILE__).'/../lib/api.php';
 
+$GLOBALS['root'] = "";
+
 check_method(["GET", "POST"]);
 
 $username = '';
@@ -37,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $session = $user->openSession();
         $db->commit();
 
-        header('Location: /profile.php', true, 303);
+        header("Location: profile.php", true, 303);
         exit();
     } catch (APIException $e) {
         $form_error = $e;

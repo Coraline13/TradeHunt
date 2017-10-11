@@ -245,7 +245,7 @@ function _t($case, $string_code, $fmt_args = null)
     $str = get_string($string_code);
     switch ($case) {
         case 'u':
-            $str = mb_strtoupper(mb_substr($str, 0, 1)).mb_substr($str, 1);
+            $str = mb_strtoupper(mb_substr($str, 0, 1, 'UTF-8'), 'UTF-8').mb_substr($str, 1, null,'UTF-8');
             break;
         case 't':
             $str = mb_convert_case($str, MB_CASE_TITLE, 'UTF-8');

@@ -12,5 +12,5 @@ if (empty($locale) || !in_array($locale, $_SUPPORTED_LOCALES)) {
 }
 
 $_LOCALE = $locale;
-setcookie(CFG_COOKIE_LOCALE, $_LOCALE, time() + 60*60*24*365 /*1 year*/, "/");
-header('Location: ' . $_SERVER['HTTP_REFERER'], true, 303);
+setcookie(CFG_COOKIE_LOCALE, $_LOCALE, time() + 60 * 60 * 24 * 365 /*1 year*/, "/");
+header('Location: '.$_SERVER['HTTP_REFERER'], true, 303);

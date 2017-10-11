@@ -1,9 +1,11 @@
 <?php
 require_once dirname(__FILE__) . '/../lib/api.php';
 
+global $_USER;
 $GLOBALS['root'] = "";
 
 check_method(["GET", "POST"]);
+force_authentication(false);
 
 $login = '';
 $password = '';
@@ -38,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title><?php echo _t('u', STRING_LOG_IN) ?></title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
     <link rel="stylesheet" type="text/css" href="static/css/forms.css"/>
 </head>
 <body>

@@ -66,7 +66,7 @@ class Session
 
             $sid = (int)$db->lastInsertId();
 
-            log_debug(sprintf("Opened session %d for user #%s (%d)", $sid, $user->getUsername(), $user->getId()));
+            log_debug(sprintf("Opened session %d for user #%d (%s)", $sid, $user->getId(), $user->getUsername()));
             return new Session($sid, $user->getId(), $token, $expiration);
         } catch (PDOException $e) {
             throw new APIException(ERROR_GENERIC_API, $e, "fail to create session");
@@ -107,6 +107,17 @@ class Session
     {
         $expiration = DateTime::createFromFormat('Y-m-d H:i:s', $s['expiration']);
         return new Session($s['id'], $s['user_id'], $s['token'], $expiration);
+    }
+
+    /**
+     * Deletes this session from the database.
+     */
+    public function delete() {
+        global $db;
+
+        $stmt = $db->prepare("DELETE FROM sessions WHERE id = :id");
+        $stmt->bindValue(":id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
     }
 
     /**

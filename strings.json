@@ -70,6 +70,11 @@
       "fr": "Pas de compte? {{ register|u }} ici!",
       "ro": "Nu ai cont? {{ register|u }} aici!"
     },
+    "logout": {
+      "en": "log out",
+      "fr": "se déconnecter",
+      "ro": "deconectare"
+    },
     "no_string": {
       "en": "<no string>",
       "fr": "<no string>",

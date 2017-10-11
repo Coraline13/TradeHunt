@@ -83,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html >
 <head>
     <meta charset="UTF-8">
-    <title>A Pen by  Celine</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title><?php echo _t('t', STRING_APP_NAME) ?></title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 
     <link rel='stylesheet prefetch' href='static/lib/jquery-ui.css'>
     <link rel='stylesheet prefetch' href='static/lib/bootstrap.min.css'>
@@ -106,7 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top">Celine Is Awesome</a>
+            <a class="navbar-brand page-scroll" href="#page-top"><?php echo _t('t', STRING_APP_NAME) ?></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -500,7 +500,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     $selected = $location != null && $loc->getId() == $location->getId();
                                     echo '<option value="'.$loc->getId().'" '.($selected ? "selected" : "").'>';
                                     echo $loc->getCountry().' - '.$loc->getCity();
-                                    echo '</option>\n';
+                                    echo '</option>';
                                 }
                                 ?>
                             </select>

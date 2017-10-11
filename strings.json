@@ -1,5 +1,10 @@
 {
   "strings": {
+    "app_name": {
+      "en": "Trade Hunt",
+      "fr": "Trade Hunt",
+      "ro": "Trade Hunt"
+    },
     "choose_option": {
       "en": "Choose an option",
       "fr": "Choisis une option",

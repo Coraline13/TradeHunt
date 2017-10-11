@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../init.php';
+require_once dirname(__FILE__).'/../init.php';
 
 define("STRING_NO_STRING", 0);
 define("STRING_USERNAME_EXISTS", 1);
@@ -31,6 +31,14 @@ define("STRING_PASSWORD_MISMATCH", 26);
 define("STRING_WRONG_PASSWORD", 27);
 define("STRING_USER_NOT_FOUND", 28);
 define("STRING_USERNAME_OR_EMAIL", 29);
+define("STRING_USER_PROFILE", 30);
+define("STRING_LOGIN_TO_REGISTER", 31);
+define("STRING_REGISTER_TO_LOGIN", 32);
+define("STRING_SELECT_LANGUAGE", 33);
+define("STRING_IDENTIFIER", 34);
+define("STRING_LANG_FR", 35);
+define("STRING_LANG_RO", 36);
+define("STRING_LANG_EN", 37);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -73,9 +81,25 @@ $string_code_to_name = array(
     STRING_WRONG_PASSWORD => "wrong_password",
     STRING_USER_NOT_FOUND => "user_not_found",
     STRING_USERNAME_OR_EMAIL => "username_or_email",
+    STRING_USER_PROFILE => "user_profile",
+    STRING_LOGIN_TO_REGISTER => "login_to_register",
+    STRING_REGISTER_TO_LOGIN => "register_to_login",
+    STRING_SELECT_LANGUAGE => "select_language",
+    STRING_IDENTIFIER => "identifier",
+    STRING_LANG_FR => "lang_fr",
+    STRING_LANG_RO => "lang_ro",
+    STRING_LANG_EN => "lang_en",
 );
 
-$supported_locales = null;
+$_SUPPORTED_LOCALES = null;
+$_LOCALE = null;
+
+function file_get_contents_utf8($fn)
+{
+    $content = file_get_contents($fn);
+    return mb_convert_encoding($content, 'UTF-8',
+        mb_detect_encoding($content, 'UTF-8, ISO-8859-1', true));
+}
 
 /**
  * Load and statically cache the strings.json file describing localized strings for all STRING_ constants.
@@ -88,11 +112,10 @@ $supported_locales = null;
  */
 function _load_strings()
 {
-    global $string_code_to_name, $supported_locales;
+    global $string_code_to_name, $_SUPPORTED_LOCALES, $_LOCALE;
     static $strings = null;
 
-
-    if (!$strings || !$supported_locales) {
+    if (!$strings || !$_SUPPORTED_LOCALES) {
         // check that all STRING_ constants have a distinct value
         $defined_codes = array();
         foreach (get_defined_constants() as $name => $val) {
@@ -105,12 +128,24 @@ function _load_strings()
         }
 
         // read string data from JSON
-        $string_data = json_decode(file_get_contents(dirname(__FILE__) . '/../strings.json'), true);
-        $supported_locales = $string_data['supported_locales'];
+        $string_data = json_decode(file_get_contents_utf8(dirname(__FILE__).'/../strings.json'), true, 512, JSON_UNESCAPED_UNICODE);
+        $_SUPPORTED_LOCALES = $string_data['supported_locales'];
         $strings = $string_data['strings'];
-        if (!$supported_locales || count($supported_locales) == 0) {
+        if (!$_SUPPORTED_LOCALES || count($_SUPPORTED_LOCALES) == 0) {
             throw new UnexpectedValueException("strings.json must define at least one locale");
         }
+
+        $_LOCALE = $_SUPPORTED_LOCALES[0];
+        if (isset($_COOKIE) && isset($_COOKIE['locale'])) {
+            $_LOCALE = $_COOKIE[CFG_COOKIE_LOCALE];
+            if (!in_array($_LOCALE, $_SUPPORTED_LOCALES)) {
+                throw new InvalidArgumentException("invalid or unknown locale '$_LOCALE'");
+            }
+        } else {
+            setcookie(CFG_COOKIE_LOCALE, $_LOCALE, time() + 60 * 60 * 24 * 365 /*1 year*/, "/");
+        }
+
+        setlocale(LC_CTYPE | LC_COLLATE, $_LOCALE);
 
         foreach ($string_code_to_name as $code => $string_name) {
             unset($defined_codes[$code]);
@@ -120,7 +155,7 @@ function _load_strings()
                 if (preg_match('/[^a-z0-9_]/', $string_name)) {
                     throw new UnexpectedValueException("string name can only contain [a-z0-9_] ($string_name)");
                 }
-                foreach ($supported_locales as $locale) {
+                foreach ($_SUPPORTED_LOCALES as $locale) {
                     if (!isset($strings[$string_name][$locale])) {
                         throw new UnexpectedValueException("$string_name is missing '$locale' translation in strings.json");
                     }
@@ -130,10 +165,9 @@ function _load_strings()
 
         // check that all string codes are defined in $string_code_to_name
         if (count($defined_codes) != 0) {
-            throw new UnexpectedValueException('missing $string_code_to_name definition for codes ' . json_encode($defined_codes));
+            throw new UnexpectedValueException('missing $string_code_to_name definition for codes '.json_encode($defined_codes));
         }
     }
-
 
     return $strings;
 }
@@ -145,10 +179,11 @@ _load_strings();
  * @param int $string_code STRING_ enumeration constant
  * @return string translated string
  * @throws InvalidArgumentException in case of bad string code or locale
+ * @see _t()
  */
 function get_string($string_code)
 {
-    global $string_code_to_name, $supported_locales;
+    global $string_code_to_name, $_LOCALE;
     $strings = _load_strings();
 
     $string_name = isset($string_code_to_name[$string_code]) ? $string_code_to_name[$string_code] : null;
@@ -159,15 +194,7 @@ function get_string($string_code)
         throw new InvalidArgumentException("invalid or unknown string code $string_code");
     }
 
-    $locale = $supported_locales[0];
-    if (isset($_COOKIE) && isset($_COOKIE['locale'])) {
-        $locale = $_COOKIE['locale'];
-        if (!in_array($locale, $supported_locales)) {
-            throw new InvalidArgumentException("invalid or unknown locale '$string_code'");
-        }
-    }
-
-    return replace_strings($strings[$string_name][$locale]);
+    return replace_strings($strings[$string_name][$_LOCALE]);
 }
 
 /**
@@ -180,8 +207,12 @@ function get_string($string_code)
  */
 function replace_strings($str)
 {
-    return preg_replace_callback('/\{\{\s*([a-z0-9_]+)\s*\}\}/', function ($matches) {
-        return get_string($matches[1]);
+    return preg_replace_callback('/\{\{\s*([a-z0-9_]+)\s*(?:\|([uclt])\s*)?\}\}/', function ($matches) {
+        $case = null;
+        if (isset($matches[2]) && !empty($matches[2])) {
+            $case = $matches[2];
+        }
+        return _t($case, $matches[1]);
     }, $str);
 }
 
@@ -201,32 +232,34 @@ function get_string_format($string_code, $fmt_args = null)
 }
 
 /**
- * Shorter alais of get_string_format
+ * Get a parameterized string translated according to cookie locale.
  * @param string $case optional case conversion; pass 'u' for Upper case, 'l' for lower case or 't' for Title Case,
  *  'c' for CAPS, null for no conversion
  * @param int $string_code parameter to get_string
  * @param mixed $fmt_args,... arguments for format specifiers
- * @return string get_string($string_code) with optional case conversion
- * @see get_string_format
+ * @return string translated and formatted string with optional case conversion
+ * @see get_string()
  */
 function _t($case, $string_code, $fmt_args = null)
 {
-    $args = func_get_args();
-    array_shift($args); // $case
-    $str = call_user_func_array('get_string_format', $args);
+    $str = get_string($string_code);
     switch ($case) {
         case 'u':
-            $str = ucfirst($str);
+            $str = mb_strtoupper(mb_substr($str, 0, 1)).mb_substr($str, 1);
             break;
         case 't':
-            $str = ucwords($str);
+            $str = mb_convert_case($str, MB_CASE_TITLE, 'UTF-8');
             break;
         case 'c':
-            $str = strtoupper($str);
+            $str = mb_strtoupper($str, 'UTF-8');
             break;
         case 'l':
-            $str = strtolower($str);
+            $str = mb_strtolower($str, 'UTF-8');
             break;
     }
-    return $str;
+
+    $args = func_get_args();
+    array_shift($args); // $case
+    array_shift($args); // $string_code
+    return vsprintf($str, $args);
 }

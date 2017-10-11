@@ -2,127 +2,198 @@
   "strings": {
     "choose_option": {
       "en": "Choose an option",
-      "fr": "Choisis une option"
+      "fr": "Choisis une option",
+      "ro": "Alegeți o variantă"
     },
     "email_address": {
       "en": "e-mail address",
-      "fr": "adresse électronique"
+      "fr": "adresse électronique",
+      "ro": "adresă e-mail"
     },
     "email_exists": {
       "en": "This e-mail address is already associated with an account!",
-      "fr": "FRENCH * E-MAIL EXISTS"
+      "fr": "Adresse e-mail déjà prise.",
+      "ro": "Această adresă de e-mail este deja utilizată."
     },
     "fetch_error": {
       "en": "could not find %1$s with %2$s %3$s",
-      "fr": "FRENCH * FETCH ERROR %1$s %2$s %3$s"
+      "fr": "n'a pas pu trouver %1$s avec %2$s %3$s",
+      "ro": "%1$s cu %2$s %3$s nu a fost găsit"
     },
     "first_name": {
       "en": "first name",
-      "fr": "prénom"
+      "fr": "prénom",
+      "ro": "prenume"
     },
     "generic_error": {
       "en": "An unknown error occured while processing your request.",
-      "fr": "FRENCH * UNKNOWN ERROR"
+      "fr": "Une erreur inconnue s'est produite lors du traitement de votre requête.",
+      "ro": "S-a produs o eroare neidentificată."
+    },
+    "identifier": {
+      "en": "Login",
+      "fr": "Identifiant",
+      "ro": "Login"
+    },
+    "lang_en": {
+      "en": "English",
+      "fr": "English",
+      "ro": "English"
+    },
+    "lang_fr": {
+      "en": "français",
+      "fr": "français",
+      "ro": "français"
+    },
+    "lang_ro": {
+      "en": "română",
+      "fr": "română",
+      "ro": "română"
     },
     "last_name": {
       "en": "last name",
-      "fr": "nom"
+      "fr": "nom",
+      "ro": "nume"
     },
     "location": {
       "en": "location",
-      "fr": "région"
+      "fr": "région",
+      "ro": "zonă"
     },
     "log_in": {
-      "en": "login",
-      "fr": "login"
+      "en": "log in",
+      "fr": "s'identifier",
+      "ro": "login"
+    },
+    "login_to_register": {
+      "en": "No account? {{ register|u }} here!",
+      "fr": "Pas de compte? {{ register|u }} ici!",
+      "ro": "Nu ai cont? {{ register|u }} aici!"
     },
     "no_string": {
       "en": "<no string>",
-      "fr": "<no string>"
+      "fr": "<no string>",
+      "ro": "<no string>"
     },
     "parameter_required": {
       "en": "The parameter is required but was not specified.",
-      "fr": "FRENCH * PARAMETER REQUIRED"
+      "fr": "Le paramètre est requis.",
+      "ro": "Parametrul este obligatoriu."
     },
     "password": {
       "en": "password",
-      "fr": "mot de passe"
+      "fr": "mot de passe",
+      "ro": "parolă"
     },
     "password_mismatch": {
       "en": "passwords don't match",
-      "fr": "les mots de passe doivent correspondre"
+      "fr": "les mots de passe doivent correspondre",
+      "ro": "parolele nu potrivesc"
     },
     "personal_info": {
       "en": "personal information",
-      "fr": "informations personnelles"
+      "fr": "informations personnelles",
+      "ro": "informații personale"
     },
     "phone_number": {
       "en": "phone number",
-      "fr": "numéro de téléphone"
+      "fr": "numéro de téléphone",
+      "ro": "număr de telefon"
     },
     "register": {
       "en": "register",
-      "fr": "register"
+      "fr": "inscrivez-vous",
+      "ro": "întregistrează-te"
+    },
+    "register_to_login": {
+      "en": "Have an account? Log in.",
+      "fr": "Avoir un compte? Indentifiez-vous!",
+      "ro": "Ai deja cont? Conectează-te!"
     },
     "register_unknown_err": {
       "en": "There was an error while creating your account. Please try again.",
-      "fr": "FRENCH * UNKNOWN USER ERROR"
+      "fr": "Une erreur s'est produite lors de la création de votre compte. Veuillez réessayer plus tard.",
+      "ro": "A apărut o eroare la crearea contului. Vă rugăm încercați mai târziu."
     },
     "repeat_password": {
       "en": "repeat password",
-      "fr": "répéter le mot de passe"
+      "fr": "répéter le mot de passe",
+      "ro": "repetă parola"
+    },
+    "select_language": {
+      "en": "Select language",
+      "fr": "Choisissez votre langue",
+      "ro": "Alege limba"
     },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",
-      "fr": "L'utilisateur '%1$s' n'existe pas."
+      "fr": "L'utilisateur '%1$s' n'existe pas.",
+      "ro": "Utilizatorul '%1$s' nu există."
+    },
+    "user_profile": {
+      "en": "%1$s's profile",
+      "fr": "profil de %1$s",
+      "ro": "profilul lui %1$s"
     },
     "username": {
       "en": "username",
-      "fr": "nom d'utilisateur"
+      "fr": "nom d'utilisateur",
+      "ro": "nume de utilizator"
     },
     "username_exists": {
       "en": "This username is already in use!",
-      "fr": "Ce nom d'utilisateur est déjà utilisé!"
+      "fr": "Ce nom d'utilisateur est déjà utilisé!",
+      "ro": "Acest nume de utilizator există deja!"
     },
     "username_or_email": {
       "en": "username or e-mail",
-      "fr": "nom d'utilisateur ou email"
+      "fr": "nom d'utilisateur ou email",
+      "ro": "e-mail sau nume de utilizator"
     },
     "validate_charset": {
       "en": "only characters %2$s are allowed in %1$s",
-      "fr": "FRENCH * CHARSET VALIDATION %1$s %2$s"
+      "fr": "seuls les caractères %2$s sont autorisés dans %1$s",
+      "ro": "pentru %1$s sunt permise doar caracterele %2$s"
     },
     "validate_email": {
       "en": "'%1$s' is not a valid {{ email_address }}",
-      "fr": "FRENCH * {{ email_address }} '%1$s'"
+      "fr": "'%1$s' n'est pas une {{ email_address }} valide",
+      "ro": "'%1$s' nu este o {{ email_address }} validă"
     },
     "validate_length": {
       "en": "%1$s must be between %2$d and %3$d characters long",
-      "fr": "FRENCH * LENGTH VALIDATION %1$s %2$d %3$d"
+      "fr": "%1$s doit avoir entre %2$d et %3$d caractères",
+      "ro": "%1$s trebuie să conțină între %2$d și %3$d caractere"
     },
     "validate_phone": {
       "en": "'%1$s' is not a valid {{ phone_number }}",
-      "fr": "FRENCH * {{ phone_number }} '%1$s'"
+      "fr": "'%1$s' n'est pas un {{ phone_number }} valide",
+      "ro": "'%1$s' nu este un {{ phone_number }} valid"
     },
     "validate_range": {
       "en": "%1$s must be a number between %2$g and %3$g",
-      "fr": "FRENCH * RANGE VALIDATION %1$g %2$g %3$g"
+      "fr": "%1$s doit être compris entre %2$g and %3$g",
+      "ro": "%1$s trebuie să fie între %2$g și %3$g"
     },
     "validate_regex": {
       "en": "invalid %1$s",
-      "fr": "FRENCH * REGEX VALIDATION %1$s"
+      "fr": "%1$s invalide",
+      "ro": "%1$s invalid(ă)"
     },
     "validation_error": {
       "en": "There was an error while validating your request. Please check all the data you entered is correct.",
-      "fr": "FRENCH * VALIDATION ERROR"
+      "fr": "Une erreur s'est produite lors de la validation de votre requête. Veuillez vérifier que toutes les données que vous avez entrées sont correctes.",
+      "ro": "Cererea dumneavoastră nu a putut fi validată. Vă rugăm verificați datele introduse."
     },
     "wrong_password": {
       "en": "The password is incorrect.",
-      "fr": "Le mot de passe est incorrect."
+      "fr": "Le mot de passe est incorrect.",
+      "ro": "Parola este incorectă."
     }
   },
   "supported_locales": [
     "en",
-    "fr"
+    "fr",
+    "ro"
   ]
 }

@@ -93,6 +93,16 @@ class Listing
         $this->status = require_non_empty($status, "status");
         $this->added = require_non_null($added, "added");
         $this->location_id = require_non_empty($location_id, "location_id");
+        self::checkEnums($type, $status);
+    }
+
+    private static function checkEnums($type, $status) {
+        if ($type != self::TYPE_OFFER && $type != self::TYPE_WISH) {
+            throw new InvalidArgumentException("invalid listing type");
+        }
+        if ($status != self::STATUS_AVAILABLE && $status != self::STATUS_GONE) {
+            throw new InvalidArgumentException("invalid listing type");
+        }
     }
 
     /**
@@ -106,7 +116,78 @@ class Listing
             $l['description'], $l['status'], $added, $l['location_id']);
     }
 
-    public static function getById($listing_id) {
+    /**
+     * Create a new Listing and save it in the database.
+     * @param int $type type of listing, one of TYPE_OFFER or TYPE_WISH
+     * @param User $user user that posted the listing
+     * @param string $title title
+     * @param string $slug url-friendly slug
+     * @param string $description long description
+     * @param int $status listing visiblity status, one of STATUS_AVAILABLE or STATUS_GONE (if it was already traded)
+     * @param Location $location Location where the listing is available
+     * @return Listing new Listing object
+     */
+    public static function create($type, User $user, $title, $slug, $description, $status, Location $location) {
+        self::checkEnums($type, $status);
+        global $db;
+
+        $added = new DateTime();
+
+        $stmt = $db->prepare("INSERT INTO listings(type, user_id, title, slug, description, status, added, location_id)
+                                        VALUES (:type, :user_id, :title, :slug, :description, :status, :added, :location_id)");
+        $stmt->bindValue(":type", $type, PDO::PARAM_INT);
+        $stmt->bindValue(":user_id", $user->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(":title", $title, PDO::PARAM_STR);
+        $stmt->bindValue(":slug", $slug, PDO::PARAM_STR);
+        $stmt->bindValue(":description", $description, PDO::PARAM_STR);
+        $stmt->bindValue(":status", $status, PDO::PARAM_INT);
+        $stmt->bindValue(":added", $added->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+        $stmt->bindValue(":location_id", $location->getId(), PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt->closeCursor();
+
+        $lid = (int)$db->lastInsertId();
+
+        return new Listing($lid, $type, $user->getId(), $title, $slug, $description, $status, $added, $location->getId());
+    }
+
+    /**
+     * Retrieve a set of listings from the database.
+     * @param string $sort_order sort order for the retrieved listings, currently only new
+     * @param int $offset starting offset for the page, affected by sort order (page number * page size)
+     * @param int $limit maximum number of listings to return (page size)
+     * @return Listing[] retrieved Listings
+     */
+    public static function getPaged($sort_order = 'new', $offset = 0, $limit = 0)
+    {
+        global $db;
+        static $SORT_ORDERS = [
+            'new' => 'added DESC',
+        ];
+        if (!array_key_exists($sort_order, $SORT_ORDERS)) {
+            throw new InvalidArgumentException("unknown sort order $sort_order");
+        }
+        $limit = empty($limit) ? 2147483647 : $limit;
+        $stmt = $db->query("SELECT id, type, user_id, title, slug, description, status, added, location_id
+                                      FROM listings ORDER BY ${SORT_ORDERS[$sort_order]}
+                                      LIMIT $limit OFFSET $offset");
+
+        $result = [];
+        $listings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($listings as $l) {
+            $result[] = Listing::makeFromPDO($l);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get a listing from the database by its id.
+     * @param int $listing_id listing unique ID
+     * @return Listing Listing object
+     */
+    public static function getById($listing_id)
+    {
         global $db;
 
         $stmt = $db->prepare("SELECT id, type, user_id, title, slug, description, status, added, location_id

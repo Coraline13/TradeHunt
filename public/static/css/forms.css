@@ -45,3 +45,46 @@ div.success {
     background-color: #dff0d8;
     padding: 10px;
 }
+
+#select-lang > * {
+    vertical-align: middle;
+}
+
+#lang-list {
+    list-style-type: none;
+    overflow: hidden;
+    padding-left: 0;
+    margin: 0 0 0 -1px;
+    display: inline-flex;
+    flex-direction: row;
+}
+
+#lang-list > li {
+    margin: 0 0;
+    padding: 0 .5em;
+    text-align: center;
+}
+
+#lang-list > li+li {
+    border-left: 1px solid #ccc;
+}
+
+#lang-list > li a {
+    text-decoration: none;
+    color: black;
+}
+
+#lang-list > li a > * {
+    vertical-align: middle;
+}
+
+#lang-list > li img {
+    width: 20px;
+    height: auto;
+    border: 1px solid black;
+    border-radius: 1px;
+}
+
+.lang-selected {
+    font-weight: 700;
+}

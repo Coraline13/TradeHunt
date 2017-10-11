@@ -119,7 +119,7 @@ CREATE UNIQUE INDEX `uk_trade_offers_trade_listing`
 CREATE UNIQUE INDEX `uk_trade_offers_listing_trade`
   ON `trade_offers` (`listing_id`, `trade_id`);
 
-CREATE TRIGGER validate_trade_offer
+CREATE TRIGGER validate_trade_listing_owner
   BEFORE
   INSERT
   ON `trade_offers`
@@ -137,4 +137,14 @@ BEGIN
      SELECT sender_id
      FROM trades
      WHERE trades.id = NEW.trade_id);
+END;
+
+CREATE TRIGGER validate_trade_listing_status
+  BEFORE
+  INSERT
+  ON trade_offers
+BEGIN
+  SELECT RAISE(ABORT, 'Only listings with ''offer'' type and available status can be traded')
+  FROM listings
+  WHERE listings.id = NEW.listing_id AND (listings.type != 1 OR listings.status != 1);
 END;

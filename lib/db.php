@@ -6,7 +6,7 @@ $db = new PDO('sqlite:' . dirname(__FILE__) . '/../data/database.sqlite3');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $db->exec('PRAGMA foreign_keys = ON;');
 
-define("SCHEMA_VERSION", 5);
+define("SCHEMA_VERSION", 6);
 
 /**
  * @param PDO $db opened database connection

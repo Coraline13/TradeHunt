@@ -53,7 +53,7 @@ class Session
      * @return Session session object
      * @throws APIException if session create fails
      */
-    public static function create($user, DateTime $expiration)
+    public static function create(User $user, DateTime $expiration)
     {
         global $db;
         $token = bin2hex(openssl_random_pseudo_bytes(10));

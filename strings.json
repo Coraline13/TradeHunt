@@ -72,6 +72,10 @@
       "en": "repeat password",
       "fr": "répéter le mot de passe"
     },
+    "user_not_found": {
+      "en": "User '%1$s' does not exist.",
+      "fr": "L'utilisateur '%1$s' n'existe pas."
+    },
     "username": {
       "en": "username",
       "fr": "nom d'utilisateur"
@@ -79,6 +83,10 @@
     "username_exists": {
       "en": "This username is already in use!",
       "fr": "Ce nom d'utilisateur est déjà utilisé!"
+    },
+    "username_or_email": {
+      "en": "username or e-mail",
+      "fr": "nom d'utilisateur ou email"
     },
     "validate_charset": {
       "en": "only characters %2$s are allowed in %1$s",
@@ -107,6 +115,10 @@
     "validation_error": {
       "en": "There was an error while validating your request. Please check all the data you entered is correct.",
       "fr": "FRENCH * VALIDATION ERROR"
+    },
+    "wrong_password": {
+      "en": "The password is incorrect.",
+      "fr": "Le mot de passe est incorrect."
     }
   },
   "supported_locales": [

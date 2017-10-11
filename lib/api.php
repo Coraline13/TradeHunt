@@ -11,6 +11,8 @@ define("ERROR_USER_UNKNOWN", 403);
 define("ERROR_GENERIC_API", 404);
 define("ERROR_METHOD_NOT_ALLOWED", 405);
 define("ERROR_GENERIC_VALIDATION", 406);
+define("ERROR_WRONG_PASSWORD", 407);
+define("ERROR_USER_NOT_FOUND", 408);
 
 $error_info = array(
     ERROR_USERNAME_EXISTS => [STRING_USERNAME_EXISTS, 409],
@@ -18,7 +20,9 @@ $error_info = array(
     ERROR_USER_UNKNOWN => [STRING_REGISTER_UNKNOWN_ERR, 500],
     ERROR_GENERIC_API => [STRING_GENERIC_ERROR, 500],
     ERROR_METHOD_NOT_ALLOWED => [STRING_NO_STRING, 405],
-    ERROR_GENERIC_VALIDATION => [STRING_VALIDATION_ERROR, 400]
+    ERROR_GENERIC_VALIDATION => [STRING_VALIDATION_ERROR, 400],
+    ERROR_WRONG_PASSWORD => [STRING_WRONG_PASSWORD, 403],
+    ERROR_USER_NOT_FOUND => [STRING_WRONG_PASSWORD, 403],
 );
 
 class APIException extends Exception
@@ -62,7 +66,9 @@ function check_method($allowed_methods)
     }
 }
 
-class UserException extends APIException { }
+class UserException extends APIException
+{
+}
 
 class ValidationException extends APIException
 {
@@ -108,7 +114,8 @@ class ValidationException extends APIException
  * @see is_null()
  * @see require_non_empty(), require_array_value()
  */
-function require_non_null($obj, $arg_name) {
+function require_non_null($obj, $arg_name)
+{
     if (is_null($obj)) {
         throw new ValidationException($arg_name, get_string(STRING_PARAMETER_REQUIRED));
     }
@@ -124,7 +131,8 @@ function require_non_null($obj, $arg_name) {
  * @see empty()
  * @see require_non_null(), require_array_value()
  */
-function require_non_empty($obj, $arg_name) {
+function require_non_empty($obj, $arg_name)
+{
     if (is_null($obj)) {
         throw new ValidationException($arg_name, get_string(STRING_PARAMETER_REQUIRED));
     }
@@ -141,7 +149,8 @@ function require_non_empty($obj, $arg_name) {
  * @see array_key_exists(), empty()
  * @see require_non_null(), require_non_empty()
  */
-function require_array_value($arr, $key, $allow_empty = true) {
+function require_array_value($arr, $key, $allow_empty = true)
+{
     if (!array_key_exists($key, $arr) || ($allow_empty ? is_null($arr[$key]) : empty($arr[$key]))) {
         throw new ValidationException($key, get_string(STRING_PARAMETER_REQUIRED));
     }
@@ -160,13 +169,13 @@ function require_array_value($arr, $key, $allow_empty = true) {
  * @internal param string $field field name for error formatting
  * @see PDOStatement::fetch()
  */
-function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code = STRING_VALIDATE_FETCH_ONE) {
+function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code = STRING_VALIDATE_FETCH_ONE)
+{
     $result = null;
     $cause = null;
     try {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-    catch (PDOException $e) {
+    } catch (PDOException $e) {
         $cause = $e;
         $result = null;
     }
@@ -186,7 +195,8 @@ function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code
  * @return mixed $obj unmodified
  * @throws ValidationException if $validator returns an error
  */
-function validate_value($obj, $arg_name, $validators) {
+function validate_value($obj, $arg_name, $validators)
+{
     foreach ($validators as $validator) {
         $validation_error = call_user_func($validator, $obj);
         if (!empty($validation_error)) {
@@ -204,7 +214,8 @@ function validate_value($obj, $arg_name, $validators) {
  * @return mixed $arr[$key]
  * @throws ValidationException if $validator returns an error
  */
-function validate_array_value($arr, $key, $validators) {
+function validate_array_value($arr, $key, $validators)
+{
     $obj = array_key_exists($key, $arr) ? $arr[$key] : null;
     foreach ($validators as $validator) {
         $validation_error = call_user_func($validator, $obj);

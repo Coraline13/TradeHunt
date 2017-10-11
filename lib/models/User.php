@@ -55,7 +55,8 @@ class User
      * @param array $u array result fetched with PDO::FETCH_ASSOC
      * @return User User object
      */
-    public static function makeFromPDO($u) {
+    public static function makeFromPDO($u)
+    {
         return new User($u['id'], $u['username'], $u['email'], $u['password_hash'], $u['profile_id']);
     }
 
@@ -68,7 +69,7 @@ class User
      * @return User user object
      * @throws UserException if user creation fails
      */
-    public static function create($username, $email, $password, $profile)
+    public static function create($username, $email, $password, Profile $profile)
     {
         global $db;
         $hashed_password = self::hash_password($password);
@@ -112,6 +113,49 @@ class User
         $stmt->execute();
 
         return self::makeFromPDO(require_fetch_one($stmt, "User", "id", $user_id));
+    }
+
+    /**
+     * Look for a user in the database, matching either name or email.
+     * @param string $username_or_email lookup string
+     * @return User found user
+     * @throws Exception unkown error
+     * @throws UserException if the user cannot be found
+     */
+    public static function getByNameOrEmail($username_or_email)
+    {
+        try {
+            global $db;
+
+            $stmt = $db->prepare("SELECT id, username, email, password_hash, profile_id FROM users WHERE username = :lookup OR email = :lookup");
+            $stmt->bindValue(":lookup", $username_or_email, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return self::makeFromPDO(require_fetch_one($stmt, "User", "name or email", $username_or_email));
+        } catch (Exception $e) {
+            if ($e instanceof APIException || $e instanceof PDOException) {
+                throw new UserException(ERROR_USER_NOT_FOUND, $e, _t(null, STRING_USER_NOT_FOUND, $username_or_email));
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Authenticate the user against the given password
+     * @param string $password plain text password
+     * @return Session the newly opened session
+     * @throws UserException if authentication fails (e.g. the password is wrong)
+     */
+    public function authenticate($password)
+    {
+        if (password_verify($password, $this->password_hash)) {
+            $exp = new DateTime();
+            $exp->add(DateInterval::createFromDateString('2 weeks'));
+            $session = Session::create($this, $exp);
+            setcookie(CFG_COOKIE_AUTH, $session->getToken(), $exp->getTimestamp(), "/", "", true, true);
+            return $session;
+        }
+        throw new UserException(ERROR_WRONG_PASSWORD, null);
     }
 
     /**

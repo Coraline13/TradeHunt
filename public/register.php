@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title><?php echo _t('u', STRING_REGISTER) ?></title>
-    <link rel="stylesheet" type="text/css" href="static/css/regsiter.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/forms.css"/>
 
     <script type="text/javascript">
         window.onload = function () {

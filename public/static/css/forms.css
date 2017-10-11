@@ -38,3 +38,10 @@ div.error {
     background-color: #f2dede;
     padding: 10px;
 }
+
+div.success {
+    color: #3c763d;
+    border: 2px solid #d6e9c6;
+    background-color: #dff0d8;
+    padding: 10px;
+}

@@ -28,6 +28,9 @@ define("STRING_PERSONAL_INFO", 23);
 define("STRING_CHOOSE_OPTION", 24);
 define("STRING_REPEAT_PASSWORD", 25);
 define("STRING_PASSWORD_MISMATCH", 26);
+define("STRING_WRONG_PASSWORD", 27);
+define("STRING_USER_NOT_FOUND", 28);
+define("STRING_USERNAME_OR_EMAIL", 29);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -67,6 +70,9 @@ $string_code_to_name = array(
     STRING_CHOOSE_OPTION => "choose_option",
     STRING_REPEAT_PASSWORD => "repeat_password",
     STRING_PASSWORD_MISMATCH => "password_mismatch",
+    STRING_WRONG_PASSWORD => "wrong_password",
+    STRING_USER_NOT_FOUND => "user_not_found",
+    STRING_USERNAME_OR_EMAIL => "username_or_email",
 );
 
 $supported_locales = null;

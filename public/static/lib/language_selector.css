@@ -3,7 +3,6 @@
     position: relative;
     z-index: 99;
     font-family: verdana, arial, sans-serif;
-    text-transform: capitalize;
 }
 /* hack to correct IE5.5 faulty box model */
 

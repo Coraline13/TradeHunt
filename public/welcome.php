@@ -109,33 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="#page-top"><?php echo _t('t', STRING_APP_NAME) ?></a>
-            <!-- aici-->
-            <div id="lang_sel_click" onclick="wpml_language_selector_click.toggle();"
-                 class="lang_sel_click">
-                <ul>
-                    <li>
-                        <a href="javascript:;" class="lang_sel_sel icl-en">
-                            English                    </a>
-                        <ul>
-                            <li class="icl-lang" data-lang="de">
-                                <a rel="alternate" href="https://erasmusplusols.eu/de/login-box/">
-                                    <span class="icl_lang_sel_native">German</span>
-                                    <span class="icl_lang_sel_translated">(Deutsch)</span>                                        </a>
-                            </li>
-                            <li class="icl-lang" data-lang="es">
-                                <a rel="alternate" href="https://erasmusplusols.eu/es/login-box/">
-                                    <span class="icl_lang_sel_native">Spanish</span>
-                                    <span class="icl_lang_sel_translated">(español)</span>                                        </a>
-                            </li>
-                            <li class="icl-lang" data-lang="fr">
-                                <a rel="alternate" href="https://erasmusplusols.eu/fr/login-box/">
-                                    <span class="icl_lang_sel_native">French</span>
-                                    <span class="icl_lang_sel_translated">(français)</span>                                        </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+
+            <?php include dirname(__FILE__).'/../lib/select-lang.php' ?>
+
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

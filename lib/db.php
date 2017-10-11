@@ -77,8 +77,6 @@ if ($schema_version < SCHEMA_VERSION) {
     $msg = "database schema version $schema_version is greater than expected version " . SCHEMA_VERSION;
     log_error($msg);
     throw new UnexpectedValueException($msg);
-} else {
-    log_debug("database schema is up to date (version $schema_version)");
 }
 
 if ($db->inTransaction()) {

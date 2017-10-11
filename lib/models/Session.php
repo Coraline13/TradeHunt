@@ -74,6 +74,42 @@ class Session
     }
 
     /**
+     * Find a session token in the database and retrieve the session object.
+     * @param string $token session token
+     * @return Session|null Session object or null if no session is active
+     */
+    public static function getByToken($token) {
+        global $db;
+
+        if (empty($token)) {
+            return null;
+        }
+
+        $stmt = $db->prepare("SELECT id, user_id, token, expiration FROM sessions WHERE token = :token");
+        $stmt->bindValue(":token", $token, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $s = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (empty($s)) {
+            log_warning("Invalid session token ".$token);
+            return null;
+        }
+
+        // TODO: check expiration
+        return self::makeFromPDO($s);
+    }
+
+    /**
+     * @param array $s array result fetched with PDO::FETCH_ASSOC
+     * @return Session Session object
+     */
+    public static function makeFromPDO($s)
+    {
+        $expiration = DateTime::createFromFormat('Y-m-d H:i:s', $s['expiration']);
+        return new Session($s['id'], $s['user_id'], $s['token'], $expiration);
+    }
+
+    /**
      * @return User the user authenticated by this session
      */
     public function getUser()

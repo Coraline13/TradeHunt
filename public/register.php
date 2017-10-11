@@ -1,5 +1,7 @@
 <?php
-require_once dirname(__FILE__) . '/../lib/api.php';
+require_once dirname(__FILE__).'/../lib/api.php';
+
+check_method(["GET", "POST"]);
 
 $username = '';
 $email = '';
@@ -20,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $username = validate_array_value($_POST, 'username', [
             validator_string_length(get_string(STRING_USERNAME), CFG_USERNAME_MIN_LEN, CFG_USERNAME_MAX_LEN),
-            validator_regex(get_string(STRING_USERNAME), '/' . CFG_USERNAME_REGEX . '/')
+            validator_regex(get_string(STRING_USERNAME), '/'.CFG_USERNAME_REGEX.'/'),
         ]);
         $email = validate_array_value($_POST, 'email', [validator_email()]);
         $password = validate_array_value($_POST, 'password', [validator_string_length(get_string(STRING_PASSWORD), CFG_PASSWORD_MIN_LEN, CFG_PASSWORD_MAX_LEN)]);
@@ -31,7 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = User::create($username, $email, $password, $profile);
         $db->commit();
 
-        header('Location: /', true, 303);
+        $db->beginTransaction();
+        $session = $user->openSession();
+        $db->commit();
+
+        header('Location: /profile.php', true, 303);
         exit();
     } catch (APIException $e) {
         $form_error = $e;
@@ -71,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="error" <?php echo $form_error ? "" : "hidden" ?>>
         <?php
         if ($form_error) {
-            echo $form_error->getMessage() . '<br/>';
+            echo $form_error->getMessage().'<br/>';
             if ($form_error instanceof ValidationException) {
-                echo $form_error->getArgName() . ': ' . $form_error->getValidationError();
+                echo $form_error->getArgName().': '.$form_error->getValidationError();
             }
         }
         ?>
@@ -140,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php
                 foreach (Location::getAll() as $loc) {
                     $selected = $location != null && $loc->getId() == $location->getId();
-                    echo '<option value="' . $loc->getId() . '" ' . ($selected ? "selected" : "") . '>';
-                    echo $loc->getCountry() . ' - ' . $loc->getCity();
+                    echo '<option value="'.$loc->getId().'" '.($selected ? "selected" : "").'>';
+                    echo $loc->getCountry().' - '.$loc->getCity();
                     echo '</option>\n';
                 }
                 ?>
@@ -151,7 +157,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div>
         <input type="submit" value="<?php echo _t('u', STRING_REGISTER) ?>">
+        <span><a href="/login.php"><?php echo _t('u', STRING_REGISTER_TO_LOGIN) ?></a></span>
     </div>
 </form>
+
+<footer><?php include dirname(__FILE__).'/../lib/select-lang.php' ?></footer>
 </body>
 </html>

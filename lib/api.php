@@ -1,8 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/../init.php';
-require_once dirname(__FILE__) . '/db.php';
-require_once dirname(__FILE__) . '/strings.php';
-require_once dirname(__FILE__) . '/validators.php';
+require_once dirname(__FILE__).'/../init.php';
+require_once dirname(__FILE__).'/db.php';
+require_once dirname(__FILE__).'/strings.php';
+require_once dirname(__FILE__).'/validators.php';
 
 
 define("ERROR_USERNAME_EXISTS", 401);
@@ -52,7 +52,7 @@ class APIException extends Exception
 }
 
 /**
- * Exception for encapsulating application errors.
+ * Check that the request method is one of $request_method, or throw an exception
  * @param string[] $allowed_methods methods allowed for the request
  * @throws APIException if the request method is not in $allowed_methods
  */
@@ -62,7 +62,7 @@ function check_method($allowed_methods)
     $allowed_methods[] = "HEAD";
     if (!in_array($method, $allowed_methods)) {
         throw new APIException(ERROR_METHOD_NOT_ALLOWED, null,
-            "$method not allowed, expected one of " . json_encode($allowed_methods));
+            "$method not allowed, expected one of ".json_encode($allowed_methods));
     }
 }
 
@@ -226,12 +226,35 @@ function validate_array_value($arr, $key, $validators)
     return $obj;
 }
 
-require_once dirname(__FILE__) . '/models/Location.php';
-require_once dirname(__FILE__) . '/models/Profile.php';
-require_once dirname(__FILE__) . '/models/User.php';
-require_once dirname(__FILE__) . '/models/Session.php';
-require_once dirname(__FILE__) . '/models/Tag.php';
-require_once dirname(__FILE__) . '/models/Listing.php';
-require_once dirname(__FILE__) . '/models/Image.php';
-require_once dirname(__FILE__) . '/models/Bookmark.php';
-require_once dirname(__FILE__) . '/models/Trade.php';
+require_once dirname(__FILE__).'/models/Location.php';
+require_once dirname(__FILE__).'/models/Profile.php';
+require_once dirname(__FILE__).'/models/User.php';
+require_once dirname(__FILE__).'/models/Session.php';
+require_once dirname(__FILE__).'/models/Tag.php';
+require_once dirname(__FILE__).'/models/Listing.php';
+require_once dirname(__FILE__).'/models/Image.php';
+require_once dirname(__FILE__).'/models/Bookmark.php';
+require_once dirname(__FILE__).'/models/Trade.php';
+
+/** @var User|null $_USER */
+$_USER = null;
+
+try {
+    $token = isset($_COOKIE[CFG_COOKIE_AUTH]) ? $_COOKIE[CFG_COOKIE_AUTH] : null;
+    $session = Session::getByToken($token);
+    $_USER = $session != null ? $session->getUser() : null;
+} catch (APIException $e) {
+    log_warning("Session validation failed because of unexpected error");
+    log_exception($e, LOG_LEVEL_WARNING);
+    $_USER = null;
+}
+
+function force_authentication()
+{
+    global $_USER;
+    if (empty($_USER)) {
+        log_debug("Not authenticated, redirecting to login");
+        header('Location: /login.php', true, 302);
+        exit();
+    }
+}

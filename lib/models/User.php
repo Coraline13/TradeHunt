@@ -141,7 +141,7 @@ class User
     }
 
     /**
-     * Authenticate the user against the given password
+     * Authenticate the user against the given password.
      * @param string $password plain text password
      * @return Session the newly opened session
      * @throws UserException if authentication fails (e.g. the password is wrong)
@@ -149,13 +149,23 @@ class User
     public function authenticate($password)
     {
         if (password_verify($password, $this->password_hash)) {
-            $exp = new DateTime();
-            $exp->add(DateInterval::createFromDateString('2 weeks'));
-            $session = Session::create($this, $exp);
-            setcookie(CFG_COOKIE_AUTH, $session->getToken(), $exp->getTimestamp(), "/", "", true, true);
-            return $session;
+            return $this->openSession();
         }
         throw new UserException(ERROR_WRONG_PASSWORD, null);
+    }
+
+    /**
+     * Opens a session for the user without checking password.
+     *
+     * USE WITH CAUTION!
+     * @return Session the newly opened session
+     */
+    public function openSession() {
+        $exp = new DateTime();
+        $exp->add(DateInterval::createFromDateString('2 weeks'));
+        $session = Session::create($this, $exp);
+        setcookie(CFG_COOKIE_AUTH, $session->getToken(), $exp->getTimestamp(), "/", "", $GLOBALS['secure'], true);
+        return $session;
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 require_once dirname(__FILE__) . '/../lib/api.php';
 
+check_method(["GET", "POST"]);
+
 $login = '';
 $password = '';
 /** @var APIException $form_error */
@@ -17,6 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = User::getByNameOrEmail($login);
         $session = $user->authenticate($password);
         $db->commit();
+
+        log_info("Successful login for ".$user->getUsername());
+        header('Location: /profile.php', true, 303);
+        exit();
     } catch (APIException $e) {
         $form_error = $e;
         http_response_code($e->getRecommendedHttpStatus());
@@ -56,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <fieldset>
         <legend><?php echo _t('u', STRING_LOG_IN) ?></legend>
         <div>
-            <label for="login"><?php echo _t('u', STRING_USERNAME_OR_EMAIL) ?>:</label>
+            <label for="login"><?php echo _t('u', STRING_IDENTIFIER) ?>:</label>
             <input type="text" name="login" id="login" required
                    placeholder="<?php echo _t('l', STRING_USERNAME_OR_EMAIL) ?>"
                    value="<?php echo $login ?>">
@@ -73,7 +79,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div>
         <input type="submit" value="<?php echo _t('u', STRING_LOG_IN) ?>">
+        <span><a href="/register.php"><?php echo _t('u', STRING_LOGIN_TO_REGISTER) ?></a></span>
     </div>
 </form>
+
+<footer><?php include dirname(__FILE__).'/../lib/select-lang.php' ?></footer>
 </body>
 </html>

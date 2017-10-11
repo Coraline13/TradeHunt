@@ -22,6 +22,8 @@ div.success {
 
 #lang_sel_click {
     display: inline-block;
+    margin-top: 12px;
+    margin-right: 15px;
 }
 
 #lang_sel_click li img {
@@ -32,6 +34,12 @@ div.success {
 
 .icl_lang_sel_translated, .lang_sel_sel {
     font-family: Montserrat, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    vertical-align: middle;
+    text-transform: none !important;
+}
+
+.lang_text {
+    vertical-align: middle;
 }
 
 section#auth form label,

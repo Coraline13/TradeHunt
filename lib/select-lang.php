@@ -12,7 +12,7 @@
             ?>
             <a href="javascript:;" class="lang_sel_sel icl-<?php echo $_LOCALE ?>">
                 <?php echo "<img src=\"${GLOBALS['root']}static/img/flag-$_LOCALE.svg\" alt=\"\"/>&nbsp;"?>
-                <?php echo _t(null, $locales[$_LOCALE]) ?>
+                <span class="lang_text"><?php echo _t(null, $locales[$_LOCALE]) ?></span>
             </a>
             <ul>
                 <?php
@@ -22,7 +22,7 @@
                     }
                     echo "<li class=\"icl-lang\" data-lang=\"$code\">";
                     echo "<a href=\"${GLOBALS['root']}set_locale.php?locale=$code\">";
-                    echo "<img src=\"${GLOBALS['root']}static/img/flag-$code.svg\" alt=\"\"/>&nbsp;";
+                    echo "<img src=\"${GLOBALS['root']}static/img/flag-$code.svg\" alt=\"\"/>&nbsp;&nbsp;";
                     echo "<span class=\"icl_lang_sel_translated\">"._t(null, $string)."</span>";
                     echo "</a></li>";
                 }

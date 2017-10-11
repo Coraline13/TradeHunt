@@ -109,9 +109,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand page-scroll" href="#page-top"><?php echo _t('t', STRING_APP_NAME) ?></a>
-
-            <?php include dirname(__FILE__).'/../lib/select-lang.php' ?>
-
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -119,6 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <ul class="nav navbar-nav navbar-right">
                 <li class="hidden active">
                     <a href="#page-top"></a>
+                </li>
+                <li class="">
+                    <?php include dirname(__FILE__).'/../lib/select-lang.php' ?>
                 </li>
                 <li class="">
                     <a class="page-scroll" href="#services">Services</a>

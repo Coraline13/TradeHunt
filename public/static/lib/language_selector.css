@@ -22,13 +22,13 @@
     content: '' !important;
 }
 #lang_sel_click ul ul {
-    width: 149px;
+    width: 105px;
 }
 /* float the list to make it horizontal and a relative positon so that you can control the dropdown menu positon */
 
 #lang_sel_click li {
     float: left;
-    width: 149px;
+    width: 105px;
     position: relative;
 }
 /* style the links for the top level */
@@ -48,7 +48,7 @@
 
 * html #lang_sel_click a,
 * html #lang_sel_click a:visited {
-    width: 149px;
+    width: 105px;
     w\idth: 138px;
 }
 /* hide the sub levels and give them a positon absolute so that they take up no room */
@@ -59,7 +59,7 @@
     height: 0;
     top: 25px;
     left: 0;
-    width: 149px;
+    width: 105px;
     border-top: 1px solid #cdcdcd;
 }
 /* another hack for IE5.5 */
@@ -149,13 +149,13 @@
     content: '' !important;
 }
 #lang_sel ul ul {
-    width: 149px;
+    width: 105px;
 }
 /* float the list to make it horizontal and a relative positon so that you can control the dropdown menu positon */
 
 #lang_sel li {
     float: left;
-    width: 149px;
+    width: 105px;
     position: relative;
 }
 /* style the links for the top level */
@@ -175,7 +175,7 @@
 
 * html #lang_sel a,
 * html #lang_sel a:visited {
-    width: 149px;
+    width: 105px;
     w\idth: 138px;
 }
 /* hide the sub levels and give them a positon absolute so that they take up no room */
@@ -186,7 +186,7 @@
     height: 0;
     top: 25px;
     left: 0;
-    width: 149px;
+    width: 105px;
     border-top: 1px solid #cdcdcd;
 }
 /* another hack for IE5.5 */
@@ -301,7 +301,7 @@
     font-family: verdana, arial, sans-serif;
 }
 #lang_sel_list.lang_sel_list_vertical {
-    width: 149px;
+    width: 105px;
 }
 /* hack to correct IE5.5 faulty box model */
 
@@ -321,7 +321,7 @@
     content: '' !important;
 }
 #lang_sel_list ul.lang_sel_list_vertical {
-    width: 149px;
+    width: 105px;
 }
 /* float the list to make it horizontal and a relative positon so that you can control the dropdown menu positon */
 
@@ -330,7 +330,7 @@
     position: relative;
 }
 #lang_sel_list.lang_sel_list_vertical li {
-    width: 149px;
+    width: 105px;
 }
 /* style the links for the top level */
 
@@ -354,7 +354,7 @@
 
 * html #lang_sel_list a,
 * html #lang_sel_list a:visited {
-    width: 149px;
+    width: 105px;
     w\idth: 138px;
 }
 /* hide the sub levels and give them a positon absolute so that they take up no room */

@@ -17,7 +17,7 @@ global $_USER;
     <title><?php echo _t('u', STRING_USER_PROFILE, $_USER->getUsername()) ?></title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 
-    <link rel="stylesheet" type="text/css" href="static/css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css"/>
 </head>
 <body>
 

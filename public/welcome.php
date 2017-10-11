@@ -1,43 +1,99 @@
+<?php
+require_once dirname(__FILE__) . '/../lib/api.php';
+
+global $_USER;
+$GLOBALS['root'] = "";
+
+check_method(["GET", "POST"]);
+force_authentication(false);
+
+/** @var APIException $form_error_login */
+$form_error_login = null;
+/** @var APIException $form_error_register */
+$form_error_register = null;
+
+// register form
+$username = '';
+$email = '';
+$first_name = '';
+$last_name = '';
+$tel = '';
+/** @var Location $location */
+$location = null;
+
+// login form
+$login = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'];
+    if ($action == 'login') {
+        try {
+            $login = $_POST['login'];
+            $password = $_POST['password'];
+
+            $db->beginTransaction();
+            $user = User::getByNameOrEmail($login);
+            $session = $user->authenticate($password);
+            $db->commit();
+
+            log_info("Successful login for ".$user->getUsername());
+            header('Location: profile.php', true, 303);
+            exit();
+        } catch (APIException $e) {
+            $form_error_login = $e;
+            http_response_code($e->getRecommendedHttpStatus());
+        }
+    }
+    else if ($action == 'register') {
+        try {
+            $first_name = validate_array_value($_POST, 'first_name', [validator_string_length(get_string(STRING_FIRST_NAME), 1, CFG_NAME_MAX_LEN)]);
+            $last_name = validate_array_value($_POST, 'last_name', [validator_string_length(get_string(STRING_LAST_NAME), 1, CFG_NAME_MAX_LEN)]);
+            $tel = require_array_value($_POST, 'tel', false);
+            $tel = validate_value($tel, 'tel', [validator_phone_number()]);
+
+            $username = validate_array_value($_POST, 'username', [
+                validator_string_length(get_string(STRING_USERNAME), CFG_USERNAME_MIN_LEN, CFG_USERNAME_MAX_LEN),
+                validator_regex(get_string(STRING_USERNAME), '/'.CFG_USERNAME_REGEX.'/'),
+            ]);
+            $email = validate_array_value($_POST, 'email', [validator_email()]);
+            $password = validate_array_value($_POST, 'password', [validator_string_length(get_string(STRING_PASSWORD), CFG_PASSWORD_MIN_LEN, CFG_PASSWORD_MAX_LEN)]);
+
+            $db->beginTransaction();
+            $location = Location::getById(require_array_value($_POST, 'location_id', false));
+            $profile = Profile::create($location, $first_name, $last_name, $tel);
+            $user = User::create($username, $email, $password, $profile);
+            $db->commit();
+
+            $db->beginTransaction();
+            $session = $user->openSession();
+            $db->commit();
+
+            header("Location: profile.php", true, 303);
+            exit();
+        } catch (APIException $e) {
+            $form_error_register = $e;
+            http_response_code($e->getRecommendedHttpStatus());
+        }
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html >
 <head>
     <meta charset="UTF-8">
     <title>A Pen by  Celine</title>
-
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
     <link rel='stylesheet prefetch' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
     <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
     <link rel="stylesheet" href="static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="static/css/celine.css">
     <link rel="stylesheet" href="static/css/style.css">
-
-
 </head>
 
 <body id="page-top" class="index" data-pinterest-extension-installed="cr1.3.4">
-
-<!-- Buttons -->
-<div id="container-floating">
-    <div class="nd5 nds" data-toggle="tooltip" data-placement="left" data-original-title="Simone"></div>
-    <div class="nd4 nds" data-toggle="tooltip" data-placement="left" data-original-title="contract@gmail.com"><img class="reminder">
-        <p class="letter">C</p>
-    </div>
-    <div class="nd3 nds" data-toggle="tooltip" data-placement="left" data-original-title="Reminder"><img class="reminder" src="//ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/ic_reminders_speeddial_white_24dp.png" /></div>
-    <div class="nd1 nds" data-toggle="tooltip" data-placement="left" data-original-title="Edoardo@live.it"><img class="reminder">
-        <p class="letter">E</p>
-    </div>
-    <div id="floating-button" data-toggle="tooltip" data-placement="left" data-original-title="Create" onclick="newmail()">
-        <p class="plus">+</p>
-        <img class="edit" src="https://ssl.gstatic.com/bt/C3341AA7A1A076756462EE2E5CD71C11/1x/bt_compose2_1x.png">
-    </div>
-</div>
-
-<!--
-<ul class="list-inline social-buttons">
-    <li class="btn-scroll">
-        <a href="#"><i class="fa fa-angle-up" style="font-size: 35px;" aria-hidden="true"></i></a>
-    </li>
-</ul>
--->
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
@@ -72,7 +128,7 @@
                     <a class="page-scroll" href="#team">Team</a>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="#contact">Contact</a>
+                    <a class="page-scroll" href="#auth"><?php echo _t('u', STRING_LOG_IN) ?></a>
                 </li>
             </ul>
         </div>
@@ -87,7 +143,7 @@
         <div class="intro-text">
             <div class="intro-lead-in">Hello Errbody</div>
             <div class="intro-heading">Yes Mel, Ajmal, Chien, Junne maybe and Syok.</div>
-            <a href="#services" class="page-scroll btn btn-xl">Aku Bukan Sempit</a>
+            <a href="#auth" class="page-scroll btn btn-xl"><?php echo _t('u', STRING_REGISTER) ?></a>
         </div>
     </div>
 </header>
@@ -359,7 +415,7 @@
 </section>
 
 <!-- Clients Aside -->
-<section id="contact">
+<section id="auth">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -369,33 +425,124 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <form name="sentMessage" id="contactForm" novalidate="">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Your Name *" id="name" required="" data-validation-required-message="Please enter your name.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control" placeholder="Your Email *" id="email" required="" data-validation-required-message="Please enter your email address.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                            <div class="form-group">
-                                <input type="tel" class="form-control" placeholder="Your Phone *" id="phone" required="" data-validation-required-message="Please enter your phone number.">
-                                <p class="help-block text-danger"></p>
-                            </div>
+                <form id="register-form" class="col-md-6" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                    <div class="error" <?php echo $form_error_register ? "" : "hidden" ?>>
+                        <?php
+                        if ($form_error_register) {
+                            echo $form_error_register->getMessage().'<br/>';
+                            if ($form_error_register instanceof ValidationException) {
+                                echo $form_error_register->getArgName().': '.$form_error_register->getValidationError();
+                            }
+                        }
+                        ?>
+                    </div>
+                    <fieldset>
+                        <legend><?php echo _t('u', STRING_LOGIN_INFO) ?></legend>
+                        <div class="form-group">
+                            <label for="username"><?php echo _t('u', STRING_USERNAME) ?>:</label>
+                            <input type="text" class="form-control" name="username" id="username" required
+                                   placeholder="<?php echo _t('l', STRING_USERNAME) ?>"
+                                   pattern="<?php echo CFG_USERNAME_REGEX ?>"
+                                   minlength="<?php echo CFG_USERNAME_MIN_LEN ?>" maxlength="<?php echo CFG_USERNAME_MAX_LEN ?>"
+                                   value="<?php echo $username ?>">
+
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <textarea class="form-control" placeholder="Your Message *" id="message" required="" data-validation-required-message="Please enter a message."></textarea>
-                                <p class="help-block text-danger"></p>
-                            </div>
+                        <div class="form-group">
+                            <label for="email"><?php echo _t('u', STRING_EMAIL_ADDRESS) ?>:</label>
+                            <input type="email" class="form-control" name="email" id="email" required
+                                   placeholder="<?php echo _t('l', STRING_EMAIL_ADDRESS) ?>"
+                                   value="<?php echo $email ?>">
                         </div>
-                        <div class="clearfix"></div>
-                        <div class="col-lg-12 text-center">
-                            <div id="success"></div>
-                            <button type="submit" class="btn btn-xl">Send Message</button>
+                        <div class="form-group">
+                            <label for="password_register"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
+                            <input type="password" class="form-control" name="password" id="password_register" required
+                                   placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
+                                   minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>" maxlength="<?php echo CFG_PASSWORD_MAX_LEN ?>">
+
                         </div>
+                        <div class="form-group">
+                            <label for="repeat_password"><?php echo _t('u', STRING_REPEAT_PASSWORD) ?>:</label>
+                            <input type="password" class="form-control" name="repeat_password" id="repeat_password" required
+                                   placeholder="<?php echo _t('l', STRING_REPEAT_PASSWORD) ?>">
+
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend><?php echo _t('u', STRING_PERSONAL_INFO) ?></legend>
+                        <div class="form-group">
+                            <label for="first_name"><?php echo _t('u', STRING_FIRST_NAME) ?>:</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name" required
+                                   placeholder="<?php echo _t('l', STRING_FIRST_NAME) ?>"
+                                   maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
+                                   value="<?php echo $first_name ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="last_name"><?php echo _t('u', STRING_LAST_NAME) ?>: </label>
+                            <input type="text" class="form-control" name="last_name" id="last_name" required
+                                   placeholder="<?php echo _t('l', STRING_LAST_NAME) ?>"
+                                   maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
+                                   value="<?php echo $last_name ?>">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="tel"><?php echo _t('u', STRING_PHONE_NUMBER) ?>:</label>
+                            <input type="tel" class="form-control" name="tel" id="tel" required
+                                   placeholder="<?php echo _t('l', STRING_PHONE_NUMBER) ?>"
+                                   value="<?php echo $tel ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="location"><?php echo _t('u', STRING_LOCATION) ?>:</label>
+                            <select  class="form-control" name="location_id" id="location" required>
+                                <option value=""></option>
+                                <?php
+                                foreach (Location::getAll() as $loc) {
+                                    $selected = $location != null && $loc->getId() == $location->getId();
+                                    echo '<option value="'.$loc->getId().'" '.($selected ? "selected" : "").'>';
+                                    echo $loc->getCountry().' - '.$loc->getCity();
+                                    echo '</option>\n';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <button type="submit" name="action" value="register"><?php echo _t('u', STRING_REGISTER) ?></button>
+                    </div>
+                </form>
+                <form id="login-form" class="col-md-6" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                    <div class="error" <?php echo $form_error_login ? "" : "hidden" ?>>
+                        <?php
+                        if ($form_error_login) {
+                            echo $form_error_login->getMessage() . '<br/>';
+                            if ($form_error_login instanceof ValidationException) {
+                                echo $form_error_login->getArgName() . ': ' . $form_error_login->getValidationError();
+                            }
+                        }
+                        ?>
+                    </div>
+
+                    <fieldset>
+                        <legend><?php echo _t('u', STRING_LOG_IN) ?></legend>
+                        <div class="form-group">
+                            <label for="login"><?php echo _t('u', STRING_IDENTIFIER) ?>:</label>
+                            <input type="text" class="form-control" name="login" id="login" required
+                                   placeholder="<?php echo _t('l', STRING_USERNAME_OR_EMAIL) ?>"
+                                   value="<?php echo $login ?>">
+
+                        </div>
+                        <div class="form-group">
+                            <label for="password_login"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
+                            <input type="password" class="form-control" name="password" id="password_login" required
+                                   placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
+                                   minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>" maxlength="<?php echo CFG_PASSWORD_MAX_LEN ?>">
+
+                        </div>
+                    </fieldset>
+
+                    <div>
+                        <button type="submit" name="action" value="login"><?php echo _t('u', STRING_LOG_IN) ?></button>
                     </div>
                 </form>
             </div>

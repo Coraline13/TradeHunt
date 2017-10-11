@@ -14,4 +14,4 @@ if ($session != null) {
 }
 
 setcookie(CFG_COOKIE_AUTH, null, -1, "/", "", $GLOBALS['secure'], true);
-header('Location: login.php', true, 302);
+header('Location: welcome.php', true, 302);

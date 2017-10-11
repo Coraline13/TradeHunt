@@ -252,7 +252,7 @@ try {
 /**
  * Check the current authentication state, and redirect the user if necessary.
  *
- * If $desired_state is true, a non-authenticated user will be redirected to the login page.
+ * If $desired_state is true, a non-authenticated user will be redirected to the welcome page.
  *
  * If $desired_state is false, an authenticated user will be redirected to his profile page.
  * @param bool $desired_state desired authentication state
@@ -261,8 +261,8 @@ function force_authentication($desired_state = true)
 {
     global $_USER;
     if (empty($_USER) && $desired_state) {
-        log_debug("Not authenticated, redirecting to login");
-        header("Location: ${GLOBALS['root']}login.php", true, 302);
+        log_debug("Not authenticated, redirecting to welcome");
+        header("Location: ${GLOBALS['root']}welcome.php", true, 302);
         exit();
     }
     else if (!empty($_USER) && !$desired_state) {

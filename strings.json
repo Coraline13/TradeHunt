@@ -65,6 +65,11 @@
       "fr": "s'identifier",
       "ro": "login"
     },
+    "login_info": {
+      "en": "login information",
+      "fr": "données de connexion",
+      "ro": "date de acces"
+    },
     "login_to_register": {
       "en": "No account? {{ register|u }} here!",
       "fr": "Pas de compte? {{ register|u }} ici!",

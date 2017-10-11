@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title><?php echo _t('u', STRING_REGISTER) ?></title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
 
-    <link rel="stylesheet" type="text/css" href="static/css/forms.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/style.css"/>
 
     <script type="text/javascript">
         window.onload = function () {

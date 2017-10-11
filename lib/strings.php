@@ -40,6 +40,7 @@ define("STRING_LANG_FR", 35);
 define("STRING_LANG_RO", 36);
 define("STRING_LANG_EN", 37);
 define("STRING_LOGOUT", 38);
+define("STRING_LOGIN_INFO", 39);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -91,6 +92,7 @@ $string_code_to_name = array(
     STRING_LANG_RO => "lang_ro",
     STRING_LANG_EN => "lang_en",
     STRING_LOGOUT => "logout",
+    STRING_LOGIN_INFO => "login_info",
 );
 
 $_SUPPORTED_LOCALES = null;

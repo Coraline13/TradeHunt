@@ -21,10 +21,12 @@ global $_USER;
 
 <h1>Hello, <?php echo $_USER->getProfile()->getFirstName().' '.$_USER->getProfile()->getLastName() ?></h1>
 
+<?php echo print_r($_USER->getTrades()) ?>
+
 <form action="logout.php" method="post">
     <button type="submit"><?php echo _t('u', STRING_LOGOUT) ?></button>
 </form>
 
-<footer><?php include dirname(__FILE__).'/../lib/select-lang.php' ?></footer>
+<footer><?php include dirname(__FILE__).'/../template/select-lang.php' ?></footer>
 </body>
 </html>

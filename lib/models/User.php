@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__FILE__) . '/../password.php';
+require_once dirname(__FILE__).'/../password.php';
 
 /**
  * A user represents login information and identity for a person's account. Users can interact with listings,
@@ -160,7 +160,8 @@ class User
      * USE WITH CAUTION!
      * @return Session the newly opened session
      */
-    public function openSession() {
+    public function openSession()
+    {
         $exp = new DateTime();
         $exp->add(DateInterval::createFromDateString('2 weeks'));
         $session = Session::create($this, $exp);
@@ -221,12 +222,58 @@ class User
         $stmt->bindValue(":user_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = [];
-        $bookmarks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($bookmarks as $bookmark) {
-            $result[] = Bookmark::makeFromPDO($bookmark);
+        return fetch_all_and_make($stmt, 'Bookmark');
+    }
+
+    /**
+     * Get the listings posted by this user.
+     * @param int[] $types filter by listing type
+     * @param int $status filter by listing status
+     * @return Listing[] requested listings
+     */
+    public function getListings($types = [Listing::TYPE_OFFER, Listing::TYPE_WISH], $status = Listing::STATUS_AVAILABLE)
+    {
+        global $db;
+        if (empty($types)) {
+            throw new InvalidArgumentException("no listings types specified");
+        }
+        foreach ($types as $type) {
+            Listing::checkEnums($type, null);
+        }
+        Listing::checkEnums(null, $status);
+
+        $stmt = $db->prepare("SELECT id, type, user_id, title, slug, description, status, added, location_id
+                             FROM listings WHERE type IN (".implode(', ', $types).") AND status = $status 
+                             AND user_id = :user_id");
+        $stmt->bindValue("user_id", $this->id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return fetch_all_and_make($stmt, 'Listing');
+    }
+
+    /**
+     * Get trades associated with this user
+     * @param bool $sent include trades sent by the user
+     * @param bool $received include trades sent by other users to this user
+     * @param bool $active_only include only active trades (not cancelled or accepted)
+     * @return Trade[] requested Trades
+     */
+    public function getTrades($sent = true, $received = true, $active_only = true)
+    {
+        global $db;
+        if (!$sent && !$received) {
+            throw new InvalidArgumentException("cannot exclude both sent and received trades");
         }
 
-        return $result;
+        $where_active = $active_only ? " AND trades.status = 1" : "";
+
+        $stmt = $db->prepare("SELECT id, recipient_id, sender_id, message, status FROM trades 
+                                        WHERE (trades.recipient_id = :received_id OR trades.sender_id = :sent_id) $where_active
+                                        ORDER BY id DESC");
+        $stmt->bindValue(":received_id", $received ? $this->id : 0, PDO::PARAM_INT);
+        $stmt->bindValue(":sent_id", $sent ? $this->id : 0, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return fetch_all_and_make($stmt, 'Trade');
     }
 }

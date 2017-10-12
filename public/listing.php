@@ -237,6 +237,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </form>
 
-<footer><?php include dirname(__FILE__).'/../lib/select-lang.php' ?></footer>
+<footer><?php include dirname(__FILE__).'/../template/select-lang.php' ?></footer>
 </body>
 </html>

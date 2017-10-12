@@ -5,6 +5,11 @@
       "fr": "ajouter",
       "ro": "adaugă"
     },
+    "action_send": {
+      "en": "Send",
+      "fr": "Envoyer",
+      "ro": "Trimite"
+    },
     "add_listing": {
       "en": "List an item",
       "fr": "Ajouter un article",
@@ -140,6 +145,11 @@
       "fr": "se déconnecter",
       "ro": "deconectare"
     },
+    "make_trade": {
+      "en": "Trade with %1$s",
+      "fr": "Échange avec %1$s",
+      "ro": "Negoț cu %1$s"
+    },
     "no_string": {
       "en": "<no string>",
       "fr": "<no string>",
@@ -270,6 +280,16 @@
       "fr": "titre",
       "ro": "denumire"
     },
+    "trade_message": {
+      "en": "Message",
+      "fr": "Message",
+      "ro": "mesaj"
+    },
+    "trade_message_placeholder": {
+      "en": "leave a short message for %1$s",
+      "fr": "laisser un court message pour %1$s",
+      "ro": "scrie un mesaj pentru %1$s"
+    },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",
       "fr": "L'utilisateur '%1$s' n'existe pas.",
@@ -329,6 +349,16 @@
       "en": "There was an error while validating your request. Please check all the data you entered is correct.",
       "fr": "Une erreur s'est produite lors de la validation de votre requête. Veuillez vérifier que toutes les données que vous avez entrées sont correctes.",
       "ro": "Cererea dumneavoastră nu a putut fi validată. Vă rugăm verificați datele introduse."
+    },
+    "what_offer": {
+      "en": "What do you want to offer?",
+      "fr": "Que voulez-vous offrir?",
+      "ro": "Ce dorești să oferi?"
+    },
+    "what_want": {
+      "en": "What do you want in exchange?",
+      "fr": "Qu'est-ce que vous voulez en retour?",
+      "ro": "Ce vrei la schimb?"
     },
     "wrong_password": {
       "en": "The password is incorrect.",

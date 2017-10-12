@@ -96,11 +96,12 @@ class Listing
         self::checkEnums($type, $status);
     }
 
-    private static function checkEnums($type, $status) {
-        if ($type != self::TYPE_OFFER && $type != self::TYPE_WISH) {
+    public static function checkEnums($type, $status)
+    {
+        if ($type != null && $type != self::TYPE_OFFER && $type != self::TYPE_WISH) {
             throw new InvalidArgumentException("invalid listing type");
         }
-        if ($status != self::STATUS_AVAILABLE && $status != self::STATUS_GONE) {
+        if ($status != null && $status != self::STATUS_AVAILABLE && $status != self::STATUS_GONE) {
             throw new InvalidArgumentException("invalid listing type");
         }
     }
@@ -126,7 +127,8 @@ class Listing
      * @param Location $location Location where the listing is available
      * @return Listing new Listing object
      */
-    public static function create($type, User $user, $title, $slug, $description, Location $location) {
+    public static function create($type, User $user, $title, $slug, $description, Location $location)
+    {
         global $db;
 
         $added = new DateTime();
@@ -225,7 +227,8 @@ class Listing
     /**
      * @return string the path of the first image on this listing, or a placeholder if none exists
      */
-    public function getMainImagePath() {
+    public function getMainImageURL()
+    {
         $images = $this->getImages();
 
         if (empty($images)) {

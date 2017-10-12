@@ -68,6 +68,12 @@ define("STRING_LISTINGS", 63);
 define("STRING_RECENT_POSTS_DESCR", 64);
 define("STRING_REGISTER_PAGE", 65);
 define("STRING_LOGIN_PAGE", 66);
+define("STRING_TRADE_MESSAGE", 67);
+define("STRING_MAKE_TRADE", 68);
+define("STRING_TRADE_MESSAGE_PLACEHOLDER", 69);
+define("STRING_ACTION_SEND", 70);
+define("STRING_WHAT_OFFER", 71);
+define("STRING_WHAT_WANT", 72);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -147,6 +153,12 @@ $string_code_to_name = array(
     STRING_RECENT_POSTS_DESCR => "recent_posts_descr",
     STRING_REGISTER_PAGE => "register_page",
     STRING_LOGIN_PAGE => "login_page",
+    STRING_TRADE_MESSAGE => "trade_message",
+    STRING_MAKE_TRADE => "make_trade",
+    STRING_TRADE_MESSAGE_PLACEHOLDER => "trade_message_placeholder",
+    STRING_ACTION_SEND => "action_send",
+    STRING_WHAT_OFFER => "what_offer",
+    STRING_WHAT_WANT => "what_want",
 );
 
 $_SUPPORTED_LOCALES = null;

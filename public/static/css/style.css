@@ -76,3 +76,8 @@ section#auth form label,
 section#auth form legend {
     color: #777;
 }
+
+.trade-listings li img {
+    width: 200px;
+    height: auto;
+}

@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="#page-top"></a>
                 </li>
                 <li class="">
-                    <?php include dirname(__FILE__).'/../lib/select-lang.php' ?>
+                    <?php include dirname(__FILE__).'/../template/select-lang.php' ?>
                 </li>
                 <li class="">
                     <a class="page-scroll" href="#services"><?php echo _t('u', STRING_SERVICES) ?></a>
@@ -216,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lcnt = 1;
             $listings = Listing::getPaged('new', 0, 6);
             foreach ($listings as $listing) {
-                $image = $listing->getMainImagePath();
+                $image = $listing->getMainImageURL();
                 $slug = $listing->getSlug();
                 $title = $listing->getTitle();
                 $tags = implode(", ", array_map(function (Tag $tag) {
@@ -471,7 +471,7 @@ foreach ($listings as $listing): ?>
                             <!-- Project Details Go Here -->
                             <h2><?php echo $listing->getTitle() ?></h2>
                             <p class="item-intro text-muted"><?php echo $name.' | '.$added ?></p>
-                            <img class="img-responsive" src="<?php echo $listing->getMainImagePath() ?>"
+                            <img class="img-responsive" src="<?php echo $listing->getMainImageURL() ?>"
                                  alt="<?php echo $listing->getSlug() ?>">
                             <p><?php echo $listing->getDescription() ?></p>
                             <button type="button" class="btn btn-primary" data-dismiss="modal"><i

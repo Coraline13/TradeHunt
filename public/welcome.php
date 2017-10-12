@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top"><?php echo _t('t', STRING_APP_NAME) ?></a>
+            <a class="navbar-brand page-scroll" href="#page-top"><img class="logo" src="static/img/logo.svg"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

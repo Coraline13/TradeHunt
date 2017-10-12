@@ -50,6 +50,13 @@ div.success {
     bottom: 3px;
 }
 
+.logo {
+    height: 30px;
+    top: 50%;
+    position: relative;
+    transform: translateY(-50%);
+}
+
 section#auth form label,
 section#auth form legend {
     color: #cccccc;

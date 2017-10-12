@@ -42,6 +42,14 @@ div.success {
     vertical-align: middle;
 }
 
+.service-img {
+    vertical-align: middle;
+    width: 70px;
+    height: 70px;
+    position: relative;
+    bottom: 3px;
+}
+
 section#auth form label,
 section#auth form legend {
     color: #cccccc;

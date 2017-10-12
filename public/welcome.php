@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php include dirname(__FILE__).'/../lib/select-lang.php' ?>
                 </li>
                 <li class="">
-                    <a class="page-scroll" href="#services">Services</a>
+                    <a class="page-scroll" href="#services"><?php echo _t('u', STRING_SERVICES) ?></a>
                 </li>
                 <li class="">
                     <a class="page-scroll" href="#portfolio">Portfolio</a>
@@ -158,34 +158,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Services</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+                <h2 class="section-heading"><?php echo _t('u', STRING_SERVICES) ?></h2>
+                <h3 class="section-subheading text-muted"><?php echo _t('u', STRING_SERVICES_DESCR) ?></h3>
             </div>
         </div>
         <div class="row text-center">
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="glyphicon glyphicon-tree-conifer"></i>
+                        <img class="service-img search" src="static/img/search.svg">
                     </span>
-                <h4 class="service-heading">Here is a pokok</h4>
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                <h4 class="service-heading"><?php echo _t('u', STRING_SERVICES_FIND) ?></h4>
+                <p class="text-muted"><?php echo _t('u', STRING_SERVICES_FIND_DESCR) ?></p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="glyphicon glyphicon-heart"></i>
+                        <img class="service-img" src="static/img/box.svg">
                     </span>
-                <h4 class="service-heading">Here's a heart</h4>
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                <h4 class="service-heading"><?php echo _t('u', STRING_SERVICES_GET_RID) ?></h4>
+                <p class="text-muted"><?php echo _t('u', STRING_SERVICES_GET_RID_DESCR) ?></p>
             </div>
             <div class="col-md-4">
                     <span class="fa-stack fa-4x">
                         <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="glyphicon glyphicon-tint"></i>
+                        <img class="service-img" src="static/img/telescope.svg">
                     </span>
-                <h4 class="service-heading">Waterfall maybe?</h4>
-                <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima maxime quam architecto quo inventore harum ex magni, dicta impedit.</p>
+                <h4 class="service-heading"><?php echo _t('u', STRING_SERVICES_DISCOVER) ?></h4>
+                <p class="text-muted"><?php echo _t('u', STRING_SERVICES_DISCOVER_DESCR) ?></p>
             </div>
         </div>
     </div>

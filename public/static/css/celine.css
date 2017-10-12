@@ -9,6 +9,7 @@ body {
 
 .text-primary {
     color: #0bb599;
+    z-index: -1;
 }
 
 p {

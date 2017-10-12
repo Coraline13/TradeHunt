@@ -44,6 +44,14 @@ define("STRING_LOGIN_INFO", 39);
 define("STRING_APP_NAME", 40);
 define("STRING_INTRO_LEAD_IN", 41);
 define("STRING_INTRO_TEXT", 42);
+define("STRING_SERVICES", 43);
+define("STRING_SERVICES_DESCR", 44);
+define("STRING_SERVICES_FIND", 45);
+define("STRING_SERVICES_GET_RID", 46);
+define("STRING_SERVICES_DISCOVER", 47);
+define("STRING_SERVICES_FIND_DESCR", 48);
+define("STRING_SERVICES_GET_RID_DESCR", 49);
+define("STRING_SERVICES_DISCOVER_DESCR", 50);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -99,6 +107,14 @@ $string_code_to_name = array(
     STRING_APP_NAME => "app_name",
     STRING_INTRO_LEAD_IN => "intro_lead_in",
     STRING_INTRO_TEXT => "intro_text",
+    STRING_SERVICES => "services",
+    STRING_SERVICES_DESCR => "services_descr",
+    STRING_SERVICES_FIND => "services_find",
+    STRING_SERVICES_GET_RID => "services_get_rid",
+    STRING_SERVICES_DISCOVER => "services_discover",
+    STRING_SERVICES_FIND_DESCR => "services_find_descr",
+    STRING_SERVICES_GET_RID_DESCR => "services_get_rid_descr",
+    STRING_SERVICES_DISCOVER_DESCR => "services_discover_descr",
 );
 
 $_SUPPORTED_LOCALES = null;

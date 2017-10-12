@@ -40,6 +40,16 @@
       "fr": "Identifiant",
       "ro": "Login"
     },
+    "intro_lead_in": {
+      "en": "Hello, stranger!",
+      "fr": "Bonjour, l'étranger!",
+      "ro": "Neața, străine!"
+    },
+    "intro_text": {
+      "en": "This is the place to hunt for trades!",
+      "fr": "Ceci est le place pour chasser les trocs!",
+      "ro": "Hai la vânătoare de trocuri!"
+    },
     "lang_en": {
       "en": "English",
       "fr": "English",
@@ -140,6 +150,46 @@
       "fr": "Choisissez votre langue",
       "ro": "Alege limba"
     },
+    "services": {
+      "en": "services",
+      "fr": "services",
+      "ro": "servicii"
+    },
+    "services_descr": {
+      "en": "Here's what we can do for you",
+      "fr": "Voici ce que nous pouvons faire pour toi",
+      "ro": "Iată cu ce te putem ajuta"
+    },
+    "services_discover": {
+      "en": "Discover",
+      "fr": "Découvres",
+      "ro": "Descoperă"
+    },
+    "services_discover_descr": {
+      "en": "Discover new objects to collect and have fun completing your collection!",
+      "fr": "Découvres de nouveaux objets à collectionner et amuses-toi en complétant ta collection!",
+      "ro": "Descoperă noi obiecte de colecționat și distrează-te completându-ți colecția!"
+    },
+    "services_find": {
+      "en": "Find",
+      "fr": "Trouve",
+      "ro": "Găsește"
+    },
+    "services_find_descr": {
+      "en": "Missing a card in your card collection? Find it on this website!",
+      "fr": "Tu manques une carte dans ta collection de cartes? Trouves-le sur ce site!",
+      "ro": "Îți lipsește o carte din colecția ta de cărți? Găsește-o pe site-ul ăsta!"
+    },
+    "services_get_rid": {
+      "en": "Get rid",
+      "fr": "Jettes",
+      "ro": "Azvârle"
+    },
+    "services_get_rid_descr": {
+      "en": "You do not need a card anymore? Give it to someone who needs it to complete his/her collection!",
+      "fr": "Tu n'as plus besoin d'une carte? Donnes-le à quelqu'un qui en a besoin pour compléter sa collection!",
+      "ro": "Nu mai ai nevoie de o carte? Dă-i-o cuiva care are nevoie de ea!"
+    },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",
       "fr": "L'utilisateur '%1$s' n'existe pas.",
@@ -204,16 +254,6 @@
       "en": "The password is incorrect.",
       "fr": "Le mot de passe est incorrect.",
       "ro": "Parola este incorectă."
-    },
-    "intro_lead_in": {
-      "en": "Hello, stranger!",
-      "fr": "Bonjour, l'étranger!",
-      "ro": "Neața, străine!"
-    },
-    "intro_text": {
-      "en": "This is the place to hunt for trades!",
-      "fr": "Ceci est le place pour chasser les trocs!",
-      "ro": "Hai la vânătoare de trocuri!"
     }
   },
   "supported_locales": [

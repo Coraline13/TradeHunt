@@ -2,14 +2,12 @@
 require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_LOCALE, $_SUPPORTED_LOCALES;
-$GLOBALS['root'] = "";
-
-check_method(["GET"]);
+$GLOBALS['included_from'] = "index";
 
 if (empty($_USER)) {
-    header('Location: welcome.php', true, 302);
+    require dirname(__FILE__).'/welcome.php';
 }
 else {
-    header('Location: profile.php', true, 302);
+    require dirname(__FILE__).'/profile.php';
 }
 

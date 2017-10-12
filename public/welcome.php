@@ -2,10 +2,11 @@
 require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_USER;
-$GLOBALS['root'] = "";
-
 check_method(["GET", "POST"]);
 force_authentication(false);
+if (!isset($GLOBALS['included_from']) || $GLOBALS['included_from'] !== 'index') {
+    http_redirect("", 301);
+}
 
 /** @var APIException $form_error_login */
 $form_error_login = null;
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $db->commit();
 
             log_info("Successful login for ".$user->getUsername());
-            header('Location: profile.php', true, 303);
+            http_redirect("", 303);
             exit();
         } catch (APIException $e) {
             $form_error_login = $e;
@@ -67,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session = $user->openSession();
             $db->commit();
 
-            header("Location: profile.php", true, 303);
+            http_redirect("", 303);
             exit();
         } catch (APIException $e) {
             $form_error_register = $e;

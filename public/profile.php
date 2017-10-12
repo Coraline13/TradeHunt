@@ -1,8 +1,6 @@
 <?php
 require_once dirname(__FILE__).'/../lib/api.php';
 
-$GLOBALS['root'] = "";
-
 check_method(["GET"]);
 force_authentication(true);
 

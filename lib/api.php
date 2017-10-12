@@ -261,13 +261,32 @@ function force_authentication($desired_state = true)
 {
     global $_USER;
     if (empty($_USER) && $desired_state) {
-        log_debug("Not authenticated, redirecting to welcome");
-        header("Location: ${GLOBALS['root']}welcome.php", true, 302);
+        log_debug("Not authenticated, redirecting to auth section");
+        http_redirect("#auth");
         exit();
     }
     else if (!empty($_USER) && !$desired_state) {
         log_debug("Already authenticated, redirecting to profile");
-        header("Location: ${GLOBALS['root']}profile.php", true, 302);
+        http_redirect("");
         exit();
     }
+}
+
+/**
+ * Send a HTTP redirect to the target page, relative to the site root.
+ * @param string $target root-relative URL, effective redirect will be sent to $GLOBALS['root'].$target
+ * @param int $status_code HTTP status code, usually one of 301, 302, 303, 307, 308
+ * @param bool $absolute true if $target should be treated as an absolute URI rather than root-relative
+ */
+function http_redirect($target, $status_code = 302, $absolute = false) {
+    if (empty($target) && $absolute) {
+        throw new InvalidArgumentException("absolute URI cannot be empty");
+    }
+    if (empty($target)) {
+        $target = $GLOBALS['root'];
+    }
+    else if(!$absolute) {
+        $target = $GLOBALS['root'].$target;
+    }
+    header("Location: $target", true, $status_code);
 }

@@ -2,7 +2,6 @@
 require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_LOCALE, $_SUPPORTED_LOCALES;
-$GLOBALS['root'] = "";
 
 check_method(["POST"]);
 
@@ -14,4 +13,4 @@ if ($session != null) {
 }
 
 setcookie(CFG_COOKIE_AUTH, null, -1, "/", "", $GLOBALS['secure'], true);
-header('Location: welcome.php', true, 302);
+http_redirect("#auth");

@@ -2,8 +2,6 @@
 require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_USER;
-$GLOBALS['root'] = "";
-
 check_method(["GET", "POST"]);
 force_authentication(true);
 
@@ -146,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $db->commit();
 
         log_info($_USER->getUsername()." added listing ".$listing->getId()." ".$listing->getTitle());
-        header('Location: profile.php', true, 303);
+        http_redirect("", 303);
         exit();
     } catch (APIException $e) {
         $form_error_listing = $e;

@@ -65,11 +65,14 @@ div.success {
     transform: translateY(-50%);
 }
 
-section#auth form label,
-section#auth form legend {
-    color: #cccccc;
+.auth-container {
+    background-color: #fff;
+    padding-top: 30px;
+    padding-right: 30px;
+    padding-left: 30px;
 }
 
-.navbar {
-    border-bottom: 1px solid #ccc;
+section#auth form label,
+section#auth form legend {
+    color: #777;
 }

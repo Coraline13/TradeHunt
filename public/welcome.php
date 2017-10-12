@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </section>
 
-<!-- About Section -->
+<!-- About Section
 <section id="about">
     <div class="container">
         <div class="row">
@@ -336,9 +336,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </section>
+-->
 
 <!-- Team Section -->
-<section id="team" class="bg-light-gray">
+<section id="team">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -382,144 +383,145 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </section>
 
 <!-- Clients Aside -->
-<section id="auth">
+<section id="auth" class="bg-light-gray">
     <div class="container">
         <div class="row">
-            <div class="col-lg-12 text-center">
-                <h2 class="section-heading">Contact Us</h2>
-                <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-lg-12">
-                <form id="register-form" class="col-md-6" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                    <div class="error" <?php echo $form_error_register ? "" : "hidden" ?>>
-                        <?php
-                        if ($form_error_register) {
-                            echo $form_error_register->getMessage().'<br/>';
-                            if ($form_error_register instanceof ValidationException) {
-                                echo $form_error_register->getArgName().': '.$form_error_register->getValidationError();
+                <div class="container col-md-5 auth-container">
+                    <h2 class="section-heading">Register</h2>
+                    <form id="register-form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                        <div class="error" <?php echo $form_error_register ? "" : "hidden" ?>>
+                            <?php
+                            if ($form_error_register) {
+                                echo $form_error_register->getMessage().'<br/>';
+                                if ($form_error_register instanceof ValidationException) {
+                                    echo $form_error_register->getArgName().': '.$form_error_register->getValidationError();
+                                }
                             }
-                        }
-                        ?>
-                    </div>
-                    <fieldset>
-                        <legend><?php echo _t('u', STRING_LOGIN_INFO) ?></legend>
-                        <div class="form-group">
-                            <label for="username"><?php echo _t('u', STRING_USERNAME) ?>:</label>
-                            <input type="text" class="form-control" name="username" id="username" required
-                                   placeholder="<?php echo _t('l', STRING_USERNAME) ?>"
-                                   pattern="<?php echo CFG_USERNAME_REGEX ?>"
-                                   minlength="<?php echo CFG_USERNAME_MIN_LEN ?>"
+                            ?>
+                        </div>
+                        <fieldset>
+                            <legend><?php echo _t('u', STRING_LOGIN_INFO) ?></legend>
+                            <div class="form-group">
+                                <label for="username"><?php echo _t('u', STRING_USERNAME) ?>:</label>
+                                <input type="text" class="form-control" name="username" id="username" required
+                                       placeholder="<?php echo _t('l', STRING_USERNAME) ?>"
+                                       pattern="<?php echo CFG_USERNAME_REGEX ?>"
+                                       minlength="<?php echo CFG_USERNAME_MIN_LEN ?>"
                                    maxlength="<?php echo CFG_USERNAME_MAX_LEN ?>"
-                                   value="<?php echo $username ?>">
+                                       value="<?php echo $username ?>">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="email"><?php echo _t('u', STRING_EMAIL_ADDRESS) ?>:</label>
-                            <input type="email" class="form-control" name="email" id="email" required
-                                   placeholder="<?php echo _t('l', STRING_EMAIL_ADDRESS) ?>"
-                                   value="<?php echo $email ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="password_register"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
-                            <input type="password" class="form-control" name="password" id="password_register" required
-                                   placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
-                                   minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>"
+                            </div>
+                            <div class="form-group">
+                                <label for="email"><?php echo _t('u', STRING_EMAIL_ADDRESS) ?>:</label>
+                                <input type="email" class="form-control" name="email" id="email" required
+                                       placeholder="<?php echo _t('l', STRING_EMAIL_ADDRESS) ?>"
+                                       value="<?php echo $email ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="password_register"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
+                                <input type="password" class="form-control" name="password" id="password_register" required
+                                       placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
+                                       minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>"
                                    maxlength="<?php echo CFG_PASSWORD_MAX_LEN ?>">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="repeat_password"><?php echo _t('u', STRING_REPEAT_PASSWORD) ?>:</label>
-                            <input type="password" class="form-control" name="repeat_password" id="repeat_password"
+                            </div>
+                            <div class="form-group">
+                                <label for="repeat_password"><?php echo _t('u', STRING_REPEAT_PASSWORD) ?>:</label>
+                                <input type="password" class="form-control" name="repeat_password" id="repeat_password"
                                    required
-                                   placeholder="<?php echo _t('l', STRING_REPEAT_PASSWORD) ?>">
+                                       placeholder="<?php echo _t('l', STRING_REPEAT_PASSWORD) ?>">
 
-                        </div>
-                    </fieldset>
+                            </div>
+                        </fieldset>
 
-                    <fieldset>
-                        <legend><?php echo _t('u', STRING_PERSONAL_INFO) ?></legend>
-                        <div class="form-group">
-                            <label for="first_name"><?php echo _t('u', STRING_FIRST_NAME) ?>:</label>
-                            <input type="text" class="form-control" name="first_name" id="first_name" required
-                                   placeholder="<?php echo _t('l', STRING_FIRST_NAME) ?>"
-                                   maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
-                                   value="<?php echo $first_name ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name"><?php echo _t('u', STRING_LAST_NAME) ?>: </label>
-                            <input type="text" class="form-control" name="last_name" id="last_name" required
-                                   placeholder="<?php echo _t('l', STRING_LAST_NAME) ?>"
-                                   maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
-                                   value="<?php echo $last_name ?>">
+                        <fieldset>
+                            <legend><?php echo _t('u', STRING_PERSONAL_INFO) ?></legend>
+                            <div class="form-group">
+                                <label for="first_name"><?php echo _t('u', STRING_FIRST_NAME) ?>:</label>
+                                <input type="text" class="form-control" name="first_name" id="first_name" required
+                                       placeholder="<?php echo _t('l', STRING_FIRST_NAME) ?>"
+                                       maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
+                                       value="<?php echo $first_name ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name"><?php echo _t('u', STRING_LAST_NAME) ?>: </label>
+                                <input type="text" class="form-control" name="last_name" id="last_name" required
+                                       placeholder="<?php echo _t('l', STRING_LAST_NAME) ?>"
+                                       maxlength="<?php echo CFG_NAME_MAX_LEN ?>"
+                                       value="<?php echo $last_name ?>">
 
-                        </div>
-                        <div class="form-group">
-                            <label for="tel"><?php echo _t('u', STRING_PHONE_NUMBER) ?>:</label>
-                            <input type="tel" class="form-control" name="tel" id="tel" required
-                                   placeholder="<?php echo _t('l', STRING_PHONE_NUMBER) ?>"
-                                   value="<?php echo $tel ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="location"><?php echo _t('u', STRING_LOCATION) ?>:</label>
-                            <select class="form-control" name="location_id" id="location" required>
-                                <option value=""></option>
-                                <?php
-                                foreach (Location::getAll() as $loc) {
-                                    $selected = $location != null && $loc->getId() == $location->getId();
-                                    echo '<option value="'.$loc->getId().'" '.($selected ? "selected" : "").'>';
-                                    echo $loc->getCountry().' - '.$loc->getCity();
-                                    echo '</option>';
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </fieldset>
+                            </div>
+                            <div class="form-group">
+                                <label for="tel"><?php echo _t('u', STRING_PHONE_NUMBER) ?>:</label>
+                                <input type="tel" class="form-control" name="tel" id="tel" required
+                                       placeholder="<?php echo _t('l', STRING_PHONE_NUMBER) ?>"
+                                       value="<?php echo $tel ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="location"><?php echo _t('u', STRING_LOCATION) ?>:</label>
+                                <select class="form-control" name="location_id" id="location" required>
+                                    <option value=""></option>
+                                    <?php
+                                    foreach (Location::getAll() as $loc) {
+                                        $selected = $location != null && $loc->getId() == $location->getId();
+                                        echo '<option value="'.$loc->getId().'" '.($selected ? "selected" : "").'>';
+                                        echo $loc->getCountry().' - '.$loc->getCity();
+                                        echo '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </fieldset>
 
-                    <div class="form-group">
-                        <button type="submit" name="action" value="register" class="btn btn-xl">
+                        <div class="form-group">
+                            <button type="submit" name="action" value="register" class="btn btn-xl">
                             <?php echo _t('u', STRING_REGISTER) ?>
                         </button>
-                    </div>
-                </form>
-                <form id="login-form" class="col-md-6" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
-                    <div class="error" <?php echo $form_error_login ? "" : "hidden" ?>>
-                        <?php
-                        if ($form_error_login) {
-                            echo $form_error_login->getMessage().'<br/>';
-                            if ($form_error_login instanceof ValidationException) {
-                                echo $form_error_login->getArgName().': '.$form_error_login->getValidationError();
-                            }
-                        }
-                        ?>
-                    </div>
-
-                    <fieldset>
-                        <legend><?php echo _t('u', STRING_LOG_IN) ?></legend>
-                        <div class="form-group">
-                            <label for="login"><?php echo _t('u', STRING_IDENTIFIER) ?>:</label>
-                            <input type="text" class="form-control" name="login" id="login" required
-                                   placeholder="<?php echo _t('l', STRING_USERNAME_OR_EMAIL) ?>"
-                                   value="<?php echo $login ?>">
-
                         </div>
-                        <div class="form-group">
-                            <label for="password_login"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
-                            <input type="password" class="form-control" name="password" id="password_login" required
-                                   placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
-                                   minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>"
+                    </form>
+                </div>
+                <div class="container col-md-2"></div>
+                <div class="container col-md-5 auth-container">
+                    <h2 class="section-heading">Log in</h2>
+                    <form id="login-form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+                        <div class="error" <?php echo $form_error_login ? "" : "hidden" ?>>
+                            <?php
+                            if ($form_error_login) {
+                                echo $form_error_login->getMessage().'<br/>';
+                                if ($form_error_login instanceof ValidationException) {
+                                    echo $form_error_login->getArgName().': '.$form_error_login->getValidationError();
+                                }
+                            }
+                            ?>
+                        </div>
+
+                        <fieldset>
+                            <legend><?php echo _t('u', STRING_LOG_IN) ?></legend>
+                            <div class="form-group">
+                                <label for="login"><?php echo _t('u', STRING_IDENTIFIER) ?>:</label>
+                                <input type="text" class="form-control" name="login" id="login" required
+                                       placeholder="<?php echo _t('l', STRING_USERNAME_OR_EMAIL) ?>"
+                                       value="<?php echo $login ?>">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="password_login"><?php echo _t('u', STRING_PASSWORD) ?>:</label>
+                                <input type="password" class="form-control" name="password" id="password_login" required
+                                       placeholder="<?php echo _t('l', STRING_PASSWORD) ?>"
+                                       minlength="<?php echo CFG_PASSWORD_MIN_LEN ?>"
                                    maxlength="<?php echo CFG_PASSWORD_MAX_LEN ?>">
 
-                        </div>
-                    </fieldset>
+                            </div>
+                        </fieldset>
 
-                    <div class="form-group">
-                        <button type="submit" name="action" value="login" class="btn btn-xl">
+                        <div class="form-group">
+                            <button type="submit" name="action" value="login" class="btn btn-xl">
                             <?php echo _t('u', STRING_LOG_IN) ?>
                         </button>
-                    </div>
-                </form>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

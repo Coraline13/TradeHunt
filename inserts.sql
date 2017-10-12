@@ -16,7 +16,7 @@ INSERT INTO `listings` (id, type, user_id, title, slug, description, status, add
    'In good condition.\n\nI want the Pokémon card with Suicuno.', 1, '2017-10-08 19:16:33', 1),
   (3, 1, 1, 'Old radios', 'old-radios', 'Very good condition.\n\nPick one and surprise me with an old lamp', 1,
    '2017-10-08 19:11:31', 1),
-  (4, 1, 2, 'Napkins collection', 'napkins-collection',
+  (4, 1, 2, 'Napkin collection', 'napkins-collection',
    'Old, but gold. Took them from my mom''s collection.\n\nI do not have any special requests.', 1,
    '2017-10-08 19:16:33', 1),
   (5, 2, 2, 'Special insect', 'special-insect',

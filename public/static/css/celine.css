@@ -644,14 +644,6 @@ section h3.section-subheading {
     margin-top: 0;
 }
 
-section#auth {
-    background: #222 no-repeat center;
-}
-
-section#auth .section-heading {
-    color: #fff;
-}
-
 section#auth .form-group {
     margin-bottom: 25px;
 }
@@ -709,6 +701,7 @@ section#auth .text-danger {
 footer {
     padding: 25px 0;
     text-align: center;
+    background-color: #222;
 }
 
 footer span.copyright {

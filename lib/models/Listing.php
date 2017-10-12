@@ -227,7 +227,7 @@ class Listing
     {
         global $db;
 
-        $stmt = $db->prepare("SELECT id, path, listing_id FROM images WHERE images.listing_id = :listing_id");
+        $stmt = $db->prepare("SELECT id, path, listing_id FROM images WHERE images.listing_id = :listing_id ORDER BY id ASC");
         $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -238,6 +238,20 @@ class Listing
         }
 
         return $result;
+    }
+
+    /**
+     * @return string the path of the first image on this listing, or a placeholder if none exists
+     */
+    public function getMainImagePath() {
+        $images = $this->getImages();
+
+        if (empty($images)) {
+            // TODO: placeholder
+            return $GLOBALS['root'].'img/listings/napkins.jpg';
+        }
+
+        return $GLOBALS['root'].'img/listings/'.$images[0]->getPath();
     }
 
     /**

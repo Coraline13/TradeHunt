@@ -48,6 +48,69 @@ function slugify($string, $replace = array(), $delimiter = '-')
     return $clean;
 }
 
+/**
+ * Crop-to-fit an image to the given dimensions
+ * @param string $source_path path to image
+ * @param string $dest_path destination image path
+ * @param int $w target width in pixels
+ * @param int $h target height in pixels
+ * @return string $dstfile
+ */
+function resize_image($source_path, $dest_path, $w, $h)
+{
+    list($source_width, $source_height, $source_type) = getimagesize($source_path);
+
+    switch ($source_type) {
+        case IMAGETYPE_GIF:
+            $source_gdim = imagecreatefromgif($source_path);
+            break;
+        case IMAGETYPE_JPEG:
+            $source_gdim = imagecreatefromjpeg($source_path);
+            break;
+        case IMAGETYPE_PNG:
+            $source_gdim = imagecreatefrompng($source_path);
+            break;
+        default:
+            throw new InvalidArgumentException("unknown image type for $source_path");
+    }
+
+    $source_aspect_ratio = $source_width / $source_height;
+    $desired_aspect_ratio = $w / $h;
+
+    if ($source_aspect_ratio > $desired_aspect_ratio) {
+        $temp_height = $h;
+        $temp_width = ( int )($h * $source_aspect_ratio);
+    } else {
+        $temp_width = $w;
+        $temp_height = ( int )($w / $source_aspect_ratio);
+    }
+
+    $temp_gdim = imagecreatetruecolor($temp_width, $temp_height);
+    imagecopyresampled(
+        $temp_gdim,
+        $source_gdim,
+        0, 0,
+        0, 0,
+        $temp_width, $temp_height,
+        $source_width, $source_height
+    );
+
+    $x0 = ($temp_width - $w) / 2;
+    $y0 = ($temp_height - $h) / 2;
+    $desired_gdim = imagecreatetruecolor($w, $h);
+    imagecopy(
+        $desired_gdim,
+        $temp_gdim,
+        0, 0,
+        $x0, $y0,
+        $w, $h
+    );
+
+    header('Content-type: image/jpeg');
+    imagejpeg($desired_gdim, $dest_path);
+    return $dest_path;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $type = (int)require_array_value($_POST, 'type', false);
@@ -75,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($images as $image) {
             $image_type = exif_imagetype($image['tmp_name']);
             $ext = image_type_to_extension($image_type, false);
-            $image_name = sprintf("/img/listings/%s_%d.%s", $listing->getSlug(), $icnt, $ext);
-            move_uploaded_file($image['tmp_name'], dirname(__FILE__).$image_name);
+            $image_name = sprintf("%s_%d.jpg", $listing->getSlug(), $icnt);
+            resize_image($image['tmp_name'], dirname(__FILE__).'/img/listings/'.$image_name, 720, 450);
             Image::create($image_name, $listing);
             $icnt += 1;
         }
@@ -136,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="form-group">
             <label for="description"><?php echo _t('u', STRING_DESCRIPTION) ?>:</label>
-            <textarea class="form-control" name="description" id="description" required
+            <textarea class="form-control" name="description" id="description"
                       placeholder="<?php echo _t('l', STRING_DESCRIPTION_PLACEHOLDER) ?>"
                       maxlength="<?php echo CFG_LISTING_DESCRIPTION_MAX_LEN ?>"><?php echo $description ?></textarea>
         </div>

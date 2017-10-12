@@ -95,6 +95,11 @@
       "fr": "je veux cet article",
       "ro": "îmi doresc acest articol"
     },
+    "listings": {
+      "en": "Listings",
+      "fr": "Articles",
+      "ro": "Articole"
+    },
     "location": {
       "en": "location",
       "fr": "région",
@@ -149,6 +154,16 @@
       "en": "phone number",
       "fr": "numéro de téléphone",
       "ro": "număr de telefon"
+    },
+    "recent_posts": {
+      "en": "recent posts",
+      "fr": "annonces récentes",
+      "ro": "anunțuri recente"
+    },
+    "recent_posts_descr": {
+      "en": "What our users have been trading recently",
+      "fr": "Ce que nos utilisateurs ont échangé",
+      "ro": "Ce schimburi au făcut utilizatorii noștri"
     },
     "register": {
       "en": "register",

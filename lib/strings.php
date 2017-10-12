@@ -50,6 +50,9 @@ define("STRING_DESCRIPTION_PLACEHOLDER", 45);
 define("STRING_ADD_LISTING", 46);
 define("STRING_ACTION_ADD", 47);
 define("STRING_LISTING_TYPE", 48);
+define("STRING_RECENT_POSTS", 49);
+define("STRING_LISTINGS", 50);
+define("STRING_RECENT_POSTS_DESCR", 51);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -111,6 +114,9 @@ $string_code_to_name = array(
     STRING_ADD_LISTING => "add_listing",
     STRING_ACTION_ADD => "action_add",
     STRING_LISTING_TYPE => "listing_type",
+    STRING_RECENT_POSTS => "recent_posts",
+    STRING_LISTINGS => "listings",
+    STRING_RECENT_POSTS_DESCR => "recent_posts_descr",
 );
 
 $_SUPPORTED_LOCALES = null;
@@ -167,7 +173,7 @@ function _load_strings()
             setcookie(CFG_COOKIE_LOCALE, $_LOCALE, time() + 60 * 60 * 24 * 365 /*1 year*/, "/");
         }
 
-        setlocale(LC_CTYPE | LC_COLLATE, $_LOCALE);
+        setlocale(LC_ALL, $_LOCALE);
 
         foreach ($string_code_to_name as $code => $string_name) {
             unset($defined_codes[$code]);

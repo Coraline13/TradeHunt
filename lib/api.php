@@ -188,6 +188,24 @@ function require_fetch_one($stmt, $table_name, $key_name, $key_val, $string_code
 }
 
 /**
+ * Fetch all rows from the given statement, and apply the specified static creator function to create objects.
+ * @param PDOStatement $stmt executed pdo statement
+ * @param string $make_class class name where the make method is found
+ * @param string $make_method maker method name
+ * @return array array of results of repeated calls to $make_class::$make_method
+ * @see PDOStatement::fetchAll()
+ */
+function fetch_all_and_make($stmt, $make_class, $make_method = 'makeFromPDO') {
+    $result = [];
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $row) {
+        $result[] = call_user_func("$make_class::$make_method", $row);
+    }
+
+    return $result;
+}
+
+/**
  * Validate a value against a given validator
  * @param mixed $obj object to be validated
  * @param string $arg_name argument name used for error formatting

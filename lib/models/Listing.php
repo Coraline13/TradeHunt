@@ -172,13 +172,7 @@ class Listing
                                       FROM listings ORDER BY ${SORT_ORDERS[$sort_order]}
                                       LIMIT $limit OFFSET $offset");
 
-        $result = [];
-        $listings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($listings as $l) {
-            $result[] = Listing::makeFromPDO($l);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Listing');
     }
 
     /**
@@ -211,13 +205,7 @@ class Listing
         $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = [];
-        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($tags as $tag) {
-            $result[] = Tag::makeFromPDO($tag);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Tag');
     }
 
     /**
@@ -231,13 +219,7 @@ class Listing
         $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = [];
-        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($images as $image) {
-            $result[] = Image::makeFromPDO($image);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Image');
     }
 
     /**

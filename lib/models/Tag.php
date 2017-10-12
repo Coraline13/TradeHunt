@@ -61,13 +61,7 @@ class Tag
         $stmt->bindValue(":tag_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $result = [];
-        $listings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($listings as $l) {
-            $result[] = Listing::makeFromPDO($l);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Listing');
     }
 
     /**
@@ -95,13 +89,7 @@ class Tag
         $stmt = $db->prepare("SELECT id, name FROM tags");
         $stmt->execute();
 
-        $result = [];
-        $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($tags as $tag) {
-            $result[] = self::makeFromPDO($tag);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Tag');
     }
 
     /**

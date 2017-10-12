@@ -63,13 +63,7 @@ class Location
         $stmt = $db->prepare("SELECT id, country, city FROM locations");
         $stmt->execute();
 
-        $result = [];
-        $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($locations as $location) {
-            $result[] = self::makeFromPDO($location);
-        }
-
-        return $result;
+        return fetch_all_and_make($stmt, 'Location');
     }
 
     /**

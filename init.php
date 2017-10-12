@@ -180,7 +180,6 @@ function parse_root_url($request_url) {
 
     $scheme = $GLOBALS['secure'] ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
-    $port = isset($url['port']) ? $url['port'] : ($scheme == 'https' ? 443 : 80);
-    return "$scheme://$host:$port$path";
+    return "$scheme://$host$path";
 }
 $GLOBALS['root'] = parse_root_url($_SERVER['REQUEST_URI']);

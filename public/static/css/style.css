@@ -20,10 +20,18 @@ div.success {
     padding: 10px;
 }
 
-#lang_sel_click {
-    display: inline-block;
-    margin-top: 12px;
-    margin-right: 15px;
+@media (max-width: 767px) {
+    #lang_sel_click {
+        margin: 3px 0 -4px 15px;
+    }
+}
+
+@media (min-width: 768px) {
+    #lang_sel_click {
+        display: inline-block;
+        margin-top: 12px;
+        margin-right: 15px;
+    }
 }
 
 #lang_sel_click li img {

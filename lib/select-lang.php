@@ -10,7 +10,7 @@
                 'ro' => STRING_LANG_RO,
             ];
             ?>
-            <a href="javascript:;" class="lang_sel_sel icl-<?php echo $_LOCALE ?>">
+            <a href="javascript:;" class="lang_sel_sel icl-<?php echo $_LOCALE ?> lang_sel_link">
                 <?php echo "<img src=\"${GLOBALS['root']}static/img/flag-$_LOCALE.svg\" alt=\"\"/>&nbsp;"?>
                 <span class="lang_text"><?php echo _t(null, $locales[$_LOCALE]) ?></span>
             </a>
@@ -22,8 +22,8 @@
                     }
                     echo "<li class=\"icl-lang\" data-lang=\"$code\">";
                     echo "<a href=\"${GLOBALS['root']}set_locale.php?locale=$code\">";
-                    echo "<img src=\"${GLOBALS['root']}static/img/flag-$code.svg\" alt=\"\"/>&nbsp;&nbsp;";
-                    echo "<span class=\"icl_lang_sel_translated\">"._t(null, $string)."</span>";
+                    echo "    <img src=\"${GLOBALS['root']}static/img/flag-$code.svg\" alt=\"\"/>&nbsp;&nbsp;";
+                    echo "    <span class=\"icl_lang_sel_translated\">"._t(null, $string)."</span>";
                     echo "</a></li>";
                 }
                 ?>

@@ -4,7 +4,7 @@ var wpml_language_selector_click = {
     toggle: function(){
         var sel = document.getElementById('lang_sel_click').children[0].children[0].children[1];
 
-        if(sel.style.visibility == 'visible'){
+        if(sel.style.visibility === 'visible'){
             sel.style.visibility = 'hidden';
             document.removeEventListener('click', wpml_language_selector_click.close);
         }else{
@@ -21,4 +21,4 @@ var wpml_language_selector_click = {
         }
         wpml_language_selector_click.ls_click_flag = false;
     }
-}
+};

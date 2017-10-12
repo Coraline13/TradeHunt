@@ -61,3 +61,7 @@ section#auth form label,
 section#auth form legend {
     color: #cccccc;
 }
+
+.navbar {
+    border-bottom: 1px solid #ccc;
+}

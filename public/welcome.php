@@ -348,7 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row">
             <div class="col-sm-6">
                 <div class="team-member">
-                    <img src="/static/img/cora.png" class="img-responsive img-circle" alt="">
+                    <img src="static/img/cora.png" class="img-responsive img-circle" alt="">
                     <h4>Coralia Bodea</h4>
                     <p class="text-muted">Lead Designer</p>
                     <ul class="list-inline social-buttons">
@@ -363,7 +363,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="col-sm-6">
                 <div class="team-member">
-                    <img src="/static/img/cristi.jpg" class="img-responsive img-circle" alt="">
+                    <img src="static/img/cristi.jpg" class="img-responsive img-circle" alt="">
                     <h4>Cristi Vîjdea</h4>
                     <p class="text-muted">Lead Developer</p>
                     <ul class="list-inline social-buttons">

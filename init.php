@@ -166,4 +166,21 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
     $GLOBALS['secure'] = true;
 }
 
-$GLOBALS['root'] = "../";
+function parse_root_url($request_url) {
+    $url = parse_url($request_url);
+    $path = isset($url['path']) ? $url['path'] : '/';
+    $path_components = preg_split('|/|', $path, -1, PREG_SPLIT_NO_EMPTY);
+    $public_root_index = array_search('public', $path_components);
+    if ($public_root_index !== false) {
+        $path = '/'.implode('/', array_slice($path_components, 0, $public_root_index + 1, true)).'/';
+    }
+    else {
+        $path = '/';
+    }
+
+    $scheme = $GLOBALS['secure'] ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'];
+    $port = isset($url['port']) ? $url['port'] : ($scheme == 'https' ? 443 : 80);
+    return "$scheme://$host:$port$path";
+}
+$GLOBALS['root'] = parse_root_url($_SERVER['REQUEST_URI']);

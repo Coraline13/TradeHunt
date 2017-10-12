@@ -52,6 +52,9 @@ define("STRING_SERVICES_DISCOVER", 47);
 define("STRING_SERVICES_FIND_DESCR", 48);
 define("STRING_SERVICES_GET_RID_DESCR", 49);
 define("STRING_SERVICES_DISCOVER_DESCR", 50);
+define("STRING_TEAM", 51);
+define("STRING_OUR_TEAM", 52);
+define("STRING_TEAM_DESCR", 53);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -115,6 +118,9 @@ $string_code_to_name = array(
     STRING_SERVICES_FIND_DESCR => "services_find_descr",
     STRING_SERVICES_GET_RID_DESCR => "services_get_rid_descr",
     STRING_SERVICES_DISCOVER_DESCR => "services_discover_descr",
+    STRING_TEAM => "team",
+    STRING_OUR_TEAM => "our_team",
+    STRING_TEAM_DESCR => "team_descr",
 );
 
 $_SUPPORTED_LOCALES = null;

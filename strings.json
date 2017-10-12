@@ -100,6 +100,11 @@
       "fr": "<no string>",
       "ro": "<no string>"
     },
+    "our_team": {
+      "en": "Our amazing team",
+      "fr": "Notre équipe époustouflante",
+      "ro": "Echipa noastră epustuflantă"
+    },
     "parameter_required": {
       "en": "The parameter is required but was not specified.",
       "fr": "Le paramètre est requis.",
@@ -189,6 +194,16 @@
       "en": "You do not need a card anymore? Give it to someone who needs it to complete his/her collection!",
       "fr": "Tu n'as plus besoin d'une carte? Donnes-le à quelqu'un qui en a besoin pour compléter sa collection!",
       "ro": "Nu mai ai nevoie de o carte? Dă-i-o cuiva care are nevoie de ea!"
+    },
+    "team": {
+      "en": "Team",
+      "fr": "Équipe",
+      "ro": "Echipă"
+    },
+    "team_descr": {
+      "en": "Get to know us",
+      "fr": "Apprennes à nous connaître",
+      "ro": "Cunoaște-ne"
     },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",

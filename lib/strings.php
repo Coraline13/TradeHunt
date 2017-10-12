@@ -42,6 +42,14 @@ define("STRING_LANG_EN", 37);
 define("STRING_LOGOUT", 38);
 define("STRING_LOGIN_INFO", 39);
 define("STRING_APP_NAME", 40);
+define("STRING_LISTING_OFFER", 41);
+define("STRING_LISTING_WISH", 42);
+define("STRING_DESCRIPTION", 43);
+define("STRING_TITLE", 44);
+define("STRING_DESCRIPTION_PLACEHOLDER", 45);
+define("STRING_ADD_LISTING", 46);
+define("STRING_ACTION_ADD", 47);
+define("STRING_LISTING_TYPE", 48);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -95,6 +103,14 @@ $string_code_to_name = array(
     STRING_LOGOUT => "logout",
     STRING_LOGIN_INFO => "login_info",
     STRING_APP_NAME => "app_name",
+    STRING_LISTING_OFFER => "listing_offer",
+    STRING_LISTING_WISH => "listing_wish",
+    STRING_DESCRIPTION => "description",
+    STRING_TITLE => "title",
+    STRING_DESCRIPTION_PLACEHOLDER => "description_placeholder",
+    STRING_ADD_LISTING => "add_listing",
+    STRING_ACTION_ADD => "action_add",
+    STRING_LISTING_TYPE => "listing_type",
 );
 
 $_SUPPORTED_LOCALES = null;

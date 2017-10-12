@@ -512,8 +512,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </fieldset>
 
-                    <div>
-                        <button type="submit" name="action" value="register"><?php echo _t('u', STRING_REGISTER) ?></button>
+                    <div class="form-group">
+                        <button type="submit" name="action" value="register" class="btn btn-xl">
+                            <?php echo _t('u', STRING_REGISTER) ?>
+                        </button>
                     </div>
                 </form>
                 <form id="login-form" class="col-md-6" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
@@ -546,8 +548,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </fieldset>
 
-                    <div>
-                        <button type="submit" name="action" value="login"><?php echo _t('u', STRING_LOG_IN) ?></button>
+                    <div class="form-group">
+                        <button type="submit" name="action" value="login" class="btn btn-xl">
+                            <?php echo _t('u', STRING_LOG_IN) ?>
+                        </button>
                     </div>
                 </form>
             </div>

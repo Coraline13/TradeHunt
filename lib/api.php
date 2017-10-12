@@ -133,7 +133,7 @@ function require_non_null($obj, $arg_name)
  */
 function require_non_empty($obj, $arg_name)
 {
-    if (is_null($obj)) {
+    if (empty($obj)) {
         throw new ValidationException($arg_name, get_string(STRING_PARAMETER_REQUIRED));
     }
     return $obj;

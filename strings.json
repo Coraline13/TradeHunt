@@ -1,5 +1,15 @@
 {
   "strings": {
+    "action_add": {
+      "en": "add",
+      "fr": "ajouter",
+      "ro": "adaugă"
+    },
+    "add_listing": {
+      "en": "List an item",
+      "fr": "Ajouter un article",
+      "ro": "Adaugă un articol"
+    },
     "app_name": {
       "en": "Trade Hunt",
       "fr": "Trade Hunt",
@@ -9,6 +19,16 @@
       "en": "Choose an option",
       "fr": "Choisis une option",
       "ro": "Alegeți o variantă"
+    },
+    "description": {
+      "en": "description",
+      "fr": "description",
+      "ro": "descriere"
+    },
+    "description_placeholder": {
+      "en": "Say something about your item",
+      "fr": "Dites quelque chose à propos de votre article",
+      "ro": "Spune ceva despre articolul tău"
     },
     "email_address": {
       "en": "e-mail address",
@@ -59,6 +79,21 @@
       "en": "last name",
       "fr": "nom",
       "ro": "nume"
+    },
+    "listing_offer": {
+      "en": "I have this item",
+      "fr": "j'ai cet article",
+      "ro": "am acest articol"
+    },
+    "listing_type": {
+      "en": "Choose the type of your listing",
+      "fr": "Choisissez le type de votre annonce",
+      "ro": "Alege tipul anunțului"
+    },
+    "listing_wish": {
+      "en": "I want this item",
+      "fr": "je veux cet article",
+      "ro": "îmi doresc acest articol"
     },
     "location": {
       "en": "location",
@@ -139,6 +174,11 @@
       "en": "Select language",
       "fr": "Choisissez votre langue",
       "ro": "Alege limba"
+    },
+    "title": {
+      "en": "title",
+      "fr": "titre",
+      "ro": "denumire"
     },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",

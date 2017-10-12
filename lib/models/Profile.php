@@ -99,11 +99,11 @@ class Profile
     }
 
     /**
-     * @return int location's ID
+     * @return Location the user's location
      */
-    public function getLocationId()
+    public function getLocation()
     {
-        return $this->location_id;
+        return Location::getById($this->id);
     }
 
     /**

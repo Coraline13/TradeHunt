@@ -69,3 +69,4 @@ fabric.properties
 *.sqlite3-journal
 public/phpinfo.php
 /data
+/public/img

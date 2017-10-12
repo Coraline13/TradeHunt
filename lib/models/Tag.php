@@ -103,4 +103,20 @@ class Tag
 
         return $result;
     }
+
+    /**
+     * @return int the tag's unique ID
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string the tag's unique name
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 }

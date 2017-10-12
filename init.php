@@ -156,6 +156,7 @@ function error_handler($errno , $errstr, $errfile = null, $errline = -1, $errcon
 
 set_exception_handler('exception_handler');
 set_error_handler('error_handler', E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 $GLOBALS['secure'] = false;
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {

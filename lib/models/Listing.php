@@ -123,15 +123,15 @@ class Listing
      * @param string $title title
      * @param string $slug url-friendly slug
      * @param string $description long description
-     * @param int $status listing visiblity status, one of STATUS_AVAILABLE or STATUS_GONE (if it was already traded)
      * @param Location $location Location where the listing is available
      * @return Listing new Listing object
      */
-    public static function create($type, User $user, $title, $slug, $description, $status, Location $location) {
-        self::checkEnums($type, $status);
+    public static function create($type, User $user, $title, $slug, $description, Location $location) {
         global $db;
 
         $added = new DateTime();
+        $status = self::STATUS_AVAILABLE;
+        self::checkEnums($type, $status);
 
         $stmt = $db->prepare("INSERT INTO listings(type, user_id, title, slug, description, status, added, location_id)
                                         VALUES (:type, :user_id, :title, :slug, :description, :status, :added, :location_id)");
@@ -227,7 +227,7 @@ class Listing
     {
         global $db;
 
-        $stmt = $db->prepare("SELECT id, path, listing_id FROM images WHERE images.listing_id = :listing_id");
+        $stmt = $db->prepare("SELECT id, path, listing_id FROM images WHERE images.listing_id = :listing_id ORDER BY id ASC");
         $stmt->bindValue(":listing_id", $this->id, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -238,6 +238,20 @@ class Listing
         }
 
         return $result;
+    }
+
+    /**
+     * @return string the path of the first image on this listing, or a placeholder if none exists
+     */
+    public function getMainImagePath() {
+        $images = $this->getImages();
+
+        if (empty($images)) {
+            // TODO: placeholder
+            return $GLOBALS['root'].'img/listings/napkins.jpg';
+        }
+
+        return $GLOBALS['root'].'img/listings/'.$images[0]->getPath();
     }
 
     /**

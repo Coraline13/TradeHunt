@@ -55,6 +55,17 @@ define("STRING_SERVICES_DISCOVER_DESCR", 50);
 define("STRING_TEAM", 51);
 define("STRING_OUR_TEAM", 52);
 define("STRING_TEAM_DESCR", 53);
+define("STRING_LISTING_OFFER", 54);
+define("STRING_LISTING_WISH", 55);
+define("STRING_DESCRIPTION", 56);
+define("STRING_TITLE", 57);
+define("STRING_DESCRIPTION_PLACEHOLDER", 58);
+define("STRING_ADD_LISTING", 59);
+define("STRING_ACTION_ADD", 60);
+define("STRING_LISTING_TYPE", 61);
+define("STRING_RECENT_POSTS", 62);
+define("STRING_LISTINGS", 63);
+define("STRING_RECENT_POSTS_DESCR", 64);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -121,6 +132,17 @@ $string_code_to_name = array(
     STRING_TEAM => "team",
     STRING_OUR_TEAM => "our_team",
     STRING_TEAM_DESCR => "team_descr",
+    STRING_LISTING_OFFER => "listing_offer",
+    STRING_LISTING_WISH => "listing_wish",
+    STRING_DESCRIPTION => "description",
+    STRING_TITLE => "title",
+    STRING_DESCRIPTION_PLACEHOLDER => "description_placeholder",
+    STRING_ADD_LISTING => "add_listing",
+    STRING_ACTION_ADD => "action_add",
+    STRING_LISTING_TYPE => "listing_type",
+    STRING_RECENT_POSTS => "recent_posts",
+    STRING_LISTINGS => "listings",
+    STRING_RECENT_POSTS_DESCR => "recent_posts_descr",
 );
 
 $_SUPPORTED_LOCALES = null;
@@ -177,7 +199,7 @@ function _load_strings()
             setcookie(CFG_COOKIE_LOCALE, $_LOCALE, time() + 60 * 60 * 24 * 365 /*1 year*/, "/");
         }
 
-        setlocale(LC_CTYPE | LC_COLLATE, $_LOCALE);
+        setlocale(LC_ALL, $_LOCALE);
 
         foreach ($string_code_to_name as $code => $string_name) {
             unset($defined_codes[$code]);

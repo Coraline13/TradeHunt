@@ -297,7 +297,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row">
             <div class="col-lg-12">
                 <div class="container col-md-5 auth-container">
-                    <h2 class="section-heading">Register</h2>
+                    <h2 class="section-heading"><?php echo _t('u', STRING_REGISTER_PAGE) ?></h2>
                     <form id="register-form" action="<?php echo $_SERVER['PHP_SELF'].'#auth' ?>" method="post">
                         <div class="error" <?php echo $form_error_register ? "" : "hidden" ?>>
                             <?php
@@ -392,7 +392,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="container col-md-2"></div>
                 <div class="container col-md-5 auth-container">
-                    <h2 class="section-heading">Log in</h2>
+                    <h2 class="section-heading"><?php echo _t('u', STRING_LOGIN_PAGE) ?></h2>
                     <form id="login-form" action="<?php echo $_SERVER['PHP_SELF'].'#auth' ?>" method="post">
                         <div class="error" <?php echo $form_error_login ? "" : "hidden" ?>>
                             <?php

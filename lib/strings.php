@@ -66,6 +66,8 @@ define("STRING_LISTING_TYPE", 61);
 define("STRING_RECENT_POSTS", 62);
 define("STRING_LISTINGS", 63);
 define("STRING_RECENT_POSTS_DESCR", 64);
+define("STRING_REGISTER_PAGE", 65);
+define("STRING_LOGIN_PAGE", 66);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -143,6 +145,8 @@ $string_code_to_name = array(
     STRING_RECENT_POSTS => "recent_posts",
     STRING_LISTINGS => "listings",
     STRING_RECENT_POSTS_DESCR => "recent_posts_descr",
+    STRING_REGISTER_PAGE => "register_page",
+    STRING_LOGIN_PAGE => "login_page",
 );
 
 $_SUPPORTED_LOCALES = null;

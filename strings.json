@@ -125,6 +125,11 @@
       "fr": "données de connexion",
       "ro": "date de acces"
     },
+    "login_page": {
+      "en": "Login",
+      "fr": "Connexion",
+      "ro": "Conectare"
+    },
     "login_to_register": {
       "en": "No account? {{ register|u }} here!",
       "fr": "Pas de compte? {{ register|u }} ici!",
@@ -184,6 +189,11 @@
       "en": "register",
       "fr": "inscrivez-vous",
       "ro": "întregistrează-te"
+    },
+    "register_page": {
+      "en": "Register",
+      "fr": "Inscription",
+      "ro": "Înregistrare"
     },
     "register_to_login": {
       "en": "Have an account? Log in.",

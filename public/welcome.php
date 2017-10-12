@@ -146,8 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <header>
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">Hello Errbody</div>
-            <div class="intro-heading">Yes Mel, Ajmal, Chien, Junne maybe and Syok.</div>
+            <div class="intro-lead-in"><?php echo _t('u', STRING_INTRO_LEAD_IN) ?></div>
+            <div class="intro-heading"><?php echo _t('u', STRING_INTRO_TEXT) ?></div>
             <a href="#auth" class="page-scroll btn btn-xl"><?php echo _t('u', STRING_REGISTER) ?></a>
         </div>
     </div>

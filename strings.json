@@ -204,6 +204,16 @@
       "en": "The password is incorrect.",
       "fr": "Le mot de passe est incorrect.",
       "ro": "Parola este incorectă."
+    },
+    "intro_lead_in": {
+      "en": "Hello, stranger!",
+      "fr": "Bonjour, l'étranger!",
+      "ro": "Neața, străine!"
+    },
+    "intro_text": {
+      "en": "This is the place to hunt for trades!",
+      "fr": "Ceci est le place pour chasser les trocs!",
+      "ro": "Hai la vânătoare de trocuri!"
     }
   },
   "supported_locales": [

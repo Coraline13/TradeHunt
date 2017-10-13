@@ -32,7 +32,7 @@ check_method(["GET", "POST"]);
 
 </head>
 
-<body id="page-top" class="index" data-pinterest-extension-installed="cr1.3.4">
+<body id="page-top">
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">
@@ -63,6 +63,9 @@ check_method(["GET", "POST"]);
                 </li>
                 <li class="">
                     <a class="page-scroll" href="profile.php"><?php echo _t('u', STRING_MY_PROFILE) ?></a>
+                </li>
+                <li class="">
+                    <a class="page-scroll" href="logout.php"><?php echo _t('u', STRING_LOGOUT) ?></a>
                 </li>
             </ul>
         </div>

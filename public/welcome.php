@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </head>
 
-<body id="page-top" class="index" data-pinterest-extension-installed="cr1.3.4">
+<body id="page-top">
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-fixed-top navbar-shrink">

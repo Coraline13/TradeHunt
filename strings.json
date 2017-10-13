@@ -65,6 +65,11 @@
       "fr": "Une erreur inconnue s'est produite lors du traitement de votre requête.",
       "ro": "S-a produs o eroare neidentificată."
     },
+    "hello": {
+      "en": "Hi, %1$s!",
+      "fr": "Bonjour, %1$s !",
+      "ro": "Neața, %1$s!"
+    },
     "identifier": {
       "en": "Login",
       "fr": "Identifiant",
@@ -375,10 +380,20 @@
       "fr": "Qu'est-ce que vous voulez en retour?",
       "ro": "Ce vrei la schimb?"
     },
+    "whats_up": {
+      "en": "What's up?",
+      "fr": "Ça va ?",
+      "ro": "Cum îți mai merge?"
+    },
     "wrong_password": {
       "en": "The password is incorrect.",
       "fr": "Le mot de passe est incorrect.",
       "ro": "Parola este incorectă."
+    },
+    "your_trades": {
+      "en": "Your trades",
+      "fr": "Tes trocs",
+      "ro": "Trocurile tale"
     }
   },
   "supported_locales": [

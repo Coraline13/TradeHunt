@@ -77,6 +77,9 @@ define("STRING_WHAT_WANT", 72);
 define("STRING_MY_PROFILE", 73);
 define("STRING_CATEGORIES", 74);
 define("STRING_SEARCH", 75);
+define("STRING_WHATS_UP", 76);
+define("STRING_HELLO", 77);
+define("STRING_YOUR_TRADES", 78);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -165,6 +168,9 @@ $string_code_to_name = array(
     STRING_MY_PROFILE => "my_profile",
     STRING_CATEGORIES => "categories",
     STRING_SEARCH => "search",
+    STRING_WHATS_UP => "whats_up",
+    STRING_HELLO => "hello",
+    STRING_YOUR_TRADES => "your_trades",
 );
 
 $_SUPPORTED_LOCALES = null;

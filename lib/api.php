@@ -295,8 +295,9 @@ function force_authentication($desired_state = true)
  * @param string $target root-relative URL, effective redirect will be sent to $GLOBALS['root'].$target
  * @param int $status_code HTTP status code, usually one of 301, 302, 303, 307, 308
  * @param bool $absolute true if $target should be treated as an absolute URI rather than root-relative
+ * @param bool $preserve_query true to preserve query and fragment parts of request URI
  */
-function http_redirect($target, $status_code = 302, $absolute = false) {
+function http_redirect($target, $status_code = 302, $absolute = false, $preserve_query = false) {
     if (empty($target) && $absolute) {
         throw new InvalidArgumentException("absolute URI cannot be empty");
     }
@@ -305,6 +306,14 @@ function http_redirect($target, $status_code = 302, $absolute = false) {
     }
     else if(!$absolute) {
         $target = $GLOBALS['root'].$target;
+    }
+    if ($preserve_query) {
+        if (!empty($GLOBALS['query'])) {
+            $target = "$target?${GLOBALS['query']}";
+        }
+        if (!empty($GLOBALS['fragment'])) {
+            $target = "$target#${GLOBALS['fragment']}";
+        }
     }
     header("Location: $target", true, $status_code);
 }

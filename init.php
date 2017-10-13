@@ -180,6 +180,10 @@ function parse_root_url($request_url) {
 
     $scheme = $GLOBALS['secure'] ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
+    $query = isset($url['query']) ? $url['query'] : null;
+    $fragment = isset($url['fragment']) ? $url['fragment'] : null;
+    $GLOBALS['query'] = $query;
+    $GLOBALS['fragment'] = $fragment;
     return "$scheme://$host$path";
 }
 $GLOBALS['root'] = parse_root_url($_SERVER['REQUEST_URI']);

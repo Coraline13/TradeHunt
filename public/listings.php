@@ -6,6 +6,9 @@ check_method(["GET", "POST"]);
 
 $tag = (isset($_GET['tag']) && !empty($_GET['tag']) ? Tag::getByName($_GET['tag']) : null);
 $query = isset($_GET['query']) && !empty($_GET['query']) ? $_GET['query'] : "";
+if (!isset($GLOBALS['included_from']) || $GLOBALS['included_from'] !== 'index') {
+    http_redirect("", 301);
+}
 ?>
 
 <!DOCTYPE html>

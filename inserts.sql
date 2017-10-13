@@ -6,8 +6,8 @@ INSERT INTO `profiles` (id, location_id, first_name, last_name, tel) VALUES
   (1, 1, 'Cristi', 'Vîjdea', '+40720527093'),
   (2, 1, 'Coralia', 'Bodea', '+40765980589');
 INSERT INTO `users` (id, username, email, password_hash, profile_id) VALUES
-  (1, 'axnsan', 'cristi@cvjd.me', '$2y$10$kx7DGHlkKghppE/F5xPv5OPwtNZm9uJOg78X5HKUg1a.pbHZ13Cbu', 1),
-  (2, 'Coraline', 'coralia.bodea@gmail.com', '$2y$10$xG01P2p1wwKTNqLvtkrR4.iY8x9Rfd7aymieyB8yV1W3hH9JdfRFy', 2);
+  (1, 'cvijdea', 'cristi@cvjd.me', '$2y$10$helR/FOu/MKfhNn2MZsb9eCNMnamVWJxBomOc8a4PD1p2ITzSiyM6', 1),
+  (2, 'cbodea', 'coralia.bodea@gmail.com', '$2y$10$heosNU1raN7PUBErhhhR9emaGkvAAu/yE8AXMtP4h6PJ8XNugs/wW', 2);
 INSERT INTO `listings` (id, type, user_id, title, slug, description, status, added, location_id) VALUES
   (1, 1, 1, 'Rubik cube collection', 'rubik-cube-collection',
    'I have this awesome collection of rubik cubes and I''m willing to give them to a passionate rubik cube master.' || x'0a' || x'0a' || 'In exchange for them I would appreciate any golden card from the Duel Masters collection.',

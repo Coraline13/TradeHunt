@@ -50,7 +50,7 @@ $profile = $_USER->getProfile();
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top"><img class="logo" src="static/img/logo.svg"></a>
+            <a class="navbar-brand page-scroll" href="index.php"><img class="logo" src="static/img/logo.svg"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->

@@ -100,3 +100,13 @@ section#auth form legend {
     width: 200px;
     height: auto;
 }
+
+.listing-caption.offer h4,
+.listing-modal h2.offer {
+    color: #0bb599;
+}
+
+.listing-caption.wish h4,
+.listing-modal h2.wish {
+    color: #bbad03;
+}

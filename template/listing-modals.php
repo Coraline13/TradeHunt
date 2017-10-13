@@ -22,7 +22,7 @@ foreach ($listings as $listing): ?>
                         $added = strftime("%x", $listing->getAdded()->getTimestamp())
                         ?>
                         <!-- Project Details Go Here -->
-                        <h2><?php echo $listing->getTitle() ?></h2>
+                        <h2 class="<?php echo ($listing->getType() == Listing::TYPE_OFFER ? "offer" : "wish") ?>"><?php echo $listing->getTitle() ?></h2>
                         <p class="item-intro text-muted"><?php echo $name.' | '.$added ?></p>
                         <img class="img-responsive" src="<?php echo $listing->getMainImageURL() ?>"
                              alt="<?php echo $listing->getSlug() ?>">

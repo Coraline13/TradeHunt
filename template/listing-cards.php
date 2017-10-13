@@ -20,7 +20,7 @@ foreach ($listings as $listing) {
     echo '        </div></div>';
     echo "        <img src=\"$image\" class=\"img-responsive\" alt=\"$slug\">";
     echo '    </a>';
-    echo '    <div class="listing-caption">';
+    echo '    <div class="listing-caption '.($listing->getType() == Listing::TYPE_OFFER ? "offer" : "wish").'">';
     echo "        <h4>$title</h4>";
     echo "        <p class=\"text-muted\">$name | $added</p>";
     echo '    </div>';

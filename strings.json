@@ -165,6 +165,11 @@
       "fr": "Mon profil",
       "ro": "Profilul meu"
     },
+    "no_results": {
+      "en": "Your search returned no results",
+      "fr": "Votre recherche n'a donné aucun résultat",
+      "ro": "Nu a fost găsit niciun rezultat"
+    },
     "no_string": {
       "en": "<no string>",
       "fr": "<no string>",

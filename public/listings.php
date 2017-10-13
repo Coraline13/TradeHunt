@@ -3,13 +3,16 @@ require_once dirname(__FILE__).'/../lib/api.php';
 
 global $_USER;
 check_method(["GET", "POST"]);
+
+$tag = (isset($_GET['tag']) && !empty($_GET['tag']) ? Tag::getByName($_GET['tag']) : null);
+$query = isset($_GET['query']) && !empty($_GET['query']) ? $_GET['query'] : "";
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
-    <title><?php echo _t('u', STRING_RECENT_POSTS) ?></title>
+    <title><?php echo _t('u', STRING_LISTINGS) ?></title>
     <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -80,20 +83,31 @@ check_method(["GET", "POST"]);
         <div class="row">
             <div class="filter-toolbar col-lg-12 text-center">
                 <div class="col-md-8">
-                    <form class="search_bar small">
-                        <div class="search_dropdown" style="width: 16px;">
+                    <form id="search-form" class="search_bar small" method="get" action="<?php echo $_SERVER['PHP_SELF'] ?>">
+                        <div class="search_dropdown">
                             <span><?php echo _t('u', STRING_CATEGORIES) ?></span>
                             <ul>
-                                <li class="selected"><?php echo _t('u', STRING_CATEGORIES) ?></li>
+                                <li class="default <?php echo empty($tag) ? "selected" : "" ?>">
+                                    <?php echo _t('u', STRING_CATEGORIES) ?>
+                                </li>
                                 <?php
-                                foreach (Tag::getAll() as $tag) {
-                                    echo "<li>".$tag->getName()."</li>";
+                                foreach (Tag::getAll() as $t) {
+                                    echo '<li class"'.(!empty($tag) && $t->getName() == $tag->getName() ? "selected" : "").'">'.$t->getName()."</li>";
                                 }
                                 ?>
                             </ul>
                         </div>
-                        <input type="text" placeholder="<?php echo _t('u', STRING_SEARCH) ?>"/>
-                        <button type="submit" value="Search">Search</button>
+                        <input id="search-tag-input" type="hidden" name="tag" value=""/>
+                        <input type="text" name="query" value="<?php echo $query ?>" placeholder="<?php echo _t('u', STRING_SEARCH) ?>"/>
+                        <button type="submit" value="search">Search</button>
+
+                        <?php if (!empty($tag)) {
+                            echo "<script>$(document).ready(function() {
+                                $('.search_bar .search_dropdown > span').text('".$tag->getName()."'); 
+                                $('#search-tag-input').val('".$tag->getName()."'); 
+                            });</script>";
+                        }
+                        ?>
                     </form>
                 </div>
                 <div class="col-md-3"></div>
@@ -104,7 +118,7 @@ check_method(["GET", "POST"]);
         </div>
         <div class="row">
             <?php
-            $listings = Listing::getPaged('new', 0);
+            $listings = Listing::getPaged('new', $tag, $query);
             include dirname(__FILE__).'/../template/listing-cards.php'
             ?>
         </div>

@@ -233,21 +233,8 @@ class User
      */
     public function getListings($types = [Listing::TYPE_OFFER, Listing::TYPE_WISH], $status = Listing::STATUS_AVAILABLE)
     {
-        global $db;
-        if (empty($types)) {
-            throw new InvalidArgumentException("no listings types specified");
-        }
-        foreach ($types as $type) {
-            Listing::checkEnums($type, null);
-        }
-        Listing::checkEnums(null, $status);
-
-        $stmt = $db->prepare("SELECT id, type, user_id, title, slug, description, status, added, location_id
-                             FROM listings WHERE type IN (".implode(', ', $types).") AND status = $status 
-                             AND user_id = :user_id");
-        $stmt->bindValue("user_id", $this->id, PDO::PARAM_INT);
+        $stmt = Listing::buildQuery('new', null, null, $types, $status, $this->id);
         $stmt->execute();
-
         return fetch_all_and_make($stmt, 'Listing');
     }
 

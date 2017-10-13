@@ -213,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="row">
             <?php
-            $listings = Listing::getPaged('new', 0, 6);
+            $listings = Listing::getPaged('new', null, '',null, Listing::STATUS_AVAILABLE,0, 6);
             include dirname(__FILE__).'/../template/listing-cards.php'
             ?>
         </div>

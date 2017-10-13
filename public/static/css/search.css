@@ -61,6 +61,7 @@
 .search_bar .search_dropdown {
     font-weight: 600;
     min-width: 35px;
+    width: 130px;
     background: #f2f2f2;
     border-right: 1px solid #ddd;
     color: #777;
@@ -176,4 +177,8 @@
 .filter-toolbar {
     padding-bottom: 80px;
     z-index: 3 !important;
+}
+
+h2.no-results {
+    margin-left: 50px;
 }

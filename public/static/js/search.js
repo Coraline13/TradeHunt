@@ -22,8 +22,8 @@ $(document).ready(function() {
     resizeElements = function() {
         var barWidth = $(bar).outerWidth();
 
-        var labelWidth = $(dropdownLabel).outerWidth();
-        $(dropdown).width(labelWidth);
+        // var labelWidth = $(dropdownLabel).outerWidth();
+        // $(dropdown).width(labelWidth);
 
         var dropdownWidth = $(dropdown).outerWidth();
         var buttonWidth	= $(button).outerWidth();
@@ -31,7 +31,7 @@ $(document).ready(function() {
         var inputWidthPercent = inputWidth / barWidth * 100 + "%";
 
         $(input).css({ 'margin-left': dropdownWidth, 'width': inputWidthPercent });
-    }
+    };
 
     function dropdownOn() {
         $(dropdownList).fadeIn(25);
@@ -80,14 +80,20 @@ $(document).ready(function() {
         $(dropdownLabel).text(labelText);
 
         resizeElements();
-
     });
-
 
     // Resize all elements when the window resizes
     // --------------------------------------------------
 
     $(window).resize(function() {
         resizeElements();
+    });
+
+    // Set selected tag form input
+    // --------------------------------------------------
+
+    $('#search-form').submit(function() {
+        $('#search-tag-input').val($('li.selected:not(.default)').text());
+        return true;
     });
 });

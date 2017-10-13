@@ -156,12 +156,37 @@ class Listing
     /**
      * Retrieve a set of listings from the database.
      * @param string $sort_order sort order for the retrieved listings, currently only new
+     * @param Tag|null $tag filter by tag
+     * @param string $search search in title and description
+     * @param int[]|null $types filter by listing type
+     * @param int $status filter by listing status
      * @param int $offset starting offset for the page, affected by sort order (page number * page size)
      * @param int $limit maximum number of listings to return (page size)
      * @return Listing[] retrieved Listings
      */
-    public static function getPaged($sort_order = 'new', $offset = 0, $limit = 0)
+    public static function getPaged($sort_order = 'new', Tag $tag = null, $search = '', $types = [Listing::TYPE_OFFER, Listing::TYPE_WISH], $status = Listing::STATUS_AVAILABLE, $offset = 0, $limit = 0)
     {
+        $stmt = self::buildQuery($sort_order, $tag, $search, $types, $status, 0, $offset, $limit);
+        $stmt->execute();
+        return fetch_all_and_make($stmt, 'Listing');
+    }
+
+    /**
+     * Build a query against the listings table with the given filter criteria.
+     * See getPaged() for filter descriptions.
+     * @param string $sort_order
+     * @param Tag|null $tag
+     * @param string $search
+     * @param int[]|null $types
+     * @param int $status
+     * @param int $user_id
+     * @param int $offset
+     * @param int $limit
+     * @return PDOStatement
+     * @see Listing::getPaged()
+     */
+    public static function buildQuery($sort_order = 'new', Tag $tag = null, $search = '', $types = [Listing::TYPE_OFFER, Listing::TYPE_WISH],
+                                      $status = Listing::STATUS_AVAILABLE, $user_id = 0, $offset = 0, $limit = 0) {
         global $db;
         static $SORT_ORDERS = [
             'new' => 'added DESC',
@@ -169,14 +194,51 @@ class Listing
         if (!array_key_exists($sort_order, $SORT_ORDERS)) {
             throw new InvalidArgumentException("unknown sort order $sort_order");
         }
+        if (is_null($types)) {
+            $types = [Listing::TYPE_OFFER, Listing::TYPE_WISH];
+        }
+        if (empty($types)) {
+            throw new InvalidArgumentException("no listings types specified");
+        }
+        foreach ($types as $type) {
+            Listing::checkEnums($type, null);
+        }
+        Listing::checkEnums(null, $status);
+        if (!is_int($user_id)) {
+            throw new InvalidArgumentException("user_id must be an integer");
+        }
+
+        $where = '';
+        $sep = '';
+        if (!empty($tag)) {
+            $where = "$where$sep (listing_tags.tag_id = ".$tag->getId().')';
+            $sep = ' AND ';
+        }
+        if (!empty($search)) {
+            $where = "$where$sep (l.title LIKE :like_search OR l.description LIKE :like_search)";
+            $sep = ' AND ';
+        }
+        if (!empty($user_id)) {
+            $where = "$where$sep (user_id = $user_id)";
+            $sep = ' AND ';
+        }
+        $where = "$where$sep (type IN (".implode(', ', $types).")) AND (status = $status)";
+
         $limit = empty($limit) ? 2147483647 : $limit;
-        $stmt = $db->query("SELECT id, type, user_id, title, slug, description, status, added, location_id
-                                      FROM listings ORDER BY ${SORT_ORDERS[$sort_order]}
-                                      LIMIT $limit OFFSET $offset");
 
-        return fetch_all_and_make($stmt, 'Listing');
+        $stmt = $db->query("
+            SELECT l.id, l.type, l.user_id, l.title, l.slug, l.description, l.status, l.added, l.location_id
+            FROM listings l INNER JOIN listing_tags ON l.id = listing_tags.listing_id 
+            WHERE $where 
+            ORDER BY ${SORT_ORDERS[$sort_order]}
+            LIMIT $limit OFFSET $offset;
+        ");
+        if (!empty($search)) {
+            $stmt->bindValue("like_search", "%$search%", PDO::PARAM_STR);
+        }
+        log_debug($stmt->queryString);
+        return $stmt;
     }
-
     /**
      * Get a listing from the database by its id.
      * @param int $listing_id listing unique ID

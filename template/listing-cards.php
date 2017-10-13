@@ -27,3 +27,7 @@ foreach ($listings as $listing) {
     echo '</div>';
     $lcnt += 1;
 }
+
+if (empty($listings)) {
+    echo "<h2 class=\"no-results\">"._t('u', STRING_NO_RESULTS)."</h2>";
+}

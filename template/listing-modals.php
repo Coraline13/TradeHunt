@@ -27,7 +27,7 @@ foreach ($listings as $listing): ?>
                         <img class="img-responsive" src="<?php echo $listing->getMainImageURL() ?>"
                              alt="<?php echo $listing->getSlug() ?>">
                         <p><?php echo nl2br($listing->getDescription()) ?></p>
-                        <?php if ($user->getId() != $_USER->getId()): ?>
+                        <?php if (!empty($_USER) && $user->getId() != $_USER->getId()): ?>
                         <a class="btn btn-primary" href="trade.php?user_id=<?php echo $user->getId() ?>&prechecked_id=<?php echo $listing->getId() ?>">
                             <i class="fa fa-times"></i>
                             <?php echo _t('u', STRING_TRADE_WITH_USER, $name) ?>

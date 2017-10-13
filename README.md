@@ -1,5 +1,5 @@
-#Trade Hunt
-###Bodea Coralia-Mihaela, Vîjdea Cristian-Ioan
+# Trade Hunt
+### Bodea Coralia-Mihaela, Vîjdea Cristian-Ioan
 
 * source: https://github.com/Coraline13/ProgWeb
 * hosted: https://progweb.cvjd.me/

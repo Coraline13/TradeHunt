@@ -103,7 +103,7 @@ class Profile
      */
     public function getLocation()
     {
-        return Location::getById($this->id);
+        return Location::getById($this->location_id);
     }
 
     /**

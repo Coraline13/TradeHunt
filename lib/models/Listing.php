@@ -228,7 +228,7 @@ class Listing
 
         $stmt = $db->query("
             SELECT l.id, l.type, l.user_id, l.title, l.slug, l.description, l.status, l.added, l.location_id
-            FROM listings l INNER JOIN listing_tags ON l.id = listing_tags.listing_id 
+            FROM listings l LEFT JOIN listing_tags ON l.id = listing_tags.listing_id 
             WHERE $where 
             ORDER BY ${SORT_ORDERS[$sort_order]}
             LIMIT $limit OFFSET $offset;

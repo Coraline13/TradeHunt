@@ -315,6 +315,11 @@
       "fr": "laisser un court message pour %1$s",
       "ro": "scrie un mesaj pentru %1$s"
     },
+    "trade_with_user": {
+      "en": "Trade with %1$s",
+      "fr": "Faire un troc avec %1$s",
+      "ro": "Fă schimb cu %1$s"
+    },
     "user_not_found": {
       "en": "User '%1$s' does not exist.",
       "fr": "L'utilisateur '%1$s' n'existe pas.",

@@ -1,5 +1,6 @@
 <?php
 $lcnt = 1;
+global $_USER;
 foreach ($listings as $listing): ?>
 <div class="listing-modal modal fade" id="listingModal<?php echo $lcnt ?>" tabindex="-1" role="dialog">
     <div class="modal-content">
@@ -15,7 +16,8 @@ foreach ($listings as $listing): ?>
                     <div class="modal-body">
                         <?php
                         /** @var Listing $listing */
-                        $profile = $listing->getUser()->getProfile();
+                        $user = $listing->getUser();
+                        $profile = $user->getProfile();
                         $name = $profile->getFirstName().' '.$profile->getLastName();
                         $added = strftime("%x", $listing->getAdded()->getTimestamp())
                         ?>
@@ -25,9 +27,12 @@ foreach ($listings as $listing): ?>
                         <img class="img-responsive" src="<?php echo $listing->getMainImageURL() ?>"
                              alt="<?php echo $listing->getSlug() ?>">
                         <p><?php echo nl2br($listing->getDescription()) ?></p>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>PLACEHOLDER
-                        </button>
+                        <?php if ($user->getId() != $_USER->getId()): ?>
+                        <a class="btn btn-primary" href="trade.php?user_id=<?php echo $user->getId() ?>&prechecked_id=<?php echo $listing->getId() ?>">
+                            <i class="fa fa-times"></i>
+                            <?php echo _t('u', STRING_TRADE_WITH_USER, $name) ?>
+                        </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

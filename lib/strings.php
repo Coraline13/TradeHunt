@@ -81,6 +81,7 @@ define("STRING_WHATS_UP", 76);
 define("STRING_HELLO", 77);
 define("STRING_YOUR_TRADES", 78);
 define("STRING_NO_RESULTS", 79);
+define("STRING_TRADE_WITH_USER", 80);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -173,6 +174,7 @@ $string_code_to_name = array(
     STRING_HELLO => "hello",
     STRING_YOUR_TRADES => "your_trades",
     STRING_NO_RESULTS => "no_results",
+    STRING_TRADE_WITH_USER => "trade_with_user",
 );
 
 $_SUPPORTED_LOCALES = null;

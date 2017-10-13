@@ -6,6 +6,7 @@ check_method(["GET", "POST"]);
 force_authentication(true);
 
 $recipient = User::getById(require_array_value($_GET, 'user_id', false));
+$prechecked_id = isset($_GET['prechecked_id']) ? (int)$_GET['prechecked_id'] : 0;
 $recipient_name = $recipient->getProfile()->getFirstName();
 
 $message = '';

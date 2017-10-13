@@ -74,6 +74,9 @@ define("STRING_TRADE_MESSAGE_PLACEHOLDER", 69);
 define("STRING_ACTION_SEND", 70);
 define("STRING_WHAT_OFFER", 71);
 define("STRING_WHAT_WANT", 72);
+define("STRING_MY_PROFILE", 73);
+define("STRING_CATEGORIES", 74);
+define("STRING_SEARCH", 75);
 
 /**
  * Array mapping STRING constants to a code name that is used to specify localizations in strings.json.
@@ -159,6 +162,9 @@ $string_code_to_name = array(
     STRING_ACTION_SEND => "action_send",
     STRING_WHAT_OFFER => "what_offer",
     STRING_WHAT_WANT => "what_want",
+    STRING_MY_PROFILE => "my_profile",
+    STRING_CATEGORIES => "categories",
+    STRING_SEARCH => "search",
 );
 
 $_SUPPORTED_LOCALES = null;

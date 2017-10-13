@@ -44,11 +44,11 @@ class User
      */
     private function __construct($id, $username, $email, $hashed_password, $profile_id)
     {
-        $this->id = require_non_empty($id, "user_id");
+        $this->id = (int)require_non_empty($id, "user_id");
         $this->username = require_non_empty($username, "username");
         $this->email = require_non_empty($email, "email");
         $this->password_hash = require_non_empty($hashed_password, "hashed_password");
-        $this->profile_id = require_non_empty($profile_id, "profile_id");
+        $this->profile_id = (int)require_non_empty($profile_id, "profile_id");
     }
 
     /**

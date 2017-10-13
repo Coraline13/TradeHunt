@@ -34,8 +34,8 @@ class Profile
      */
     private function __construct($id, $location_id, $first_name, $last_name, $tel)
     {
-        $this->id = require_non_empty($id, "profile_id");
-        $this->location_id = require_non_empty($location_id, "location_id");
+        $this->id = (int)require_non_empty($id, "profile_id");
+        $this->location_id = (int)require_non_empty($location_id, "location_id");
         $this->first_name = require_non_empty($first_name, "first_name");
         $this->last_name = require_non_empty($last_name, "last_name");
         $this->tel = require_non_empty($tel, "tel");

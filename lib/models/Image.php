@@ -23,16 +23,17 @@ class Image
      */
     private function __construct($id, $path, $listing_id)
     {
-        $this->id = require_non_empty($id, "image_Id");
+        $this->id = (int)require_non_empty($id, "image_Id");
         $this->path = require_non_empty($path, "path");
-        $this->listing_id = require_non_empty($listing_id, "listing_id");
+        $this->listing_id = (int)require_non_empty($listing_id, "listing_id");
     }
 
     /**
      * @param array $i array result fetched with PDO::FETCH_ASSOC
      * @return Image Image object
      */
-    public static function makeFromPDO($i) {
+    public static function makeFromPDO($i)
+    {
         return new Image($i['id'], $i['path'], $i['listing_id']);
     }
 

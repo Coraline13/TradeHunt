@@ -18,7 +18,7 @@ class Tag
      */
     private function __construct($id, $name)
     {
-        $this->id = require_non_empty($id, "tag_id");
+        $this->id = (int)require_non_empty($id, "tag_id");
         $this->name = require_non_empty($name, "name");
     }
 

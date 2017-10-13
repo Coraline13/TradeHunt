@@ -23,7 +23,7 @@ class Location
      */
     private function __construct($id, $country, $city)
     {
-        $this->id = require_non_empty($id, "location_id");
+        $this->id = (int)require_non_empty($id, "location_id");
         $this->country = require_non_empty($country, "country");
         $this->city = require_non_empty($city, "city");
     }

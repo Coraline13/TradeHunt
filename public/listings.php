@@ -82,8 +82,11 @@ check_method(["GET", "POST"]);
                             <span><?php echo _t('u', STRING_CATEGORIES) ?></span>
                             <ul>
                                 <li class="selected"><?php echo _t('u', STRING_CATEGORIES) ?></li>
-                                <li>Books</li>
-                                <li>Articles</li>
+                                <?php
+                                foreach (Tag::getAll() as $tag) {
+                                    echo "<li>".$tag->getName()."</li>";
+                                }
+                                ?>
                             </ul>
                         </div>
                         <input type="text" placeholder="<?php echo _t('u', STRING_SEARCH) ?>"/>
@@ -98,35 +101,8 @@ check_method(["GET", "POST"]);
         </div>
         <div class="row">
             <?php
-            $lcnt = 1;
             $listings = Listing::getPaged('new', 0);
-            foreach ($listings as $listing) {
-                $image = $listing->getMainImageURL();
-                $slug = $listing->getSlug();
-                $title = $listing->getTitle();
-                $tags = implode(", ", array_map(function (Tag $tag) {
-                    return $tag->getName();
-                }, $listing->getTags()));
-
-                $profile = $listing->getUser()->getProfile();
-                $name = $profile->getFirstName().' '.$profile->getLastName();
-                $added = strftime("%x", $listing->getAdded()->getTimestamp());
-
-                echo '<div class="col-md-4 col-sm-6 listing-item">';
-                echo "    <a href=\"#listingModal$lcnt\" class=\"listing-link\" data-toggle=\"modal\">";
-                echo '        <div class="listing-hover"><div class="listing-hover-content">';
-                echo '            <i class="fa fa-plus fa-3x"></i>';
-                echo '        </div></div>';
-                echo "        <img src=\"$image\" class=\"img-responsive\" alt=\"$slug\">";
-                echo '    </a>';
-                echo '    <div class="listing-caption">';
-                echo "        <h4>$title</h4>";
-                echo "        <p class=\"text-muted\">$name | $added</p>";
-                echo '    </div>';
-                echo '</div>';
-                $lcnt += 1;
-            }
-
+            include dirname(__FILE__).'/../template/listing-cards.php'
             ?>
         </div>
     </div>
@@ -144,44 +120,7 @@ check_method(["GET", "POST"]);
     </div>
 </footer>
 
-<?php $lcnt = 1;
-foreach ($listings as $listing): ?>
-    <div class="listing-modal modal fade" id="listingModal<?php echo $lcnt ?>" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl">
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 col-lg-offset-2">
-                        <div class="modal-body">
-                            <?php
-                            $profile = $listing->getUser()->getProfile();
-                            $name = $profile->getFirstName().' '.$profile->getLastName();
-                            $added = strftime("%x", $listing->getAdded()->getTimestamp())
-                            ?>
-                            <!-- Project Details Go Here -->
-                            <h2><?php echo $listing->getTitle() ?></h2>
-                            <p class="item-intro text-muted"><?php echo $name.' | '.$added ?></p>
-                            <img class="img-responsive" src="<?php echo $listing->getMainImageURL() ?>"
-                                 alt="<?php echo $listing->getSlug() ?>">
-                            <p><?php echo $listing->getDescription() ?></p>
-                            <button type="button" class="btn btn-primary" data-dismiss="modal"><i
-                                    class="fa fa-times"></i>PLACEHOLDER
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php
-    $lcnt += 1;
-endforeach; ?>
+<?php include dirname(__FILE__).'/../template/listing-modals.php' ?>
 
 </body>
 </html>

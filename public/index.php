@@ -8,6 +8,6 @@ if (empty($_USER)) {
     require dirname(__FILE__).'/welcome.php';
 }
 else {
-    require dirname(__FILE__).'/profile.php';
+    require dirname(__FILE__).'/listings.php';
 }
 
